@@ -19,7 +19,7 @@
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
-  <link href="<?= base_url() ?>/assets/css/style.css" rel="stylesheet">
+  <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
   <title>kasir</title>
   <style>
       @media print{
@@ -328,15 +328,15 @@
   
 
   <!-- Custom scripts for all pages-->
-  <script src="<?= base_url() ?>/assets/js/sb-admin-2.js"></script>
+  <script src="<?= base_url() ?>assets/js/sb-admin-2.js"></script>
   
   <!-- Page level plugins -->
   <script src="<?= base_url() ?>assets/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
   
 
   <!-- Page level custom scripts -->
-  <script src="<?= base_url() ?>/aassets/demo/datatables-demo.js"></script>
-  
+  <!-- <script src="<-?= base_url() ?>/aassets/demo/datatables-demo.js"></script>
+   -->
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script>
