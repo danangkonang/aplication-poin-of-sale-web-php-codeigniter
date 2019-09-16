@@ -1,5 +1,5 @@
 # aplication-poin-of-sale-web-php-codeigniter
-aplikasi pos kasir berbasis web memudahkan pengusaha untuk memantau penjualan barang dan stok barang
+Aplikasi penjualan berbasis web mempermudah pengusaha memantau penjualan harian/bulanan, setok barang, laba/rugi dan laporan-laporan. Dibangun dengan Codeigniter, MySQL, dan Bootstrap
 
 ## Stack
 <ul>
@@ -26,11 +26,12 @@ aplikasi pos kasir berbasis web memudahkan pengusaha untuk memantau penjualan ba
 ## Screenshots
 
 <P>
-<img src="https://danangkonang.github.io/assets/kasir/kasir-cetak-nota.png" width="600" height="350" />
-<img src="https://danangkonang.github.io/assets/kasir/kasir-data-barang.png" width="600" height="350" />
-<img src="https://danangkonang.github.io/assets/kasir/kasir-data-penjualan.png" width="600" height="350" />
-<img src="https://danangkonang.github.io/assets/kasir/kasir-tambah-barang.png" width="600" height="350" />
-<img src="https://danangkonang.github.io/assets/kasir/kasir-cetak-nota.png" width="600" height="350" />
+   <img src="https://danangkonang.github.io/assets/kasir/kasir-home.png" width="500" height="300" />
+   <img src="https://danangkonang.github.io/assets/kasir/kasir-nota.png" width="500" height="300" />
+   <img src="https://danangkonang.github.io/assets/kasir/kasir-data-barang.png" width="500" height="300" />
+   <img src="https://danangkonang.github.io/assets/kasir/kasir-data-penjualan.png" width="500" height="300" />
+   <img src="https://danangkonang.github.io/assets/kasir/kasir-tambah-barang.png" width="500" height="300" />
+   <img src="https://danangkonang.github.io/assets/kasir/kasir-diagram.png" width="500" height="300" />
 </p>
 
 <p>
