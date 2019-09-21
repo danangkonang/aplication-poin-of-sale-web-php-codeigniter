@@ -37,6 +37,13 @@ Aplikasi penjualan berbasis web mempermudah pengusaha memantau penjualan harian/
 <p>
 <a href="https://dakon.000webhostapp.com" target="_blank"><h2>live demo</h2></a>
 </p>
+<p>
+   mohom maaf ada fitur yang saya disable<br/>
+</p>
+<ul>
+   <li>Admin => dngrifai21@gmail.com 123</li>
+   <li>Kasir => dngrifai@gmail.com 111</li>
+</ul>
 
 ## Contribusi
 * email: dngrifai21@gmail.com
