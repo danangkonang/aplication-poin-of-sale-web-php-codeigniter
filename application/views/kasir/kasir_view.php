@@ -205,7 +205,7 @@
                         <form class="form-horizontal" id="form_transaksi" role="form">
 
                             <div class="form-group row">
-                              <label class="col-md-3 col-form-label">id/ nama</label>
+                              <label class="col-md-3 col-form-label">id/nama (f2)</label>
                                 <div class="col-md-9">
                                   <input class="form-control reset" id="pencarian"  name="id" type="text" placeholder="id / nama" >
                                 </div>
@@ -357,31 +357,26 @@
               },
               ],
               });
-           //new $.fn.dataTable.FixedHeader( table );
+           
            $('#pencarian').focus();
        });
        
-       function reload_table()
-       {
-           table.ajax.reload(null,false); //reload datatable ajax
+       function reload_table(){
+           table.ajax.reload(null,false);
        }
        
-      function subTotal(qty)
-      {
+      function subTotal(qty){
           var harga = $('#harga').val().replace(".", "").replace(".", "");
           var promo = $('#jenis_promo').val();
           var potongan = $('#potongan').val();
           var hrg_potong = $('#harga_potongan').val();
-          if(promo == 'minimal')
-          {
+          if(promo == 'minimal'){
               var induk = Math.floor(qty / potongan);
               var sisa = qty% potongan;
               var sub = (induk*hrg_potong)+(harga*sisa);
               $('#sub_total').val(convertToRupiah(sub));
               $('#tambah').removeAttr("disabled");
-          }
-          else
-          {
+          }else{
               var diskon = harga - (harga*potongan/100);
               $('#sub_total').val(convertToRupiah(diskon*qty));
               $('#tambah').removeAttr("disabled");
@@ -389,8 +384,7 @@
           
       }
       
-      function addbarang()
-      {
+      function addbarang(){
           var id = $('#id').val();
           var qty = $('#qty').val();
           $.ajax({
@@ -398,21 +392,19 @@
               type: "POST",
               data: $('#form_transaksi').serialize(),
               dataType: "JSON",
-              success: function(data)
-              {
+              success: function(data){
                   reload_table();
                   $('#tambah').attr("disabled","disabled");
                   $('#qty').attr("readonly","readonly");
                   $('#bayar').focus();
               },
-              error: function (jqXHR, textStatus, errorThrown)
-              {
+              error: function (jqXHR, textStatus, errorThrown){
                   alert('Error adding data');
               }
-              });
-              showTotal();
-              showKembali($('#bayar').val());
-              $('.reset').val('');
+          });
+          showTotal();
+          showKembali($('#bayar').val());
+          $('.reset').val('');
       }
       
       document.onkeydown = function(e){
@@ -433,10 +425,16 @@
           break;
         }
         }
+      // 113 f2
+      // 37 kiri 38 atas 39 kanan 40 bawah
+      switch(e.keyCode){
+        case 113:
+        $('#pencarian').focus();
+        break;
+      }
       };
       
-      function showTotal()
-      {
+      function showTotal(){
           var total = $('#total').val().replace(".", "").replace(".", "");
           var sub_total = $('#sub_total').val().replace(".", "").replace(".", "");
           $('#total').val(convertToRupiah((Number(total)+Number(sub_total))));
@@ -478,13 +476,13 @@
                 source: function(request, response) { 
 
                     jQuery.ajax({
-                       url:      "http://localhost/penjualan/option/cari_barang",
-                       data:    {
-                                    keyword : request.term
-                                },
-                       dataType: "json",
-                       success: function(data){
-                            response(data);
+                        url:      "http://localhost/penjualan/option/cari_barang",
+                        data: {
+                          keyword : request.term
+                        },
+                        dataType: "json",
+                        success: function(data){
+                          response(data);
                         }   
                     })
                 },
@@ -538,8 +536,7 @@
                 });
         }
 		
-		function print_nota()
-		{
+		function print_nota(){
 			window.print();
 			cetak_struk();
 		}
@@ -551,15 +548,17 @@
 				type: "post",
 				dataType:"json",
 				success:function(result){
-					if(result.status){
+					if(result.status == true){
 						$('#modalNota').modal('hide');
 						reload_table();
 						$('.res').val('');
             $('#pencarian').focus();
-					}
+					}else{
+            alert('gagal melakukan transaksi')
+          }
 				},
-				error: function(xhr, Status, err){
-					alert('Gagal transaksi');
+				error: function(err){
+					alert('error transaksi')
 				}
 			});
 		}
@@ -570,12 +569,10 @@
 				url : "<?= site_url('option/deletebarang')?>/"+id,
 				type: "POST",
 				dataType: "JSON",
-				success: function(data)
-				{
+				success: function(data){
 					reload_table();
 				},
-				error: function (jqXHR, textStatus, errorThrown)
-				{
+				error: function (jqXHR, textStatus, errorThrown){
 					alert('Gagal hapus barang');
 				}
 			});

@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,17 +10,11 @@
 
   <title>kasir</title>
 
-  <!-- Custom fonts for this template-->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-
-  <!-- Custom styles for this template-->
   <link href="<?= base_url() ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
-  
-  <!-- Custom styles for this page -->
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
-  <!-- <link href="<-?= base_url() ?>aassets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" > -->
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <title>kasir</title>
 </head>
@@ -34,50 +27,50 @@
    <!-- Sidebar -->
    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-<!-- Sidebar - Brand -->
-<a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-  <div class="sidebar-brand-icon rotate-n-15">
-    <i class="fas fa-laugh-wink"></i>
-  </div>
-  <div class="sidebar-brand-text mx-3">
-    <?php if($this->session->userdata('email')==1)
-    {
-      echo 'admin';
-    }else{
-      echo 'kasir';
-    }
-    ?>
-  </div>
-</a>
-<!-- Divider -->
-<hr class="sidebar-divider my-0">
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <div class="sidebar-brand-icon rotate-n-15">
+        <i class="fas fa-laugh-wink"></i>
+      </div>
+      <div class="sidebar-brand-text mx-3">
+        <?php if($this->session->userdata('email')==1)
+        {
+          echo 'admin';
+        }else{
+          echo 'kasir';
+        }
+        ?>
+      </div>
+  </a>
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
 
-<!-- Nav Item - Dashboard -->
-<li class="nav-item ">
-  <a class="nav-link" href="<?= site_url() ?>">
-    <i class="fas fa-fw fa-cash-register"></i>
-    <span>Kasir</span></a>
-</li>
-<!-- Divider -->
-<hr class="sidebar-divider">
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item ">
+    <a class="nav-link" href="<?= site_url() ?>">
+      <i class="fas fa-fw fa-cash-register"></i>
+      <span>Kasir</span></a>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider">
 
-<!-- Nav Item - Tables pembelian -->
-<li class="nav-item">
-  <a class="nav-link" href="<?= site_url() ?>option/data_barang">
-    <i class="fas fa-fw fa-cubes"></i>
-    <span>Data barang</span></a>
-</li>
-<!-- Divider -->
-<hr class="sidebar-divider">
+  <!-- Nav Item - Tables pembelian -->
+  <li class="nav-item">
+    <a class="nav-link" href="<?= site_url() ?>option/data_barang">
+      <i class="fas fa-fw fa-cubes"></i>
+      <span>Data barang</span></a>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider">
 
-<!-- Nav Item - Tables -->
-<li class="nav-item">
-  <a class="nav-link" href="<?= site_url() ?>option/data_penjualan">
-  <i class="far fa-handshake"></i>
-    <span>Data penjualan</span></a>
-</li>
-<!-- Divider -->
-<hr class="sidebar-divider">
+  <!-- Nav Item - Tables -->
+  <li class="nav-item">
+    <a class="nav-link" href="<?= site_url() ?>option/data_penjualan">
+    <i class="far fa-handshake"></i>
+      <span>Data penjualan</span></a>
+  </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider">
 
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
@@ -185,24 +178,51 @@
 
         <!-- Begin Page Content -->
         <div class="container-fluid">
+          <div class="form-row">
+        
+            <div class="form-group col-md-3">
+              <label for="satuan">barang</label>
+              <select class="form-control " id="bulan" onChange="cek_bulan()" name="bulan">
+                <option value="1"> tes</option>
+              </select>
+            </div>
             
+            <div class="form-group col-md-3">
+              <label for="satuan">Dari</label>
+              <select class="form-control " id="tahun" name="tahun" onChange="cek_bulan()">
+                <option value="pcs">pcs</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-3">
+              <label for="satuan">Sampai</label>
+              <select class="form-control " id="tahun" name="tahun" onChange="cek_bulan()">
+                <option value="pcs">pcs</option>
+              </select>
+            </div>
+
+            <div class="col-md-3 m-auto">
+              <button class="btn btn-success">Filter</button>
+            </div>
+        
+          </div>
 			
-			<table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
-				<thead>
-					<tr>
-						<th>no</th>
-						<!--th>Kode</th-->
-						<th>Nama</th>
-						<th>Qty</th>
-						<!--th>Kasir</th-->
-						<th>Bayar</th>
-						<!--th>satuan</th-->
-						<!--th>S P</th-->
-						<th>H beli</th>
-						<th>Untung</th>
-					</tr>
-				</thead>
-				<tbody>
+              <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
+                <thead>
+                  <tr>
+                    <th>no</th>
+                    <!--th>Kode</th-->
+                    <th>Nama</th>
+                    <th>Qty</th>
+                    <!--th>Kasir</th-->
+                    <th>Bayar</th>
+                    <!--th>satuan</th-->
+                    <!--th>S P</th-->
+                    <th>H beli</th>
+                    <th>Untung</th>
+                  </tr>
+                </thead>
+                <tbody>
                 </tbody>
                 <tfoot>
                     <tr>
@@ -213,7 +233,7 @@
                         </td>
                     </tr>
                 </tfoot>
-		    </table>
+		          </table>
     
         </div>
         <!-- /.container-fluid -->
@@ -276,6 +296,7 @@
               {
                   "targets": [ 2,3,4,5 ],
                   "orderable": false,
+                  
               },
               ],
               "order": [],

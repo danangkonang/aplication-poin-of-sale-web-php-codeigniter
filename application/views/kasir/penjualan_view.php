@@ -37,7 +37,7 @@
           <i class="fas fa-laugh-wink"></i>
         </div>
         <div class="sidebar-brand-text mx-3">
-          <?php if($this->session->userdata('email')==1)
+          <?php if($this->session->userdata('level')==1)
           {
             echo 'admin';
           }else{
