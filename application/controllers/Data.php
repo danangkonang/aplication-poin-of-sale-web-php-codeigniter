@@ -24,8 +24,6 @@ class Data extends CI_Controller {
 		$data[] = $this->acak();
 		for($a=0; $a<2; $a++)
 		{
-			//print_r (explode(',',$this->acak()));
-			//echo $this->acak();
 			print_r($data);
 		}
 	}
@@ -38,7 +36,6 @@ class Data extends CI_Controller {
 	function hapus()
 	{
 		$id = 2;
-		//$this->db->empty_table('toko');
 		$this->db->where('id_penjualan',$id);
 		$this->db->delete('penjualan');
 	}

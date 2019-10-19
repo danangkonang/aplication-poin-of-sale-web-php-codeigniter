@@ -3,22 +3,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Registrasi extends CI_Controller {
 	
-	public function __construct()
-        {
+        public function __construct(){
                 parent::__construct();
-                
                 $this->load->model('model_registrasi');
                 if($this->session->userdata('id')){
-			header("location: http://localhost:8080/penjualan");
-			}
+                        header("location: http://localhost:8080/penjualan");
+                }
         }
 	
 	
 	
-	public function index()
-	{
-                
-
+	public function index(){
                 $this->load->library('form_validation');
 
                 $this->form_validation->set_rules('username', 'Username', 'required|alpha_dash|is_unique[user.nama]',
@@ -49,37 +44,35 @@ class Registrasi extends CI_Controller {
                 {
                         $this->load->view('user/form_registrasi');
                         
-                }
-                else
-                {
+                }else{
                         
                         $username = $this->input->post('username',true);
                         $email = $this->input->post('email',true);
                         $password0 = $this->input->post('password',true);
                         $password = $this->input->post('confirm_password',true);
                         $data = array(
-                                                'nama' => $username,
-                                                'email' => $email,
-                                                'password' => password_hash($password, PASSWORD_BCRYPT),
-                                                'level' => 0,
-                                                'aktif' => 0
-                                                
-                                                );
-                                                
-                                                $token = urlencode(base64_encode(random_bytes(32)));
-                                                $data_token = array(
-                                                'email' => $email,
-                                                'token' => $token,
-                                                'waktu' => time()
-                                                );
-                                                
-                                                $this->daftar_baru($data);
-                                                
-                                                //jika gagal hapus user
-                                                $this->simpan_token($data_token);
-                                                $this-> send_email($email, $token);
-                                                $this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>silahkan konfirmasi email</strong></div>');
-                                                redirect('login');
+                                        'nama' => $username,
+                                        'email' => $email,
+                                        'password' => password_hash($password, PASSWORD_BCRYPT),
+                                        'level' => 0,
+                                        'aktif' => 0
+                                        
+                                        );
+                                        
+                                        $token = urlencode(base64_encode(random_bytes(32)));
+                                        $data_token = array(
+                                        'email' => $email,
+                                        'token' => $token,
+                                        'waktu' => time()
+                                        );
+                                        
+                                        $this->daftar_baru($data);
+                                        
+                                        //jika gagal hapus user
+                                        $this->simpan_token($data_token);
+                                        $this-> send_email($email, $token);
+                                        $this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>silahkan konfirmasi email</strong></div>');
+                                        redirect('login');
                 }
         }
         

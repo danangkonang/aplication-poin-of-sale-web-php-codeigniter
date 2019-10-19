@@ -100,7 +100,7 @@ class Login extends CI_Controller {
 	
 	private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id)
 	{
-		
+
 		$cek_cookie = $this->model_member->cek_cookie_db($cookie_id);
 		if($cek_cookie)
 		{

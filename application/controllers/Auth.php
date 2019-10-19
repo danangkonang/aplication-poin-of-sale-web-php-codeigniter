@@ -13,23 +13,17 @@ class Auth extends CI_Controller {
 		$id= $this->session->userdata('id');
 		if(! $id){
 			$this->tdk_ada_sesion();
-			//echo "tdk ada session";
 			}else{
 				$this->load->view('kasir/kasir_view');
-				//echo "ada session";
 			}
 	}
 	
 	public function tdk_ada_sesion()
-	//public function index()
 	{
 		$this->load->helper('cookie');
 		$user_cookie = get_cookie('id');
-		//echo $user_cookie;
-		//die;
 		if(empty($user_cookie)){
 			$this->load->view('user/form_login');
-			//echo "kosong cookie";
 			}else{
 				$this->cek_cookie_ke_db($user_cookie);
 			}
