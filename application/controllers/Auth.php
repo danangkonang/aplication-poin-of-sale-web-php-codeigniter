@@ -2,14 +2,12 @@
 
 class Auth extends CI_Controller {
 	
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 		$this->load->model('model_member');
 	}
 	
-	public function index()
-	{
+	public function index() {
 		$id= $this->session->userdata('id');
 		if(! $id){
 			$this->tdk_ada_sesion();
@@ -18,8 +16,7 @@ class Auth extends CI_Controller {
 			}
 	}
 	
-	public function tdk_ada_sesion()
-	{
+	public function tdk_ada_sesion() {
 		$this->load->helper('cookie');
 		$user_cookie = get_cookie('id');
 		if(empty($user_cookie)){
@@ -29,15 +26,12 @@ class Auth extends CI_Controller {
 			}
 	}
 	
-	public function cek_cookie_ke_db($user_cookie)
-	{
+	public function cek_cookie_ke_db($user_cookie) {
 		$data = $this->model_member->validasi_cookie($user_cookie);
-		if($data =="")
-		{
+		if($data =="") {
 			$this->load->view('user/form_login');
 		}
-		else
-		{
+		else {
 			$get = $this->model_member->get_member($data['id_user_cookie']);
 			$this->load->library('user_agent');
 			$data_browser =[
@@ -49,8 +43,7 @@ class Auth extends CI_Controller {
 				'ip_address' => $this->input->ip_address()
 			];
 			$input_browser = $this->model_member->input_browser($data_browser);
-			if($input_browser)
-			{
+			if($input_browser) {
 				$cookie = $this->_acak($get['id']);
 				$cookie_id = $get['id'];
 				$data_input_cookie = [
@@ -73,14 +66,13 @@ class Auth extends CI_Controller {
 		}
 	}
 	
-	private function _acak($n)
-	{
+	private function _acak($n) {
 		$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
-		$text = strlen($key)-1;
+		// $text = strlen($key)-1;
 		$hasil = array();
 		$hasil = '';
-			for($i=0; $i<$n; $i++){
-				for($j=0; $j<32; $j++){
+			for($i = 0; $i < $n; $i++){
+				for($j = 0; $j < 32; $j++){
 					$buat = rand(0, strlen($key)-1);
 					$hasil .= $key[$buat];
 				}
@@ -88,24 +80,19 @@ class Auth extends CI_Controller {
 		return $hasil;
 	}
 
-	private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id)
-	{
-		
+	private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id) {
 		$cek_cookie = $this->model_member->cek_cookie_db($cookie_id);
-		if($cek_cookie)
-		{
+		if($cek_cookie) {
 			$this->model_member->update_cookie($data_update_cookie,$cookie_id);
 			return;
 		}
-		else 
-		{
+		else {
 			$input_cookie = $this->model_member->input_cookie($data_input_cookie);
 			return;
 		}
 	}
 
-	private function _cookie_session($data_session,$cookie)
-	{
+	private function _cookie_session($data_session,$cookie) {
 		$this->load->helper('cookie');
 		delete_cookie('id');
 		set_cookie('id',$cookie,'604800');

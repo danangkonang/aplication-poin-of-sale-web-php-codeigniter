@@ -125,55 +125,55 @@ class Option extends CI_Controller {
 			'harga_ahir' 		=> $this->input->post('harga_ahir'),
 			'setatus_promo' 	=> $this->input->post('setatus_promo'),
 		];
-		$insert = $this->model_barang->save($data);
+		$this->model_barang->save($data);
 		echo json_encode(array("status" => TRUE));
 	}
 	
-	private function _validate(){
-        $data = [];
-        $data['error_string'] = [];
-        $data['inputerror'] = [];
-        $data['status'] = TRUE;
- 
-        if($this->input->post('nama_barang') == ''){
-            $data['inputerror'][] = 'nama_barang';
-            $data['error_string'][] = 'Nama barang is required';
-            $data['status'] = FALSE;
-        }
-        
-        if($this->input->post('harga_beli') == ''){
-            $data['inputerror'][] = 'harga_beli';
-            $data['error_string'][] = 'Harga beli is required';
-            $data['status'] = FALSE;
-        }
- 
-        if($this->input->post('harga_jual') == ''){
-            $data['inputerror'][] = 'harga_jual';
-            $data['error_string'][] = 'Harga jual is required';
-            $data['status'] = FALSE;
-        }
-        
-        if($this->input->post('setok') == ''){
-            $data['inputerror'][] = 'setok';
-            $data['error_string'][] = 'Setok is required';
-            $data['status'] = FALSE;
-        }
-        
-        if($this->input->post('satuan') == ''){
-            $data['inputerror'][] = 'satuan';
-            $data['error_string'][] = 'Satuan is required';
-            $data['status'] = FALSE;
-        }
- 
-        if($data['status'] === FALSE){
-            echo json_encode($data);
-            exit();
-        }
+  private function _validate(){
+    $data = [];
+    $data['error_string'] = [];
+    $data['inputerror'] = [];
+    $data['status'] = TRUE;
+
+    if($this->input->post('nama_barang') == ''){
+      $data['inputerror'][] = 'nama_barang';
+      $data['error_string'][] = 'Nama barang is required';
+      $data['status'] = FALSE;
     }
     
-    public function cari_barang(){
-		$data = $this->model_barang->cari_barang($_REQUEST['keyword']);
-		echo json_encode( $data);
+    if($this->input->post('harga_beli') == ''){
+      $data['inputerror'][] = 'harga_beli';
+      $data['error_string'][] = 'Harga beli is required';
+      $data['status'] = FALSE;
+    }
+
+    if($this->input->post('harga_jual') == ''){
+      $data['inputerror'][] = 'harga_jual';
+      $data['error_string'][] = 'Harga jual is required';
+      $data['status'] = FALSE;
+    }
+    
+    if($this->input->post('setok') == ''){
+      $data['inputerror'][] = 'setok';
+      $data['error_string'][] = 'Setok is required';
+      $data['status'] = FALSE;
+    }
+    
+    if($this->input->post('satuan') == ''){
+      $data['inputerror'][] = 'satuan';
+      $data['error_string'][] = 'Satuan is required';
+      $data['status'] = FALSE;
+    }
+
+    if($data['status'] === FALSE){
+      echo json_encode($data);
+      exit();
+    }
+  }
+    
+  public function cari_barang(){
+    $data = $this->model_barang->cari_barang($_REQUEST['keyword']);
+    echo json_encode( $data);
 	}
 	
 	public function add_keranjang(){
@@ -186,7 +186,7 @@ class Option extends CI_Controller {
 			'price' => str_replace('.', '', $this->input->post('harga')),
 			'qty' => $this->input->post('qty')
 		];
-		$insert = $this->cart->insert($data);
+		$this->cart->insert($data);
 		echo json_encode(["status" => TRUE]);
 	}
 	
@@ -202,13 +202,10 @@ class Option extends CI_Controller {
 			}else{
 				$row[] = "dis";
 			}
-			//$row[] = $items["jenis"];
 			$row[] = $items["potongan"];
 			$row[] = $items["harga_potongan"];
 			$row[] = 'Rp. ' . number_format( $items['price'], 0 , '' , '.' ) . ',-';
 			$row[] = $items["qty"];
-			//$row[] = 'Rp. ' . number_format( $items['subtotal'], 0 , '' , '.' ) . ',-';
-			//$row[] = 'Rp. ' . number_format( $items['qty'] * $items['price'], 0 , '' , '.' ) . ',-';
 			if($items["jenis"] == 'minimal'){
 				$induk = floor($items["qty"] / $items["potongan"]);
 				$sisa = $items["qty"] % $items["potongan"];
@@ -230,7 +227,6 @@ class Option extends CI_Controller {
 		$output = [
 			"data" => $data,
 		];
-		//$this->auto_update();
 		echo json_encode($output);
 	}
 	
@@ -238,8 +234,8 @@ class Option extends CI_Controller {
 		$tgl = date('Y-m-d');
 		$data=['sstatus_promo'=> 0];
 		$this->db->where('ahir_promo <',$tgl);
-	    $this->db->update('barang', $data );
-	    return true;
+    $this->db->update('barang', $data );
+    return true;
 	}
 	
 	public function cetak_nota(){
@@ -297,7 +293,7 @@ class Option extends CI_Controller {
 			foreach ($this->cart->contents() as $insert){
 				$id 		= $insert['id'];
 				$q 			= $insert['qty'];
-				$rowid 		= $insert['rowid'];
+				// $rowid 		= $insert['rowid'];
 				$tgl 		= date('Y-m-d');
 				$datestring = '%H:%i';
 				$time 		= time();
@@ -325,7 +321,7 @@ class Option extends CI_Controller {
 				echo json_encode(["status" => FALSE]);
 			}
 		}else{
-			echo('404');
+			// echo('404');
 		}
 	}
 	
@@ -410,10 +406,6 @@ class Option extends CI_Controller {
 		}else{
 			echo json_encode($data);
 		}
-		
-	}
-	
-	public function update_data_toko(){
 		
 	}
 	

@@ -183,28 +183,28 @@
 				<select class="form-control " id="bulan" onChange="cek_bulan()" name="bulan">
 					<!--option value="pcs">pcs</option-->
 					<?php
-					$bulan=array("January","February","March","April","Mey","June","July","Agust","September","October","November","December");
-					$jlh_bln=count($bulan);
-					//for($c=0; $c<($jlh_bln - (date("m")+1)); $c++){
-                    for($c=0; $c < (date("m")-1); $c++){
-                    ?>
-                        <option value="<?= $c ?>"> <?= $bulan[$c] ?></option>
-                    <?php
-					}
+            $bulan=array("January","February","March","April","Mey","June","July","Agust","September","October","November","December");
+            $jlh_bln=count($bulan);
+            for($c=0; $c < (date("m")-1); $c++){
+          ?>
+            <option value="<?= $c ?>"> <?= $bulan[$c] ?></option>
+          <?php
+					  }
 					?>
-                        <option value="<?= date("m")-1; ?>" selected="selected"><?= date("F") ?></option>
+
+          <option value="<?= date("m")-1; ?>" selected="selected"><?= date("F") ?></option>
                         
-                    <?php
-                    $sisa = 12 - date('m'); //5
-                    $tgl = 12 - $sisa;
-                    for($b=$tgl; $b < 12; $b++){
-                    ?>
-                        <option value="<?= $b ?>"> <?= $bulan[$b] ?> </option>
+          <?php
+            $sisa = 12 - date('m'); //5
+            $tgl = 12 - $sisa;
+            for($b=$tgl; $b < 12; $b++){
+          ?>
+
+          <option value="<?= $b ?>"> <?= $bulan[$b] ?> </option>
 
 					<?php
-					}
+					  }
 					?>
-                    
                         
 				</select>
 			</div>
@@ -214,10 +214,10 @@
 				<select class="form-control " id="tahun" name="tahun" onChange="cek_bulan()">
 					<!--option value="pcs">pcs</option-->
 					<?php
-					$now=date("Y") -1;
-					for($thn=$now - 3; $thn<=$now; $thn++){
-						echo "<option value=$thn>$thn</option>";
-					}
+            $now=date("Y") -1;
+            for($thn=$now - 3; $thn<=$now; $thn++){
+              echo "<option value=$thn>$thn</option>";
+            }
 					?>
 						<option value="<?= date("Y") ?>" selected="selected"><?= date("Y") ?></option>
 				</select>
@@ -271,92 +271,89 @@
   <script src="<?php echo base_url() ?>assets/js/Chart.min.js"></script>
   <script src="<?php echo base_url() ?>assets/js/custom.js"></script>
   <script>
-      
-      function cek_bulan()
-      {
-        var bulan = $("#bulan").val();
-        var tahun = $("#tahun").val();
-        $.ajax({
-            url:'http://localhost/penjualan/option/cari_diagram',
-            data:{bulan:bulan, tahun:tahun},
-            method: "POST",
-              success:function(data)
-              {
-                  var obj=JSON.parse(data);
-                  diagram(obj);
-                  //alert(data);
-              },
-              error: function(data)
-              {
-                  console.log(data);
-              }
-        });
-      }
-       
-      $(function(){
-        //cek_bulan();
-          $.ajax({
-              url:"http://localhost/penjualan/option/diagram",
-              method: "GET",
-              success:function(data)
-              {
-                  var obj=JSON.parse(data);
-                  diagram(obj);
-                  //alert(data);
-              },
-              error: function(data)
-              {
-                  console.log(data);
-              }
-          });
-      });
-      
-      function diagram(obj)
-      {
-          var player = [];
-          var score = [];
-          
-          for(var i=0; i<obj.length; i++)
+    function cek_bulan()
+    {
+      var bulan = $("#bulan").val();
+      var tahun = $("#tahun").val();
+      $.ajax({
+        url:'http://localhost/penjualan/option/cari_diagram',
+        data:{bulan:bulan, tahun:tahun},
+        method: "POST",
+          success:function(data)
           {
-              player.push(obj[i].tgl_transaksi);
-              score.push(obj[i].total_harga);
+              var obj=JSON.parse(data);
+              diagram(obj);
+              //alert(data);
+          },
+          error: function(data)
+          {
+              console.log(data);
           }
-          
-          var option = {
-              responsive: true,
-              scales: {
-                  yAxes: [{
-                      stacked: true,
-                      gridLines:
-                      {
-                          display: true,
-                          color: "rgba(255,99,132,0.2)"
-                      }
-                  }],
-              }
-          };
-          
-          var ctx = $("#mycanvas");
-          ctx.height(200);
-          var barGraph = new Chart(ctx, {
-              type: 'bar',
-              label: 'pendapatan',
-              options: option,
-              data:{
-                  labels: player,
-                  datasets:[{
-                      label: 'pendapatan',
-                      backgroundColor: "rgba(255,99,132,0.2)",
-                      borderColor: "rgba(255,99,132,1)",
-                      borderWidth: 2,
-                      hoverBackgroundColor: "rgba(255,99,132,0.4)",
-                      hoverBorderColor: "rgba(255,99,132,1)",
-                      data:score
-                  }]
-              }
-          });
-          
+      });
+    }
+      
+    $(function(){
+      $.ajax({
+          url:"http://localhost/penjualan/option/diagram",
+          method: "GET",
+          success:function(data)
+          {
+              var obj=JSON.parse(data);
+              diagram(obj);
+              //alert(data);
+          },
+          error: function(data)
+          {
+              console.log(data);
+          }
+      });
+    });
+    
+    function diagram(obj)
+    {
+      var player = [];
+      var score = [];
+      
+      for(var i=0; i<obj.length; i++)
+      {
+          player.push(obj[i].tgl_transaksi);
+          score.push(obj[i].total_harga);
       }
+      
+      var option = {
+          responsive: true,
+          scales: {
+              yAxes: [{
+                  stacked: true,
+                  gridLines:
+                  {
+                      display: true,
+                      color: "rgba(255,99,132,0.2)"
+                  }
+              }],
+          }
+      };
+      
+      var ctx = $("#mycanvas");
+      ctx.height(200);
+      var barGraph = new Chart(ctx, {
+          type: 'bar',
+          label: 'pendapatan',
+          options: option,
+          data:{
+              labels: player,
+              datasets:[{
+                  label: 'pendapatan',
+                  backgroundColor: "rgba(255,99,132,0.2)",
+                  borderColor: "rgba(255,99,132,1)",
+                  borderWidth: 2,
+                  hoverBackgroundColor: "rgba(255,99,132,0.4)",
+                  hoverBorderColor: "rgba(255,99,132,1)",
+                  data:score
+              }]
+          }
+      });
+    }
   </script>
 </body>
 

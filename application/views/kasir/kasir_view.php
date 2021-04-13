@@ -17,19 +17,19 @@
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
   <title>kasir</title>
   <style>
-      @media print{
-          #wrapper {
-              display:none;
-              }
-          
-          .modal-footer, .modal-header {
-              display:none;
-              }
+  @media print{
+    #wrapper {
+        display:none;
+        }
+    
+    .modal-footer, .modal-header {
+        display:none;
+        }
 
-          title{
-            display: none;
-          }
-          }
+    title{
+      display: none;
+    }
+  }
   </style>
 </head>
 
@@ -324,69 +324,68 @@
   <script>
       var table;
       $(document).ready(function(){
-          table = $('#tabelBarang').DataTable({
-              paging: false,
-              "info": false,
-              "searching": false,
-              "ajax": {
-                  "url": "http://localhost/penjualan/option/list_transaksi",
-                  "type": "POST"
-                  },
-              "columnDefs": [
-              {
-                  "targets": [ 2,3,4,5,6,7,8 ],
-                  "orderable": false,
+        table = $('#tabelBarang').DataTable({
+          paging: false,
+          "info": false,
+          "searching": false,
+          "ajax": {
+              "url": "http://localhost/penjualan/option/list_transaksi",
+              "type": "POST"
               },
-              ],
-              });
-           
-           $('#pencarian').focus();
-       });
+          "columnDefs": [
+          {
+              "targets": [ 2,3,4,5,6,7,8 ],
+              "orderable": false,
+          },
+          ],
+          });
+        $('#pencarian').focus();
+      });
        
-       function reload_table(){
-           table.ajax.reload(null,false);
-       }
+      function reload_table(){
+        table.ajax.reload(null,false);
+      }
        
       function subTotal(qty){
-          var harga = $('#harga').val().replace(".", "").replace(".", "");
-          var promo = $('#jenis_promo').val();
-          var potongan = $('#potongan').val();
-          var hrg_potong = $('#harga_potongan').val();
-          if(promo == 'minimal'){
-              var induk = Math.floor(qty / potongan);
-              var sisa = qty% potongan;
-              var sub = (induk*hrg_potong)+(harga*sisa);
-              $('#sub_total').val(convertToRupiah(sub));
-              $('#tambah').removeAttr("disabled");
-          }else{
-              var diskon = harga - (harga*potongan/100);
-              $('#sub_total').val(convertToRupiah(diskon*qty));
-              $('#tambah').removeAttr("disabled");
-          }
-          
+        var harga = $('#harga').val().replace(".", "").replace(".", "");
+        var promo = $('#jenis_promo').val();
+        var potongan = $('#potongan').val();
+        var hrg_potong = $('#harga_potongan').val();
+        if(promo == 'minimal'){
+          var induk = Math.floor(qty / potongan);
+          var sisa = qty% potongan;
+          var sub = (induk*hrg_potong)+(harga*sisa);
+          $('#sub_total').val(convertToRupiah(sub));
+          $('#tambah').removeAttr("disabled");
+        }
+        else{
+          var diskon = harga - (harga*potongan/100);
+          $('#sub_total').val(convertToRupiah(diskon*qty));
+          $('#tambah').removeAttr("disabled");
+        }
       }
       
       function addbarang(){
-          var id = $('#id').val();
-          var qty = $('#qty').val();
-          $.ajax({
-              url : "http://localhost/penjualan/option/add_keranjang",
-              type: "POST",
-              data: $('#form_transaksi').serialize(),
-              dataType: "JSON",
-              success: function(data){
-                  reload_table();
-                  $('#tambah').attr("disabled","disabled");
-                  $('#qty').attr("readonly","readonly");
-                  $('#bayar').focus();
-              },
-              error: function (jqXHR, textStatus, errorThrown){
-                  alert('Error adding data');
-              }
-          });
-          showTotal();
-          showKembali($('#bayar').val());
-          $('.reset').val('');
+        var id = $('#id').val();
+        var qty = $('#qty').val();
+        $.ajax({
+          url : "http://localhost/penjualan/option/add_keranjang",
+          type: "POST",
+          data: $('#form_transaksi').serialize(),
+          dataType: "JSON",
+          success: function(data){
+            reload_table();
+            $('#tambah').attr("disabled","disabled");
+            $('#qty').attr("readonly","readonly");
+            $('#bayar').focus();
+          },
+          error: function (jqXHR, textStatus, errorThrown){
+            alert('Error adding data');
+          }
+        });
+        showTotal();
+        showKembali($('#bayar').val());
+        $('.reset').val('');
       }
       
       document.onkeydown = function(e){
@@ -394,128 +393,122 @@
         var byr = $('#bayar').val();
         if(q !==''){
           switch(e.keyCode){
-          case 13:
-          addbarang();
-          break;
-        }
+            case 13:
+              addbarang();
+            break;
+          }
         }
 
         if(byr !==''){
           switch(e.keyCode){
-          case 13:
-          selesai();
+            case 13:
+              selesai();
+            break;
+          }
+        }
+        switch(e.keyCode){
+          case 113:
+            $('#pencarian').focus();
           break;
         }
-        }
-      // 113 f2
-      // 37 kiri 38 atas 39 kanan 40 bawah
-      switch(e.keyCode){
-        case 113:
-        $('#pencarian').focus();
-        break;
-      }
       };
       
       function showTotal(){
-          var total = $('#total').val().replace(".", "").replace(".", "");
-          var sub_total = $('#sub_total').val().replace(".", "").replace(".", "");
-          $('#total').val(convertToRupiah((Number(total)+Number(sub_total))));
+        var total = $('#total').val().replace(".", "").replace(".", "");
+        var sub_total = $('#sub_total').val().replace(".", "").replace(".", "");
+        $('#total').val(convertToRupiah((Number(total)+Number(sub_total))));
       }
       
-      function showKembali(str)
-      {
-          var total = $('#total').val().replace(".", "").replace(".", "");
-          var bayar = str.replace(".", "").replace(".", "");
-          var kembali = bayar-total;
-          $('#kembali').val(convertToRupiah(kembali));
-          if (kembali >= 0)
-          {
-              $('#selesai').removeAttr("disabled");
-          }
-          else
-          {
-              $('#selesai').attr("disabled","disabled");
-          }
-          if (total == 0)
-          {
-              $('#selesai').attr("disabled","disabled");
-          }
-  	}
+      function showKembali(str) {
+        var total = $('#total').val().replace(".", "").replace(".", "");
+        var bayar = str.replace(".", "").replace(".", "");
+        var kembali = bayar-total;
+        $('#kembali').val(convertToRupiah(kembali));
+        if (kembali >= 0)
+        {
+            $('#selesai').removeAttr("disabled");
+        }
+        else
+        {
+            $('#selesai').attr("disabled","disabled");
+        }
+        if (total == 0)
+        {
+            $('#selesai').attr("disabled","disabled");
+        }
+      }
     	
-      function convertToRupiah(angka)
-      {
-          var rupiah = '';
-          var angkarev = angka.toString().split('').reverse().join('');
-          for(var i = 0; i < angkarev.length; i++)
-          if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-          return rupiah.split('',rupiah.length-1).reverse().join('');
+      function convertToRupiah(angka) {
+        var rupiah = '';
+        var angkarev = angka.toString().split('').reverse().join('');
+        for(var i = 0; i < angkarev.length; i++)
+        if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+        return rupiah.split('',rupiah.length-1).reverse().join('');
       }
        
-       $(function(){
-            $("#pencarian").autocomplete({
-                minLength: 1,
-                delay : 400,
-                source: function(request, response) { 
-
-                    jQuery.ajax({
-                        url:      "http://localhost/penjualan/option/cari_barang",
-                        data: {
-                          keyword : request.term
-                        },
-                        dataType: "json",
-                        success: function(data){
-                          response(data);
-                        }   
-                    })
+        $(function(){
+          $("#pencarian").autocomplete({
+            minLength: 1,
+            delay : 400,
+            source: function(request, response) { 
+              jQuery.ajax({
+                url:      "http://localhost/penjualan/option/cari_barang",
+                data: {
+                  keyword : request.term
                 },
-                select:  function(e, ui){
-                    var nama = ui.item.nama_barang;
-                    var code = ui.item.id_barang;
-                    $("#pencarian").val(code);
-                    $("#nama_barang").val(nama);
-                    $("#harga").val(convertToRupiah(ui.item.harga_jual));
-                    $("#jenis_promo").val(ui.item.jenis_promo);
-                    $("#potongan").val(ui.item.potongan);
-                    $("#harga_potongan").val(ui.item.harga_ahir);
-                    $('#qty').removeAttr("readonly");
-                    $('#qty').focus();
-                    return false;
+                dataType: "json",
+                success: function(data){
+                  response(data);
                 }
-            })
-            .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-               return $( "<li>" )
-               .append( "<a>" + item.id_barang + " " + item.nama_barang + "</a>" )
-               .appendTo( ul );
-            };
+              })
+            },
+            select:  function(e, ui){
+              var nama = ui.item.nama_barang;
+              var code = ui.item.id_barang;
+              $("#pencarian").val(code);
+              $("#nama_barang").val(nama);
+              $("#harga").val(convertToRupiah(ui.item.harga_jual));
+              $("#jenis_promo").val(ui.item.jenis_promo);
+              $("#potongan").val(ui.item.potongan);
+              $("#harga_potongan").val(ui.item.harga_ahir);
+              $('#qty').removeAttr("readonly");
+              $('#qty').focus();
+              return false;
+            }
+          })
+          .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+              return $( "<li>" )
+              .append( "<a>" + item.id_barang + " " + item.nama_barang + "</a>" )
+              .appendTo( ul );
+          };
         });
         
         $('#selesai').click(function(){
-            var bayar=$('#bayar').val();
-            var kembali=$('#kembali').val();
-            $.ajax({
-                url:"http://localhost/penjualan/option/cetak_nota/",
-                data:{bayar:bayar,kembali:kembali},
-                method:"POST",
-                success:function(data){
-                    $('#modalNota').modal('show');
-                    $('#isiModal').html(data);
-                    }
-                });
+          var bayar=$('#bayar').val();
+          var kembali=$('#kembali').val();
+          $.ajax({
+            url:"http://localhost/penjualan/option/cetak_nota/",
+            data:{bayar:bayar,kembali:kembali},
+            method:"POST",
+            success:function(data){
+                $('#modalNota').modal('show');
+                $('#isiModal').html(data);
+                }
+            });
         });
 
-        function selesai()
-        {
+        function selesai() {
           var bayar=$('#bayar').val();
             var kembali=$('#kembali').val();
             $.ajax({
-                url:"http://localhost/penjualan/option/cetak_nota/",
-                data:{bayar:bayar,kembali:kembali},
-                method:"POST",
-                success:function(data){
-                    $('#modalNota').modal('show');
-                    $('#isiModal').html(data);
-                    }
-                });
+              url:"http://localhost/penjualan/option/cetak_nota/",
+              data:{bayar:bayar,kembali:kembali},
+              method:"POST",
+              success:function(data){
+                $('#modalNota').modal('show');
+                $('#isiModal').html(data);
+              }
+            });
         }
 		
 		function print_nota(){
@@ -523,8 +516,7 @@
 			cetak_struk();
 		}
 		
-		function cetak_struk()
-		{
+		function cetak_struk() {
 			$.ajax({
 				url : "http://localhost/penjualan/option/shoping/",
 				type: "post",
@@ -545,8 +537,7 @@
 			});
 		}
 		
-		function deletebarang(id,sub_total)
-		{
+		function deletebarang(id,sub_total) {
 			$.ajax({
 				url : "<?= site_url('option/deletebarang')?>/"+id,
 				type: "POST",

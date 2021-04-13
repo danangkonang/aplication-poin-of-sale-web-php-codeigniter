@@ -11,10 +11,11 @@ class Model_laba extends CI_Model {
 	function get_data_laba()
 	{
 		$this->_get_data_laba_query();
-		if($_POST['length'] != -1)
-		$this->db->limit($_POST['length'], $_POST['start']);
-		$query = $this->db->get();
-		return $query->result();
+		if($_POST['length'] != -1) {
+      $this->db->limit($_POST['length'], $_POST['start']);
+      $query = $this->db->get();
+      return $query->result();
+    }
 	}
 	
 	private function _get_data_laba_query()
@@ -35,8 +36,9 @@ class Model_laba extends CI_Model {
 				{
 					$this->db->or_like($item, $_POST['search']['value']);
 				}
-				if(count($this->column_search) - 1 == $i) //last loop
+				if(count($this->column_search) - 1 == $i) { //last loop
 					$this->db->group_end(); //close bracket
+        }
 			}
 			$i++;
 		}

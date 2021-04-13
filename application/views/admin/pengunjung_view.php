@@ -31,12 +31,13 @@
     <i class="fas fa-laugh-wink"></i>
   </div>
   <div class="sidebar-brand-text mx-3">
-    <?php if($this->session->userdata('email')==1)
-    {
-      echo 'admin';
-    }else{
-      echo 'kasir';
-    }
+    <?php
+      if($this->session->userdata('email')==1) {
+        echo 'admin';
+      }
+      else{
+        echo 'kasir';
+      }
     ?>
   </div>
 </a>
@@ -180,13 +181,9 @@
 				<thead>
 					<tr>
 						<th>no</th>
-						<!--th>Kode</th-->
 						<th>Nama</th>
 						<th>Qty</th>
-						<!--th>Kasir</th-->
 						<th>Bayar</th>
-						<!--th>satuan</th-->
-						<!--th>S P</th-->
 						<th>H beli</th>
 						<th>Untung</th>
 					</tr>
@@ -234,67 +231,60 @@
   
   <script src="<?php echo base_url() ?>assets/js/custom.js"></script>
   <script>
-      
-      var table;
-      $(document).ready(function(){
-          table = $('#tabelBarang').DataTable({
-              "columnDefs": [
-              {
-                  "targets": [ 2,3,4,5 ],
-                  "orderable": false,
-              },
-              ],
-              "order": [],
-              "serverSide": true, 
-              "ajax": {
-                  "url": "http://localhost/penjualan/option/get_data_laba",
-                  "type": "POST"
-                  },
-              "lengthChange": false,
-              "responsive": true,
-              "footerCallback": function ( row, data, start, end, display ) {
-                      var api = this.api(), data;
-          
-                      // Remove the formatting to get integer data for summation
-                      var intVal = function ( i ) {
-                          return typeof i === 'string' ?
-                              i.replace(/[\$,]/g, '')*1 :
-                              typeof i === 'number' ?
-                                  i : 0;
-                      };
-          
-                      // Total over all pages
-                      total = api
-                          .column( 5 )
-                          .data()
-                          .reduce( function (a, b) {
-                              return intVal(a) + intVal(b);
-                          }, 0 );
-          
-                      // Total over this page
-                      pageTotal = api
-                          .column( 5, { page: 'current'} )
-                          .data()
-                          .reduce( function (a, b) {
-                              return intVal(a) + intVal(b);
-                          }, 0 );
-          
-                      // Update footer
-                      $( api.column( 5 ).footer() ).html(
-                          'Rp.'+pageTotal ///+' ( Rp.'+ total +' total)'
-                      );
-                  }
+    var table;
+    $(document).ready(function(){
+      table = $('#tabelBarang').DataTable({
+        "columnDefs": [
+        {
+          "targets": [ 2,3,4,5 ],
+          "orderable": false,
+        },
+        ],
+        "order": [],
+        "serverSide": true, 
+        "ajax": {
+          "url": "http://localhost/penjualan/option/get_data_laba",
+          "type": "POST"
+        },
+        "lengthChange": false,
+        "responsive": true,
+        "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+              return typeof i === 'string' ?
+                  i.replace(/[\$,]/g, '')*1 :
+                  typeof i === 'number' ?
+                      i : 0;
+            };
+            // Total over all pages
+            total = api
+                .column( 5 )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
 
-              });
-          
-       });
-       
-       function reload_table()
-       {
-           table.ajax.reload(null,false); 
-       }
-       
-     
+            // Total over this page
+            pageTotal = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Update footer
+            $( api.column( 5 ).footer() ).html(
+                'Rp.'+pageTotal ///+' ( Rp.'+ total +' total)'
+            );
+          }
+      });
+    });
+      
+    function reload_table()
+    {
+      table.ajax.reload(null,false); 
+    }
   </script>
 </body>
 
