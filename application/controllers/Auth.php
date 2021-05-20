@@ -71,8 +71,8 @@ class Auth extends CI_Controller {
 		// $text = strlen($key)-1;
 		$hasil = array();
 		$hasil = '';
-			for($i=0; $i<$n; $i++){
-				for($j=0; $j<32; $j++){
+			for($i = 0; $i < $n; $i++){
+				for($j = 0; $j < 32; $j++){
 					$buat = rand(0, strlen($key)-1);
 					$hasil .= $key[$buat];
 				}

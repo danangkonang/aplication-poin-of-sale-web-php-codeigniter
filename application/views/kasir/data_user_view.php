@@ -251,34 +251,34 @@
   <script>
     var table;
     $(document).ready(function(){
-        table = $('#tabelBarang').DataTable({
-            "columnDefs": [
-            {
-                "targets": [ 1,3,4,5 ],
-                "orderable": false,
+      table = $('#tabelBarang').DataTable({
+        "columnDefs": [
+        {
+            "targets": [ 1,3,4,5 ],
+            "orderable": false,
+        },
+        ],
+        "order": [],
+        "serverSide": true, 
+        "ajax": {
+            "url": "http://localhost/penjualan/option/get_data_user",
+            "type": "POST"
             },
-            ],
-            "order": [],
-            "serverSide": true, 
-            "ajax": {
-                "url": "http://localhost/penjualan/option/get_data_user",
-                "type": "POST"
-                },
-            "lengthChange": false,
-            "responsive": true,
-            
-            });
-        // new $.fn.dataTable.FixedHeader( table );
+        "lengthChange": false,
+        "responsive": true,
+        
+        });
+      // new $.fn.dataTable.FixedHeader( table );
     });
     
     function reload_table()
     {
-        table.ajax.reload(null,false);
+      table.ajax.reload(null,false);
     }
     
     function edit_user(id)
     {
-        alert(id);
+      alert(id);
     }
   </script>
 </body>

@@ -248,180 +248,155 @@
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <!-- <script src="<-?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> -->
   <script>
-      var table;
-      $(document).ready(function(){
-          table = $('#tabelBarang').DataTable({
-              "columnDefs": [
-              {
-                  "targets": [ 0,2,3,4,5,6,7,8 ],
-                  "orderable": false,
-              },
-              ],
-              "order": [],
-              "serverSide": true, 
-              "ajax": {
-                  "url": "http://localhost/penjualan/option/get_barang",
-                  "type": "POST"
-                  },
-              "lengthChange": false,
-              "responsive": true,
-              });
-          //  new $.fn.dataTable.FixedHeader( table );
-       });
-       
-       function reload_table()
-       {
-           table.ajax.reload(null,false);
-       }
-       
-      function tambah_barang ()
+    var table;
+    $(document).ready(function(){
+        table = $('#tabelBarang').DataTable({
+            "columnDefs": [
+            {
+                "targets": [ 0,2,3,4,5,6,7,8 ],
+                "orderable": false,
+            },
+            ],
+            "order": [],
+            "serverSide": true, 
+            "ajax": {
+                "url": "http://localhost/penjualan/option/get_barang",
+                "type": "POST"
+                },
+            "lengthChange": false,
+            "responsive": true,
+            });
+        //  new $.fn.dataTable.FixedHeader( table );
+      });
+      
+      function reload_table()
       {
-          save_method = 'add';
-          $('#form')[0].reset();
-          $('.modal-title').text('Input barang');
-          $('#modal_form').modal('show'); 
+          table.ajax.reload(null,false);
       }
       
-      $(function(){
-          $("#jenis_promo").change(function(){
-              if($(this).val() =="minimal")
-              {
-                  $("#harga_ahir").removeClass('d-none');
-                  $("#potongan").attr("placeholder", "minimal beli");
-                  $(".reset").val("");
-              }
-              else
-              {
-                  $("#harga_ahir").addClass('d-none');
-                  $("#potongan").attr("placeholder", "(%)");
-                  $(".reset").val("");
-              }
-              });
+    function tambah_barang ()
+    {
+        save_method = 'add';
+        $('#form')[0].reset();
+        $('.modal-title').text('Input barang');
+        $('#modal_form').modal('show'); 
+    }
+    
+    $(function(){
+      $("#jenis_promo").change(function(){
+        if($(this).val() =="minimal") {
+          $("#harga_ahir").removeClass('d-none');
+          $("#potongan").attr("placeholder", "minimal beli");
+          $(".reset").val("");
+        }
+        else {
+          $("#harga_ahir").addClass('d-none');
+          $("#potongan").attr("placeholder", "(%)");
+          $(".reset").val("");
+        }
+      });
+      tanggal();
+    });
           
-          tanggal();
-          
-          
-          });
-          
-       function save()
-       {
-           var url;
-           if(save_method == 'add')
-           {
-               url = "<?php echo site_url('option/simpan_barang')?>";
-           }
-           else
-           {
-               url = "<?php echo site_url('option/update_barang')?>";
-           }
-           
-           
-           $.ajax({
-               url : url,
-               type: "POST",
-               data: $('#form').serialize(),
-               dataType: "JSON",
-               success: function(data)
-               {
-                   if(data.status)
-                   {
-                       $('#modal_form').modal('hide');
-                       reload_table();
-                   }
-                   else
-                   {
-                       for (var i = 0; i < data.inputerror.length; i++)
-                       {
-                           //$('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error');
-                           $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
-                           $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
-                       }
-                   }            
-               },
-               error: function (jqXHR, textStatus, errorThrown)
-               {
-                   alert('error');
-               }
-           });
-       }
+    function save() {
+      var url;
+      if(save_method == 'add') {
+        url = "<?php echo site_url('option/simpan_barang')?>";
+      }
+      else {
+        url = "<?php echo site_url('option/update_barang')?>";
+      }
+      $.ajax({
+        url : url,
+        type: "POST",
+        data: $('#form').serialize(),
+        dataType: "JSON",
+        success: function(data) {
+          if(data.status) {
+              $('#modal_form').modal('hide');
+              reload_table();
+          }
+          else {
+            for (var i = 0; i < data.inputerror.length; i++) {
+              //$('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error');
+              $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
+              $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
+            }
+          }      
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert('error');
+        }
+      });
+    }
        
-       function tanggal()
-       {
-           $('[data-toggle="mulai_promo"]').datepicker({
-               dateFormat: "yy-mm-dd",
-               onSelect: function (selected) {
-                   var dt = new Date(selected);
-                   dt.setDate(dt.getDate() + 1);
-                   $('[data-toggle="ahir_promo"]').datepicker("option", "minDate", dt);
-                   }
-               });
-           $('[data-toggle="ahir_promo"]').datepicker({
-               dateFormat: "yy-mm-dd",
-               onSelect: function (selected) {
-                   var dt = new Date(selected);
-                   dt.setDate(dt.getDate() - 1);
-                   $('[data-toggle="mulai_promo"]').datepicker("option", "maxDate", dt);
-                   }
-               });
-       }
-       
-       function delete_barang(id)
-       {
-         if(confirm('yakin ingin di hapus?')){
-               $.ajax({
-                   url : "<?php echo site_url('option/hapus_barang')?>/"+id,
-                   type: "POST",
-                   dataType: "JSON",
-                   success: function(data)
-                   {
-                       
-                       reload_table();
-                   },
-                   error: function (jqXHR, textStatus, errorThrown)
-                   {
-                       alert('Error deleting data');
-                   }
-              });
-           
-           }
-       }
-       
-       function edit_barang(id)
-       {
-           save_method = 'update';
-           $('#form')[0].reset();
-           $.ajax({
-               url : "<?php echo site_url('option/edit_barang')?>/" + id,
-               type: "GET",
-               dataType: "JSON",
-               success: function(data)
-               {
-                   $('[name="id"]').val(data.id_barang);
-                   $('[name="setatus_barang"]').val(data.setatus_barang);
-                   $('[name="nama_barang"]').val(data.nama_barang);
-                   $('[name="harga_beli"]').val(data.harga_beli);
-                   $('[name="harga_jual"]').val(data.harga_jual);
-                   $('[name="setok"]').val(data.setok);
-                   $('[name="satuan"]').val(data.satuan);
-                   $('[name="mulai_promo"]').val(data.mulai_promo);
-                   $('[name="ahir_promo"]').val(data.ahir_promo);
-                   $('[name="jenis_promo"]').val(data.jenis_promo);
-                   $('[name="potongan"]').val(data.potongan);
-                   $('[name="harga_ahir"]').val(data.harga_ahir);
-                   $('[name="setatus_promo"]').val(data.setatus_promo);
-                   $('#modal_form').modal('show');
-                   $('.modal-title').text('Edit barang');
-                   if(data.jenis_promo == 'minimal')
-                   {
-                       $("#harga_ahir").removeClass('d-none');
-                   }
-               },
-               error: function (jqXHR, textStatus, errorThrown)
-               {
-                   alert('Error get data from ajax');
-               }
-               });
-       }
+    function tanggal() {
+      $('[data-toggle="mulai_promo"]').datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function (selected) {
+          var dt = new Date(selected);
+          dt.setDate(dt.getDate() + 1);
+          $('[data-toggle="ahir_promo"]').datepicker("option", "minDate", dt);
+        }
+      });
+      $('[data-toggle="ahir_promo"]').datepicker({
+        dateFormat: "yy-mm-dd",
+        onSelect: function (selected) {
+          var dt = new Date(selected);
+          dt.setDate(dt.getDate() - 1);
+          $('[data-toggle="mulai_promo"]').datepicker("option", "maxDate", dt);
+        }
+      });
+    }
+    
+    function delete_barang(id) {
+      if(confirm('yakin ingin di hapus?')){
+        $.ajax({
+          url : "<?php echo site_url('option/hapus_barang')?>/"+id,
+          type: "POST",
+          dataType: "JSON",
+          success: function(data) {
+            reload_table();
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            alert('Error deleting data');
+          }
+        });
+      }
+    }
+    
+    function edit_barang(id) {
+      save_method = 'update';
+      $('#form')[0].reset();
+      $.ajax({
+        url : "<?php echo site_url('option/edit_barang')?>/" + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data) {
+          $('[name="id"]').val(data.id_barang);
+          $('[name="setatus_barang"]').val(data.setatus_barang);
+          $('[name="nama_barang"]').val(data.nama_barang);
+          $('[name="harga_beli"]').val(data.harga_beli);
+          $('[name="harga_jual"]').val(data.harga_jual);
+          $('[name="setok"]').val(data.setok);
+          $('[name="satuan"]').val(data.satuan);
+          $('[name="mulai_promo"]').val(data.mulai_promo);
+          $('[name="ahir_promo"]').val(data.ahir_promo);
+          $('[name="jenis_promo"]').val(data.jenis_promo);
+          $('[name="potongan"]').val(data.potongan);
+          $('[name="harga_ahir"]').val(data.harga_ahir);
+          $('[name="setatus_promo"]').val(data.setatus_promo);
+          $('#modal_form').modal('show');
+          $('.modal-title').text('Edit barang');
+          if(data.jenis_promo == 'minimal') {
+            $("#harga_ahir").removeClass('d-none');
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert('Error get data from ajax');
+        }
+      });
+    }
   </script>
   
   

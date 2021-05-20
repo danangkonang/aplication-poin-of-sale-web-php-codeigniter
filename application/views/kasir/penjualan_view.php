@@ -239,32 +239,31 @@
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script>
-      var table;
-      $(document).ready(function(){
-          table = $('#tabelBarang').DataTable({
-              "columnDefs": [
-              {
-                  "targets": [ 1,3,4,5 ],
-                  "orderable": false,
-              },
-              ],
-              "order": [],
-              "serverSide": true, 
-              "ajax": {
-                  "url": "http://localhost/penjualan/option/get_penjualan",
-                  "type": "POST"
-                  },
-              "lengthChange": false,
-              "responsive": true,
-              
-              });
-          });
-       
-       function reload_table()
-       {
-           table.ajax.reload(null,false);
-       }
-      
+  var table;
+  $(document).ready(function(){
+      table = $('#tabelBarang').DataTable({
+        "columnDefs": [
+        {
+            "targets": [ 1,3,4,5 ],
+            "orderable": false,
+        },
+        ],
+        "order": [],
+        "serverSide": true, 
+        "ajax": {
+            "url": "http://localhost/penjualan/option/get_penjualan",
+            "type": "POST"
+            },
+        "lengthChange": false,
+        "responsive": true,
+        
+        });
+    });
+    
+    function reload_table()
+    {
+      table.ajax.reload(null,false);
+    }
   </script>
 </body>
 

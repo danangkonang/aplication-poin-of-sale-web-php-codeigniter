@@ -119,8 +119,7 @@ class Registrasi extends CI_Controller {
       }
    }
         
-	public function aktifasi()
-	{
+	public function aktifasi() {
 		$email = $this->input->get('email',true);
 		$token = $this->input->get('token',true);
 		$data = $this->model_registrasi->cek_data_token($email);

@@ -59,10 +59,11 @@ class Model_penjualan extends CI_Model {
 	
 	function get_data_laba() {
 		$this->_get_data_laba_query();
-		if($_POST['length'] != -1)
-		$this->db->limit($_POST['length'], $_POST['start']);
-		$query = $this->db->get();
-		return $query->result();
+		if($_POST['length'] != -1) {
+      $this->db->limit($_POST['length'], $_POST['start']);
+      $query = $this->db->get();
+      return $query->result();
+    }
 	}
 	
 	private function _get_data_laba_query() {

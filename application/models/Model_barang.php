@@ -93,12 +93,6 @@ class Model_barang extends CI_Model {
 	
 	function insert_penjualan($data) {
 		return $this->db->insert('penjualan',$data);
-		// $insert = $this->db->insert('penjualan',$data);
-		// if($insert){
-		// 	echo('berhasil');
-		// }else{
-		// 	echo('gagal');
-		// }
 	}
 	
 	function update_setok($id,$qty) {
