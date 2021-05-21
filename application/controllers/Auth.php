@@ -11,16 +11,16 @@ class Auth extends CI_Controller {
 		$id= $this->session->userdata('id');
 		if(! $id){
 			$this->tdk_ada_sesion();
-			}else{
-				$this->load->view('kasir/kasir_view');
-			}
+    }else{
+      $this->load->view('kasir/kasir_view');
+    }
 	}
 	
 	public function tdk_ada_sesion() {
 		$this->load->helper('cookie');
 		$user_cookie = get_cookie('id');
 		if(empty($user_cookie)){
-			$this->load->view('user/form_login');
+			$this->load->view('auth/form_login');
     }else{
       $this->cek_cookie_ke_db($user_cookie);
     }
@@ -29,7 +29,7 @@ class Auth extends CI_Controller {
 	public function cek_cookie_ke_db($user_cookie) {
 		$data = $this->model_member->validasi_cookie($user_cookie);
 		if($data =="") {
-			$this->load->view('user/form_login');
+			$this->load->view('auth/form_login');
 		}
 		else {
 			$get = $this->model_member->get_member($data['id_user_cookie']);
@@ -68,7 +68,6 @@ class Auth extends CI_Controller {
 	
 	private function _acak($n) {
 		$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
-		// $text = strlen($key)-1;
 		$hasil = array();
 		$hasil = '';
 			for($i = 0; $i < $n; $i++){

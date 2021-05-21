@@ -11,19 +11,102 @@ class Login extends CI_Controller {
 		}
 	}
 
-	public function index()
-	{
+  public function loginv2(){
+    if($_SERVER['REQUEST_METHOD'] != "POST"){
+      echo json_encode(
+        array(
+          "status" => 400,
+          "message" => "method not allowed",
+        )
+      );
+      return;
+    }
+    $email = $this->input->post('email');
+    $password = $this->input->post('password');
+
+    $data = $this->model_login->cek_email_member($email);
+
+    if($data == NULL) {
+      echo json_encode(
+        array(
+          "status" => 400,
+          "message" => "email not register",
+        )
+      );
+      return;
+    }
+    
+    if(!$data['is_active']){
+      echo json_encode(
+        array(
+          "status" => 400,
+          "message" => "yaur account not active",
+        )
+      );
+      return;
+    }
+
+    if(!password_verify($password, $data['password'])){
+      echo json_encode(
+        array(
+          "status" => 400,
+          "message" => "wrong password",
+        )
+      );
+      return;
+    }
+
+    $data_session = [
+      'id'  => $data['id'],
+      'username'  => $data['username'],
+      'email'  => $data['email'],
+      'level'  => $data['role']
+    ];
+    $cookie = $this->_rundom_string($data['id']);
+    $this->_cookie_session($data_session, $cookie);
+    echo json_encode(
+      array(
+        "status" => 200,
+        "message" => "success login",
+      )
+    );
+  }
+
+  private function _rundom_string($n) {
+		$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
+		$hasil = array();
+		$hasil = '';
+			for($i=0; $i<$n; $i++){
+				for($j=0; $j<32; $j++){
+					$buat = rand(0, strlen($key)-1);
+					$hasil .= $key[$buat];
+				}
+			}
+		return $hasil;
+	}
+
+	public function index(){
 		$this->load->library('form_validation');
-		$this->form_validation->set_rules('email', 'Email', 'required',
-		  array('required' => 'email harus di isi')
+		$this->form_validation->set_rules(
+      'email',
+      'Email',
+      'required',
+		  array(
+        'required' => 'email harus di isi'
+      )
 		);
-		$this->form_validation->set_rules('password', 'password', 'required',
-			array('required' => 'password harus di isi')
+		$this->form_validation->set_rules(
+      'password',
+      'password',
+      'required',
+			array(
+        'required' => 'password harus di isi'
+      )
 		);
-		if ($this->form_validation->run() == FALSE)
-		{
-			$this->load->view('user/form_login');
-		}else{
+		if (!$this->form_validation->run()){
+			$this->load->view('auth/form_login');
+		}
+    else{
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
 			$this->proses_masuk($email, $password);
@@ -32,14 +115,16 @@ class Login extends CI_Controller {
 	
 	public function proses_masuk($email, $password) {
 		$data = $this->model_login->cek_email_member($email);
+    var_dump($data);
+    die;
 		if($data['email'] == '') {
 			$this->session->set_flashdata('error_email','Email salah');
-			$this->load->view('user/form_login');
+			$this->load->view('auth/form_login');
 		}
 		else {
 			if($data['aktif'] == 0) {
 				$this->session->set_flashdata('message','<div class="alert alert-danger" role="alert">anda belum konfirmasi email</div>');
-				$this->load->view('user/form_login');
+				$this->load->view('auth/form_login');
 			}
 			else {
 				if(password_verify($password, $data['password'])) {
@@ -78,14 +163,13 @@ class Login extends CI_Controller {
 				}
 				else {
 					$this->session->set_flashdata('error_password','password salah');
-					$this->load->view('user/form_login');
+					$this->load->view('auth/form_login');
 				}
 			}
 		}
 	}
 	
-	private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id)
-	{
+	private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id){
 		$cek_cookie = $this->model_member->cek_cookie_db($cookie_id);
 		if($cek_cookie) {
 			return $this->model_member->update_cookie($data_update_cookie,$cookie_id);
@@ -104,7 +188,6 @@ class Login extends CI_Controller {
 
 	private function _acak($n) {
 		$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
-		// $text = strlen($key)-1;
 		$hasil = array();
 		$hasil = '';
 			for($i=0; $i<$n; $i++){

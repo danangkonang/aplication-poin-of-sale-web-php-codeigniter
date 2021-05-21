@@ -23,9 +23,14 @@ final class User extends AbstractMigration
       
       // buat kolom-kolom untuk users
       $users->addColumn('username', 'string', ['limit' => 64])
-            ->addColumn('name', 'string', ['limit' => 64])
             ->addColumn('email', 'string', ['limit' => 64])
             ->addColumn('password','string', ['limit' => 255])
+            ->addColumn('gender', 'string', ['limit' => 64, 'null' => true])
+            ->addColumn('telephone', 'string', ['limit' => 64, 'null' => true])
+            ->addColumn('avatar', 'string', ['limit' => 64, 'null' => true])
+            ->addColumn('address', 'string', ['limit' => 225, 'null' => true])
+            ->addColumn('is_active', 'boolean')
+            ->addColumn('role', 'string', ['limit' => 64, 'null' => true])
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
     }

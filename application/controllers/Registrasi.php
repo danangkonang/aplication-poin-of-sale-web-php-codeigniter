@@ -3,54 +3,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Registrasi extends CI_Controller {
 	
-   public function __construct(){
-      parent::__construct();
-      $this->load->model('model_registrasi');
-      if($this->session->userdata('id')){
-         header("location: http://localhost:8080/penjualan");
-      }
-   }
+  public function __construct(){
+    parent::__construct();
+    $this->load->model('model_registrasi');
+    if($this->session->userdata('id')){
+      header("location: http://localhost:8080/penjualan");
+    }
+  }
 	
 	
 	
 	public function index(){
       $this->load->library('form_validation');
-
-      $this->form_validation->set_rules('username', 'Username', 'required|alpha_dash|is_unique[users.nama]',
-      array('required' => 'tidak boleh kosong',
-      'alpha_dash' => 'berisi angka dan huruf',
-      'is_unique' => 'sudah terdaftar'
-      )
+      $this->form_validation->set_rules(
+        'username',
+        'Username',
+        'required|alpha_dash|is_unique[users.nama]',
+        array(
+          'required' => 'tidak boleh kosong',
+          'alpha_dash' => 'berisi angka dan huruf',
+          'is_unique' => 'sudah terdaftar'
+        )
       );
-      
-      $this->form_validation->set_rules('password', 'Password', 'required',
-            array('required' => 'tidak boleh kosong')
+      $this->form_validation->set_rules(
+        'password',
+        'Password',
+        'required',
+        array(
+          'required' => 'tidak boleh kosong'
+        )
       );
             
       $this->form_validation->set_rules(
-         'confirm_password', 
-         'Password Confirmation', 
-         'required|matches[password]',
-         array(
-            'required' => 'tidak boleh kosong',
-            'matches' => 'pass harus sama'
-         )
+        'confirm_password', 
+        'Password Confirmation', 
+        'required|matches[password]',
+        array(
+          'required' => 'tidak boleh kosong',
+          'matches' => 'pass harus sama'
+        )
       );
       
       $this->form_validation->set_rules(
-         'email',
-         'Email', 
-         'required|valid_email|is_unique[users.email]',
-         array(
-            'required' => 'tidak boleh kosong',
-            'is_unique' => 'sudah terdaftar',
-            'valid_email' => 'email tidak valid'
-         )
+        'email',
+        'Email', 
+        'required|valid_email|is_unique[users.email]',
+        array(
+          'required' => 'tidak boleh kosong',
+          'is_unique' => 'sudah terdaftar',
+          'valid_email' => 'email tidak valid'
+        )
       );
 
       if ($this->form_validation->run() == FALSE){
-         $this->load->view('user/form_registrasi');
-      }else{
+        $this->load->view('user/form_registrasi');
+      }
+      else{
          $username = $this->input->post('username',true);
          $email = $this->input->post('email',true);
          $password0 = $this->input->post('password',true);
@@ -75,7 +83,7 @@ class Registrasi extends CI_Controller {
          // $this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>silahkan konfirmasi email</strong></div>');
          redirect('login');
       }
-   }
+    }
         
         
    public function daftar_baru($data)

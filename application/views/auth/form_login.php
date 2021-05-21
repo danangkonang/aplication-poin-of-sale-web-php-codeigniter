@@ -32,7 +32,8 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Login</h1>
                   </div>
-                  <form class="user" action="<?php echo site_url('login');?>" method="post" id="form-login">
+                  <!-- <form class="user" action="<?php echo site_url('login');?>" method="post" id="form-login"> -->
+                  <form id="form-login">
                     <?php echo $this->session->flashdata('error'); ?>
                     <?php echo $this->session->flashdata('message'); ?>
                     <div class="form-group">
@@ -47,7 +48,7 @@
                       <?php echo"<span class='text-danger'>".$this->session->flashdata('error_password')."</span>"; ?>
                       <div class="invalid-feedback"></div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                    <button type="button" id="btn-login" class="btn btn-primary btn-user btn-block">
                       Login
                     </button>
                   </form>
@@ -69,6 +70,12 @@
   </div>
   <script src="<?php echo base_url() ?>assets/jquery/jquery-3.2.1.min.js"></script>
   <script type="text/javascript">
+
+    $("#btn-login").click(function(){
+      // console.log("oke");
+      let email = $("#email").val();
+      let password = $("#password").val();
+    });
     $(function(){
       if($('.alert').show()){
         hilang();

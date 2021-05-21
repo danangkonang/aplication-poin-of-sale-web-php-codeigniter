@@ -17,26 +17,19 @@ class Users extends AbstractSeed
     {
       $data = array(
         array(
-            'username' => 'ardianta',
-            'name' => 'Ardianta',
-            'email' => 'ardianta@petanikode.com',
-            'address' => 'Lombok',
-            'password' => password_hash('kopi', PASSWORD_DEFAULT)
-        ),
-        array(
             'username' => 'admin',
-            'name' => 'Admin',
-            'email' => 'info@petanikode.com',
-            'address' => 'Mataram',
-            'password' => password_hash("admin", PASSWORD_DEFAULT)
+            'email' => 'admin@email.com',
+            'address' => 'jakarta',
+            'is_active' => true,
+            'password' => password_hash('admin', PASSWORD_DEFAULT)
         ),
         array(
-            'username' => 'petanikode',
-            'name' => 'Petani Kode',
-            'email' => 'petani@petanikode.com',
-            'address' => 'Internet',
-            'password' => password_hash("admin", PASSWORD_DEFAULT)
-        )
+            'username' => 'user',
+            'email' => 'user@email.com',
+            'address' => 'surabaya',
+            'is_active' => true,
+            'password' => password_hash("user", PASSWORD_BCRYPT)
+        ),
       );
 
       $user = $this->table('users');
