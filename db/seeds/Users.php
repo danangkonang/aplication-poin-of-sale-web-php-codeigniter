@@ -17,18 +17,28 @@ class Users extends AbstractSeed
     {
       $data = array(
         array(
-            'username' => 'admin',
+            'user_name' => 'user admin',
             'email' => 'admin@email.com',
             'address' => 'jakarta',
             'is_active' => true,
-            'password' => password_hash('admin', PASSWORD_DEFAULT)
+            'role' => 'admin',
+            'password' => password_hash('password', PASSWORD_DEFAULT)
         ),
         array(
-            'username' => 'user',
-            'email' => 'user@email.com',
+            'user_name' => 'user seller',
+            'email' => 'seller@email.com',
             'address' => 'surabaya',
             'is_active' => true,
-            'password' => password_hash("user", PASSWORD_BCRYPT)
+            'role' => 'seller',
+            'password' => password_hash("password", PASSWORD_BCRYPT)
+        ),
+        array(
+          'user_name' => 'user distributor',
+          'email' => 'distributor@email.com',
+          'address' => 'surabaya',
+          'is_active' => true,
+          'role' => 'distributor',
+          'password' => password_hash("password", PASSWORD_BCRYPT)
         ),
       );
 

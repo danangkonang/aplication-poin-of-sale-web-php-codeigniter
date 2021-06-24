@@ -51,8 +51,8 @@ class Model_member extends CI_Model {
   }
 
   public function count_all() {
-  $this->db->from($this->table);
-  return $this->db->count_all_results();
+    $this->db->from($this->table);
+    return $this->db->count_all_results();
   }
 
   public function get_member($id) {

@@ -3,13 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_barang extends CI_Model {
 	
-	var $table = 'barang';
-	var $column_order = array(null,null,'harga_beli'); //file table
-	var $column_search = array('nama_barang'); //pencarian yg d ijinkan
-	var $order = array('id_barang' => 'desc'); // default order
+	var $table = 'product';
+	var $column_order = array(null, null, 'purchase_price');
+	var $column_search = array('product_name');
+	var $order = array('product_id' => 'desc');
 	
-	function get_datatables() {
-		$this->_get_datatables_query();
+	function find_all_product() {
+		$this->_get_product_query();
 		if($_POST['length'] != -1){
       $this->db->limit($_POST['length'], $_POST['start']);
       $query = $this->db->get();
@@ -17,7 +17,7 @@ class Model_barang extends CI_Model {
     }
 	}
 	
-	private function _get_datatables_query() {
+	private function _get_product_query() {
 		$this->db->from($this->table);
 		$i = 0;
 		foreach ($this->column_search as $item) {
@@ -46,7 +46,7 @@ class Model_barang extends CI_Model {
 	}
 	
 	function count_filtered() {
-		$this->_get_datatables_query();
+		$this->_get_product_query();
 		$query = $this->db->get();
 		return $query->num_rows();
 	}
@@ -56,8 +56,8 @@ class Model_barang extends CI_Model {
 		return $this->db->count_all_results();
 	}
 	
-	public function save($data) {
-		$this->db->insert('barang', $data);
+	public function save_product($data) {
+		$this->db->insert('product', $data);
 		return $this->db->insert_id();
 	}
 	
@@ -78,11 +78,11 @@ class Model_barang extends CI_Model {
 		return $this->db->affected_rows();
 	}
 	
-	public function cari_barang($key) {
+	public function search_product($key) {
 		$this->db->select('*');
-		$this->db->like('nama_barang', $key);
-		$this->db->or_like('id_barang', $key);
-		$query = $this->db->get('barang');
+		$this->db->like('product_name', $key);
+		$this->db->or_like('product_id', $key);
+		$query = $this->db->get('product');
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $data) {
 				$hasil[] = $data;

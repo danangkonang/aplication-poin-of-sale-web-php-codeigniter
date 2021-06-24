@@ -21,8 +21,29 @@ class Login extends CI_Controller {
       );
       return;
     }
+
     $email = $this->input->post('email');
     $password = $this->input->post('password');
+
+    if($email == NULL) {
+      echo json_encode(
+        array(
+          "status" => 400,
+          "message" => "email required",
+        )
+      );
+      return;
+    }
+
+    if($password == NULL) {
+      echo json_encode(
+        array(
+          "status" => 400,
+          "message" => "password required",
+        )
+      );
+      return;
+    }
 
     $data = $this->model_login->cek_email_member($email);
 
@@ -57,32 +78,32 @@ class Login extends CI_Controller {
     }
 
     $data_session = [
-      'id'  => $data['id'],
-      'username'  => $data['username'],
+      'user_id'  => $data['user_id'],
+      'user_name'  => $data['user_name'],
       'email'  => $data['email'],
-      'level'  => $data['role']
+      'role'  => $data['role']
     ];
-    $cookie = $this->_rundom_string($data['id']);
+    $cookie = $this->_rundom_string($data['user_id']);
     $this->_cookie_session($data_session, $cookie);
     echo json_encode(
       array(
         "status" => 200,
         "message" => "success login",
+        "data" => $data_session,
       )
     );
   }
 
   private function _rundom_string($n) {
-		$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
-		$hasil = array();
-		$hasil = '';
-			for($i=0; $i<$n; $i++){
-				for($j=0; $j<32; $j++){
-					$buat = rand(0, strlen($key)-1);
-					$hasil .= $key[$buat];
+		$strings = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
+		$result = '';
+			for($i = 0; $i < $n; $i++){
+				for($j = 0; $j < 64; $j++){
+					$create = rand(0, strlen($strings) - 1);
+					$result .= $strings[$create];
 				}
 			}
-		return $hasil;
+		return $result;
 	}
 
 	public function index(){
@@ -149,7 +170,7 @@ class Login extends CI_Controller {
 						];
 						$data_update_cookie = [
 							'cookie' => $cookie,
-							];
+						];
 						$data_session = [
 							'id'  => $data['id'],
 							'username'  => $data['nama'],
@@ -180,9 +201,9 @@ class Login extends CI_Controller {
 		}
 	}
 
-	private function _cookie_session($data_session,$cookie){
+	private function _cookie_session($data_session, $data_cookie){
 		$this->load->helper('cookie');
-		set_cookie('id',$cookie,'604800');
+		set_cookie('cookie_id', $data_cookie, '604800');
 		return $this->session->set_userdata($data_session);
 	}
 

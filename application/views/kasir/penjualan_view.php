@@ -251,7 +251,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-            "url": "http://localhost/penjualan/option/get_penjualan",
+            "url": "http://localhost:8080/option/get_penjualan",
             "type": "POST"
             },
         "lengthChange": false,

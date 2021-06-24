@@ -5,21 +5,23 @@ class Option extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('model_barang');
-		if(!$this->session->userdata('id')){
-			header('location:http://localhost/penjualan');
+		if(!$this->session->userdata('id_user')){
+			header('location:http://localhost:8080');
 		}
 	}
 	
-	public function index(){
-		echo 'tes';
-	}
+	// public function index(){
+	// 	echo 'tes';
+	// }
 
-	public function contoh(){
-		$this->load->view('kasir/contoh'); 
-	}
+	// public function contoh(){
+	// 	$this->load->view('kasir/contoh'); 
+	// }
 
-	public function get_barang(){
-		$list = $this->model_barang->get_datatables();
+	public function find_all_product(){
+		$list = $this->model_barang->find_all_product();
+    // var_dump($list);
+    // die;
 		$data = [];
 		$no = $_POST['start'];
 		$n=0;
@@ -27,34 +29,35 @@ class Option extends CI_Controller {
 			$n++;
 			$row = [];
 			$row[] = $n;
-			$row[] = $barang->nama_barang;
-			$row[] = number_format($barang->harga_beli,0,".",".");
-			$row[] = number_format($barang->harga_jual,0,".",".");
+      $row[] = $barang->product_image;
+			$row[] = $barang->product_name;
+			$row[] = number_format($barang->purchase_price,0,".",".");
+			$row[] = number_format($barang->selling_price,0,".",".");
 			
-			if($barang->jenis_promo == 'diskon'){
-				$row[] = '<span class="text-danger">'.number_format($barang->harga_jual - ($barang->harga_jual * $barang->potongan / 100),0,".",".").'</span>';
-			}else{
-				$row[] = '<span class="text-danger">'.number_format($barang->harga_ahir / $barang->potongan,0,".",".").'</span>';
-			}
+			// if($barang->jenis_promo == 'diskon'){
+			// 	$row[] = '<span class="text-danger">'.number_format($barang->selling_price - ($barang->selling_price * $barang->potongan / 100),0,".",".").'</span>';
+			// }else{
+			// 	$row[] = '<span class="text-danger">'.number_format($barang->harga_ahir / $barang->potongan,0,".",".").'</span>';
+			// }
 			
-			$row[] = $barang->setok;
-			if($barang->potongan == 0){
-				$row[] = "";
-			}else{
-				if($barang->jenis_promo == 'diskon'){
-					$row[] = 'dis';
-				}else{
-					$row[] = 'min';
-				}
-			}
+			$row[] = $barang->product_qty;
+			// if($barang->potongan == 0){
+			// 	$row[] = "";
+			// }else{
+			// 	if($barang->jenis_promo == 'diskon'){
+			// 		$row[] = 'dis';
+			// 	}else{
+			// 		$row[] = 'min';
+			// 	}
+			// }
 			
-			if($barang->jenis_promo == 'diskon' && $barang->potongan == 0){
-				$row[] = "";
-			}else if($barang->jenis_promo == 'diskon' && $barang->potongan > 0){
-				$row[] = $barang->potongan."%";
-			}else{
-				$row[] = $barang->potongan;
-			}
+			// if($barang->jenis_promo == 'diskon' && $barang->potongan == 0){
+			// 	$row[] = "";
+			// }else if($barang->jenis_promo == 'diskon' && $barang->potongan > 0){
+			// 	$row[] = $barang->potongan."%";
+			// }else{
+			// 	$row[] = $barang->potongan;
+			// }
 			
 			if($this->session->userdata('level') == 1 ){
 				$row[] = '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="edit_barang('."'".$barang->id_barang."'".')"><i class="far fa-edit"></i></a>
@@ -108,25 +111,36 @@ class Option extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 	
-	function simpan_barang(){
-		$this->_validate();
-		$data =[
-			'setatus_barang' 	=> $this->input->post('setatus_barang'),
-			'nama_barang' 		=> $this->input->post('nama_barang'),
-			'harga_beli' 		=> $this->input->post('harga_beli'),
-			'harga_jual' 		=> $this->input->post('harga_jual'),
-			'laba' 				=> $this->input->post('harga_jual')-$this->input->post('harga_beli'),
-			'satuan' 			=> $this->input->post('satuan'),
-			'setok' 			=> $this->input->post('setok'),
-			'mulai_promo' 		=> $this->input->post('mulai_promo'),
-			'ahir_promo' 		=> $this->input->post('ahir_promo'),
-			'jenis_promo' 		=> $this->input->post('jenis_promo'),
-			'potongan' 			=> $this->input->post('potongan'),
-			'harga_ahir' 		=> $this->input->post('harga_ahir'),
-			'setatus_promo' 	=> $this->input->post('setatus_promo'),
-		];
-		$this->model_barang->save($data);
-		echo json_encode(array("status" => TRUE));
+	function save_product(){
+		// $this->_validate();
+		// $data = [
+		// 	'setatus_barang' => $this->input->post('setatus_barang'),
+		// 	'nama_barang' => $this->input->post('nama_barang'),
+		// 	'harga_beli' => $this->input->post('harga_beli'),
+		// 	'harga_jual' => $this->input->post('harga_jual'),
+		// 	'laba' => $this->input->post('harga_jual') - $this->input->post('harga_beli'),
+		// 	'satuan' => $this->input->post('satuan'),
+		// 	'setok' => $this->input->post('setok'),
+		// 	'mulai_promo' => $this->input->post('mulai_promo'),
+		// 	'ahir_promo' => $this->input->post('ahir_promo'),
+		// 	'jenis_promo' => $this->input->post('jenis_promo'),
+		// 	'potongan' => $this->input->post('potongan'),
+		// 	'harga_ahir' => $this->input->post('harga_ahir'),
+		// 	'setatus_promo' => $this->input->post('setatus_promo'),
+		// ];
+    $data = [
+      'product_name' => 'telur ayam',
+      'purchase_price' => 5000,
+      'selling_price' => 6000,
+      'product_qty' => 60,
+      'is_promo' => false,
+      'product_image' => 'telur.png',
+      'is_active' => true,
+      // 'created_at' =>
+    ];
+		$res = $this->model_barang->save_product($data);
+    echo json_encode($res);
+		// echo json_encode(array("status" => TRUE));
 	}
 	
   private function _validate(){
@@ -172,7 +186,7 @@ class Option extends CI_Controller {
   }
     
   public function cari_barang(){
-    $data = $this->model_barang->cari_barang($_REQUEST['keyword']);
+    $data = $this->model_barang->search_product($_REQUEST['keyword']);
     echo json_encode( $data);
 	}
 	
@@ -484,13 +498,6 @@ class Option extends CI_Controller {
 			$data[]=$row;
 		}
 		print json_encode($data);
-	}
-
-	public function logout(){
-		$this->load->helper('cookie');
-		delete_cookie('id');
-		$this->session->sess_destroy();
-		header('location:http://localhost/penjualan');
 	}
 
 	public function pengunjung(){

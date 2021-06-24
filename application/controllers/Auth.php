@@ -8,17 +8,18 @@ class Auth extends CI_Controller {
 	}
 	
 	public function index(){
-		$id= $this->session->userdata('id');
-		if(! $id){
-			$this->tdk_ada_sesion();
+    // var_dump($this->session->userdata());
+		$id = $this->session->userdata('id_user');
+		if(!$id){
+			$this->empty_sesion();
     }else{
       $this->load->view('kasir/kasir_view');
     }
 	}
 	
-	public function tdk_ada_sesion() {
+	public function empty_sesion() {
 		$this->load->helper('cookie');
-		$user_cookie = get_cookie('id');
+		$user_cookie = get_cookie('cookie_id');
 		if(empty($user_cookie)){
 			$this->load->view('auth/form_login');
     }else{
@@ -27,43 +28,45 @@ class Auth extends CI_Controller {
 	}
 	
 	public function cek_cookie_ke_db($user_cookie) {
-		$data = $this->model_member->validasi_cookie($user_cookie);
-		if($data =="") {
-			$this->load->view('auth/form_login');
-		}
-		else {
-			$get = $this->model_member->get_member($data['id_user_cookie']);
-			$this->load->library('user_agent');
-			$data_browser =[
-				'id_user' => $get["id"],
-				'browser' => $this->agent->browser(),
-				'browser_version' => $this->agent->version(),
-				'os' => $this->agent->platform(),
-				'waktu_login' => date("Y-m-m h:i:s"),
-				'ip_address' => $this->input->ip_address()
-			];
-			$input_browser = $this->model_member->input_browser($data_browser);
-			if($input_browser) {
-				$cookie = $this->_acak($get['id']);
-				$cookie_id = $get['id'];
-				$data_input_cookie = [
-					'cookie' => $cookie,
-					'id_user_cookie' => $get['id']
-				];
-				$data_update_cookie = [
-					'cookie' => $cookie,
-					];
-				$data_session = [
-					'id'  => $get['id'],
-					'username'  => $get['nama'],
-					'email'  => $get['email'],
-					'level'  => $get['level']
-				];
-				$this->_input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id);
-				$this->_cookie_session($data_session,$cookie);
-				header("location: http://localhost:9000/penjualan");
-			}
-		}
+    // delete_cookie('cookie_id');
+    var_dump($user_cookie);
+		// $data = $this->model_member->validasi_cookie($user_cookie);
+		// if($data =="") {
+		// 	$this->load->view('auth/form_login');
+		// }
+		// else {
+		// 	$get = $this->model_member->get_member($data['id_user_cookie']);
+		// 	$this->load->library('user_agent');
+		// 	$data_browser =[
+		// 		'id_user' => $get["id"],
+		// 		'browser' => $this->agent->browser(),
+		// 		'browser_version' => $this->agent->version(),
+		// 		'os' => $this->agent->platform(),
+		// 		'waktu_login' => date("Y-m-m h:i:s"),
+		// 		'ip_address' => $this->input->ip_address()
+		// 	];
+		// 	$input_browser = $this->model_member->input_browser($data_browser);
+		// 	if($input_browser) {
+		// 		$cookie = $this->_acak($get['id']);
+		// 		$cookie_id = $get['id'];
+		// 		$data_input_cookie = [
+		// 			'cookie' => $cookie,
+		// 			'id_user_cookie' => $get['id']
+		// 		];
+		// 		$data_update_cookie = [
+		// 			'cookie' => $cookie,
+		// 			];
+		// 		$data_session = [
+		// 			'id'  => $get['id'],
+		// 			'username'  => $get['nama'],
+		// 			'email'  => $get['email'],
+		// 			'level'  => $get['level']
+		// 		];
+		// 		$this->_input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id);
+		// 		$this->_cookie_session($data_session,$cookie);
+		// 		header("location: http://localhost:9000");
+		// 	}
+		// }
 	}
 	
 	private function _acak($n) {
@@ -94,5 +97,12 @@ class Auth extends CI_Controller {
 		delete_cookie('id');
 		set_cookie('id',$cookie,'604800');
 		$this->session->set_userdata($data_session);
+	}
+
+  public function logout(){
+		$this->load->helper('cookie');
+		delete_cookie('cookie_id');
+		$this->session->sess_destroy();
+		header('location:http://localhost:8080');
 	}
 }

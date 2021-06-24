@@ -261,7 +261,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-            "url": "http://localhost/penjualan/option/get_data_user",
+            "url": "http://localhost:8080/option/get_data_user",
             "type": "POST"
             },
         "lengthChange": false,

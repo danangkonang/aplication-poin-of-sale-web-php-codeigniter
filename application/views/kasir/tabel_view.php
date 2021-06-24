@@ -286,7 +286,7 @@ $(document).ready(function(){
         "order": [],
         "serverSide": true, 
         "ajax": {
-            "url": "http://localhost/penjualan/option/get_data_laba",
+            "url": "http://localhost:8080/option/get_data_laba",
             "type": "POST"
             },
         "lengthChange": false,

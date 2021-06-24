@@ -32,18 +32,17 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Login</h1>
                   </div>
-                  <!-- <form class="user" action="<?php echo site_url('login');?>" method="post" id="form-login"> -->
                   <form id="form-login">
                     <?php echo $this->session->flashdata('error'); ?>
                     <?php echo $this->session->flashdata('message'); ?>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" value="<?php echo set_value('email') ?>" name="email" id="email" aria-describedby="emailHelp" placeholder="Email">
+                      <input type="text" class="form-control form-control-user" value="admin@email.com" name="email" id="email" aria-describedby="emailHelp" placeholder="Email">
                       <?php echo"<span class='text-danger'>".form_error('email')."</span>"; ?>
                       <?php echo"<span class='text-danger'>".$this->session->flashdata('error_email')."</span>"; ?>
                       <div class="invalid-feedback"></div>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" name="password" id="password" placeholder="Password">
+                      <input type="password" class="form-control form-control-user" value="password" name="password" id="password" placeholder="Password">
                       <?php echo"<span class='text-danger'>".form_error('password')."</span>"; ?>
                       <?php echo"<span class='text-danger'>".$this->session->flashdata('error_password')."</span>"; ?>
                       <div class="invalid-feedback"></div>
@@ -75,7 +74,29 @@
       // console.log("oke");
       let email = $("#email").val();
       let password = $("#password").val();
+
+      $.ajax({
+        url : 'http://localhost:8080/login/loginv2',
+        type: "POST",
+        // data: $('#form').serialize(),
+        data:{email:email, password:password},
+        dataType: "JSON",
+        success: function(response) {
+          let data = JSON.parse(response);
+          console.log(data);
+          // if (data.status === 200){
+          //   window.location.replace("http://localhost:8080/");
+          // } else {
+          //   alert(data.message);
+          // }
+          // console.log(data);
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("error", errorThrown);
+        }
+      });
     });
+
     $(function(){
       if($('.alert').show()){
         hilang();
