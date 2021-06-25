@@ -9,7 +9,7 @@ class Auth extends CI_Controller {
 	
 	public function index(){
     // var_dump($this->session->userdata());
-		$id = $this->session->userdata('id_user');
+		$id = $this->session->userdata('user_id');
 		if(!$id){
 			$this->empty_sesion();
     }else{
@@ -29,8 +29,13 @@ class Auth extends CI_Controller {
 	
 	public function cek_cookie_ke_db($user_cookie) {
     // delete_cookie('cookie_id');
-    var_dump($user_cookie);
-		// $data = $this->model_member->validasi_cookie($user_cookie);
+		$data = $this->model_member->validasi_cookie($user_cookie);
+    if($data == NULL){
+      delete_cookie('cookie_id');
+      $this->load->view('auth/form_login');
+    }
+    var_dump($data);
+    // var_dump($user_cookie);
 		// if($data =="") {
 		// 	$this->load->view('auth/form_login');
 		// }

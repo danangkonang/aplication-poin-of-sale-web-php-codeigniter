@@ -3,10 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_penjualan extends CI_Model {
 	
-	var $table = 'penjualan';
-	var $column_order = array(null,null,'nama_barang'); //file table
-	var $column_search = array('nama_barang'); //pencarian yg d ijinkan
-	var $order = array('id_penjualan' => 'desc'); // default order
+	var $table = 'order';
+	var $column_order = array(null,null,'product_name'); //file table
+	var $column_search = array('product_name'); //pencarian yg d ijinkan
+	var $order = array('order_id' => 'desc'); // default order
 	
 	function get_datatables() {
 		$this->_get_datatables_query();
@@ -51,8 +51,7 @@ class Model_penjualan extends CI_Model {
 		return $query->num_rows();
 	}
 
-	public function count_all()
-	{
+	public function count_all(){
 		$this->db->from($this->table);
 		return $this->db->count_all_results();
 	}

@@ -91,20 +91,20 @@ class Model_barang extends CI_Model {
 		}
 	}
 	
-	function insert_penjualan($data) {
-		return $this->db->insert('penjualan',$data);
+	function create_order($data) {
+		return $this->db->insert('order', $data);
 	}
 	
-	function update_setok($id,$qty) {
-		$this->db->set('setok',$qty);
-		$this->db->where('id_barang',$id);
-		return $this->db->update('barang');
+	function update_product_qty($id, $qty) {
+		$this->db->set('product_qty', $qty);
+		$this->db->where('product_id', $id);
+		return $this->db->update('product');
 	}
 	
-	function get_setok($id) {
-		$this->db->select('setok');
-		$this->db->where('id_barang',$id);
-		return $this->db->get('barang')->row();
+	function get_product_qty($id) {
+		$this->db->select('product_qty');
+		$this->db->where('product_id', $id);
+		return $this->db->get('product')->row();
 	}
 	
 }

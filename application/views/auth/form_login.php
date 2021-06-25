@@ -82,14 +82,12 @@
         data:{email:email, password:password},
         dataType: "JSON",
         success: function(response) {
-          let data = JSON.parse(response);
-          console.log(data);
-          // if (data.status === 200){
-          //   window.location.replace("http://localhost:8080/");
-          // } else {
-          //   alert(data.message);
-          // }
-          // console.log(data);
+          // console.log(response);
+          if (response.status === 200){
+            window.location.replace("http://localhost:8080/");
+          } else {
+            alert(response.message);
+          }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.log("error", errorThrown);

@@ -1,7 +1,7 @@
-<!--?php
+<?php
 var_dump($this->session->userdata());
 die;
-?-->
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,14 +31,7 @@ die;
           <i class="fas fa-cash-register"></i>
         </div>
         <div class="sidebar-brand-text mx-3">
-          <?php if($this->session->userdata('level')==1)
-          {
-            echo 'admin';
-          }
-          else{
-            echo 'kasir';
-          }
-          ?>
+          <?= $this->session->userdata('role') ?>
         </div>
       </a>
       <hr class="sidebar-divider my-0">
@@ -77,7 +70,7 @@ die;
       </li>
       <hr class="sidebar-divider">
 
-      <?php if($this->session->userdata('level') == 1){ ?>
+      <?php if($this->session->userdata('role') == 'admin'){ ?>
 
         <li class="nav-item">
           <a class="nav-link" href="<?= site_url() ?>option/data_user">
@@ -160,10 +153,11 @@ die;
               <thead>
                 <tr>
                   <th>no</th>
-                  <th>Gambar</th>
+                  <!-- <th>Gambar</th> -->
                   <th>Nama</th>
                   <th>H beli</th>
                   <th>H jual</th>
+                  <th>Untung</th>
                   <th>Qty</th>
                   <th>Opsi</th>
                   <!-- <th>Promo</th>
@@ -249,7 +243,7 @@ die;
 
     function add_product(){
       save_method = 'add';
-      $('#form')[0].reset();
+      $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
       $('#modal_form').modal('show'); 
     }
@@ -270,7 +264,7 @@ die;
       tanggal();
     });
 
-    function save() {
+    function save_product() {
       var url;
       if(save_method == 'add') {
         url = "<?php echo site_url('option/save_product')?>";
@@ -281,7 +275,7 @@ die;
       $.ajax({
         url : url,
         type: "POST",
-        data: $('#form').serialize(),
+        data: $('#form_product').serialize(),
         dataType: "JSON",
         success: function(data) {
           console.log(data);
@@ -348,11 +342,11 @@ die;
         success: function(data) {
           $('[name="id"]').val(data.id_barang);
           $('[name="setatus_barang"]').val(data.setatus_barang);
-          $('[name="nama_barang"]').val(data.nama_barang);
-          $('[name="harga_beli"]').val(data.harga_beli);
-          $('[name="harga_jual"]').val(data.harga_jual);
-          $('[name="setok"]').val(data.setok);
-          $('[name="satuan"]').val(data.satuan);
+          $('[name="product_name"]').val(data.product_name);
+          $('[name="purchase_price"]').val(data.purchase_price);
+          $('[name="selling_price"]').val(data.selling_price);
+          $('[name="product_qty"]').val(data.product_qty);
+          $('[name="unit"]').val(data.unit);
           $('[name="mulai_promo"]').val(data.mulai_promo);
           $('[name="ahir_promo"]').val(data.ahir_promo);
           $('[name="jenis_promo"]').val(data.jenis_promo);
@@ -383,7 +377,7 @@ die;
           </button>
         </div>
         <div class="modal-body form">
-          <form id="form">
+          <form id="form_product">
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
 
@@ -396,36 +390,14 @@ die;
                   </div>
                         
                   <div class="form-group">
-                    <label for="nama_barang" class="col-form-label">nama barang</label>
-                    <input type="text" class="form-control " name="nama_barang" >
-                    <div class="invalid-feedback"></div>
-                  </div>
-                        
-                  <div class="form-group">
-                    <label for="harga_beli" class="col-form-label">harga beli</label>
-                    <input type="number" class="form-control" name="harga_beli" >
-                    <div class="invalid-feedback"></div>
-                  </div>
-                        
-                  <div class="form-group">
-                    <label for="harga_jual" class="col-form-label">harga jual</label>
-                    <input type="number" class="form-control " name="harga_jual"  >
-                    <div class="invalid-feedback"></div>
-                  </div>
-
-              </div>
-
-              <div class="col-sm-12 col-lg-6 col-xl-6">
-
-                  <div class="form-group">
-                    <label for="setok" class="col-form-label">setok</label>
-                    <input type="number" class="form-control " name="setok" >
+                    <label for="product_name" class="col-form-label">Nama barang</label>
+                    <input type="text" class="form-control " name="product_name" >
                     <div class="invalid-feedback"></div>
                   </div>
 
                   <div class="form-group">
-                    <label for="satuan">satuan</label>
-                    <select class="form-control " name="satuan" >
+                    <label for="unit">Satuan</label>
+                    <select class="form-control" name="unit" >
                       <option value=""></option>
                       <option value="pcs">pcs</option>
                       <option value="botol">botol</option>
@@ -436,8 +408,30 @@ die;
                     </select>
                     <div class="invalid-feedback"></div>
                   </div>
+                        
+                  <div class="form-group">
+                    <label for="purchase_price" class="col-form-label">Harga beli</label>
+                    <input type="number" class="form-control" name="purchase_price" >
+                    <div class="invalid-feedback"></div>
+                  </div>
+                        
+                  <div class="form-group">
+                    <label for="selling_price" class="col-form-label">Harga jual</label>
+                    <input type="number" class="form-control " name="selling_price"  >
+                    <div class="invalid-feedback"></div>
+                  </div>
 
-                  <p>
+              </div>
+
+              <div class="col-sm-12 col-lg-6 col-xl-6">
+
+                <div class="form-group">
+                  <label for="product_qty" class="col-form-label">Stok</label>
+                  <input type="number" class="form-control " name="product_qty" >
+                  <div class="invalid-feedback"></div>
+                </div>
+
+                <p>
                   <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">promo</button>
                 </p>
 
@@ -498,32 +492,32 @@ die;
               </div>
                     
               <div class="form-group">
-                <label for="nama_barang" class="col-form-label">nama barang</label>
-                <input type="text" class="form-control " name="nama_barang" >
+                <label for="product_name" class="col-form-label">nama barang</label>
+                <input type="text" class="form-control " name="product_name" >
                 <div class="invalid-feedback"></div>
               </div>
                     
               <div class="form-group">
-                <label for="harga_beli" class="col-form-label">harga beli</label>
-                <input type="number" class="form-control" name="harga_beli" >
+                <label for="purchase_price" class="col-form-label">harga beli</label>
+                <input type="number" class="form-control" name="purchase_price" >
                 <div class="invalid-feedback"></div>
               </div>
                     
               <div class="form-group">
-                <label for="harga_jual" class="col-form-label">harga jual</label>
-                <input type="number" class="form-control " name="harga_jual"  >
+                <label for="selling_price" class="col-form-label">harga jual</label>
+                <input type="number" class="form-control " name="selling_price"  >
                 <div class="invalid-feedback"></div>
               </div>
                     
               <div class="form-group">
-                <label for="setok" class="col-form-label">setok</label>
-                <input type="number" class="form-control " name="setok" >
+                <label for="product_qty" class="col-form-label">product_qty</label>
+                <input type="number" class="form-control " name="product_qty" >
                 <div class="invalid-feedback"></div>
               </div>
 
               <div class="form-group">
-                <label for="satuan">satuan</label>
-                <select class="form-control " name="satuan" >
+                <label for="unit">unit</label>
+                <select class="form-control " name="unit" >
                   <option value=""></option>
                   <option value="pcs">pcs</option>
                   <option value="botol">botol</option>
@@ -585,8 +579,8 @@ die;
           </form> -->
         </div>
         <div class="modal-footer">
-          <button type="button" onClick="save()" class="btn btn-primary">Simpan</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Kembali</button>
+          <button type="button" onClick="save_product()" class="btn btn-primary">Simpan</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
         </div>
       </div>
     </div>

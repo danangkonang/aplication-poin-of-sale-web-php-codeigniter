@@ -31,13 +31,7 @@
           <i class="fas fa-laugh-wink"></i>
         </div>
         <div class="sidebar-brand-text mx-3">
-          <?php if($this->session->userdata('level')==1)
-          {
-            echo 'admin';
-          }else{
-            echo 'kasir';
-          }
-          ?>
+          <?= $this->session->userdata('role') ?>
         </div>
       </a>
       <!-- Divider -->
@@ -85,7 +79,7 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
 
-      <?php if($this->session->userdata('level')==1){ ?>
+      <?php if($this->session->userdata('role') == 'admin'){ ?>
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item">
@@ -182,25 +176,26 @@
 				<thead>
 					<tr>
 						<th>no</th>
-						<!--th>Kode</th-->
+						<th>Id</th>
 						<th>Nama</th>
 						<th>Qty</th>
 						<th>Kasir</th>
-						<th>Bayar</th>
+						<th>Harga satuan</th>
+            <th>Jumlah Bayar</th>
 						<!--th>satuan</th-->
 						<!--th>S P</th-->
-						<th>Waktu</th>
+						<th>Tanggal</th>
 						<!--th>Jam</th-->
 					</tr>
 				</thead>
 				<tbody>
         </tbody>
-        <tfoot>
+        <!-- <tfoot>
           <tr>
             <th colspan="5" style="text-align:right">Total:</th>
             <th></th>
           </tr>
-        </tfoot>
+        </tfoot> -->
 			</table>
         </div>
         <!-- /.container-fluid -->
@@ -236,32 +231,30 @@
   <script src="<?= base_url() ?>assets/DataTables-1.10.18/js/dataTables.bootstrap4.min.js"></script>
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/responsive.bootstrap4.min.js"></script>
-  <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-  <script src="<?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+  <script src="<?= base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+  <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script>
-  var table;
-  $(document).ready(function(){
+    let table;
+    $(document).ready(function(){
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
-        {
-            "targets": [ 1,3,4,5 ],
+          {
+            "targets": [1,3,4,5 ],
             "orderable": false,
-        },
+          },
         ],
         "order": [],
         "serverSide": true, 
         "ajax": {
-            "url": "http://localhost:8080/option/get_penjualan",
-            "type": "POST"
-            },
+          "url": "http://localhost:8080/option/get_penjualan",
+          "type": "POST"
+          },
         "lengthChange": false,
         "responsive": true,
-        
-        });
+      });
     });
     
-    function reload_table()
-    {
+    function reload_table(){
       table.ajax.reload(null,false);
     }
   </script>

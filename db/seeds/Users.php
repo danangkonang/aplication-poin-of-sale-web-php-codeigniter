@@ -32,14 +32,6 @@ class Users extends AbstractSeed
             'role' => 'seller',
             'password' => password_hash("password", PASSWORD_BCRYPT)
         ),
-        array(
-          'user_name' => 'user distributor',
-          'email' => 'distributor@email.com',
-          'address' => 'surabaya',
-          'is_active' => true,
-          'role' => 'distributor',
-          'password' => password_hash("password", PASSWORD_BCRYPT)
-        ),
       );
 
       $user = $this->table('users');

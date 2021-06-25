@@ -85,6 +85,7 @@ class Login extends CI_Controller {
     ];
     $cookie = $this->_rundom_string($data['user_id']);
     $this->_cookie_session($data_session, $cookie);
+    $respon = $this->model_login->save_coocie($data['user_id'], ['token_login' => $cookie]);
     echo json_encode(
       array(
         "status" => 200,
@@ -136,8 +137,8 @@ class Login extends CI_Controller {
 	
 	public function proses_masuk($email, $password) {
 		$data = $this->model_login->cek_email_member($email);
-    var_dump($data);
-    die;
+    // var_dump($data);
+    // die;
 		if($data['email'] == '') {
 			$this->session->set_flashdata('error_email','Email salah');
 			$this->load->view('auth/form_login');

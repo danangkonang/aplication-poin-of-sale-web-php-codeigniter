@@ -22,25 +22,13 @@ final class Product extends AbstractMigration
       $product->addColumn('product_name', 'string', ['limit' => 225])
             ->addColumn('purchase_price', 'float')
             ->addColumn('selling_price', 'float')
+            ->addColumn('unit', 'string', ['limit' => 225])
             ->addColumn('product_qty', 'integer')
-            ->addColumn('is_promo', 'boolean')
+            ->addColumn('is_promo', 'boolean', ['default' => false])
             ->addColumn('product_image', 'string', ['limit' => 225, 'null' => true])
-            ->addColumn('is_active', 'boolean')
+            ->addColumn('is_active', 'boolean', ['default' => false])
+            ->addColumn('is_delete', 'boolean', ['default' => false])
             ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
             ->create();
-
-          // `nama_barang` varchar(100) NULL,
-          // `harga_beli` int(11) NULL,
-          // `harga_jual` int(11) NULL,
-          // `laba` int(11) NULL,
-          // `satuan` varchar(50) NULL,
-          // `setok` int(11) NULL,
-          // `mulai_promo` date NULL,
-          // `ahir_promo` date NULL,
-          // `jenis_promo` varchar(50) NULL,
-          // `potongan` int(11) NULL,
-          // `harga_ahir` int(11) NULL,
-          // `setatus_promo` int(1) NULL,
-          // `setatus_barang` int(1) NULL
     }
 }

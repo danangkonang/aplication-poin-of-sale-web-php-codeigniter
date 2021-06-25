@@ -6,10 +6,10 @@ class Model_toko extends CI_Model {
 		return $this->db->insert('toko',$data);
 	}
 	
-	public function get_data_toko() {
+	public function find_store() {
 		$this->db->select('*');
-		$this->db->limit(1);
-		return $this->db->get('toko')->row();
+		// $this->db->limit(1);
+		return $this->db->get('store')->row();
 	}
 	
 	public function update_data_toko($data,$id) {

@@ -27,15 +27,5 @@ final class Order extends AbstractMigration
               ->addColumn('qty', 'integer')
               ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
               ->create();
-
-              // `id_penjualan` int(11) NOT NULL,
-              // `kasir` int(11) NOT NULL,
-              // `kode_brg` int(11) NOT NULL,
-              // `nama_brg` varchar(100) NOT NULL,
-              // `harga_brg` int(11) NOT NULL,
-              // `jumlah` int(11) NOT NULL,
-              // `total_harga` int(11) NOT NULL,
-              // `tgl_transaksi` date NOT NULL,
-              // `waktu` time NOT NULL
     }
 }

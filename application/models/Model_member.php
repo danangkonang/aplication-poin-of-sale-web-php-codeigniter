@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Model_member extends CI_Model {
 
-  var $table = 'user';
-  var $column_order = array(null,null,'nama');
+  var $table = 'users';
+  var $column_order = array(null, null, 'user_name');
   var $column_search = array('email');
-  var $order = array('id' => 'desc');
+  var $order = array('user_id' => 'desc');
 
   function get_datatables() {
     $this->_get_datatables_query();
@@ -61,8 +61,8 @@ class Model_member extends CI_Model {
   }
 
   public function validasi_cookie($user_cookie) {
-    $this->db->where('cookie',$user_cookie);
-    return $this->db->get('cookies')->row_array();
+    $this->db->where('token_login',$user_cookie);
+    return $this->db->get('users')->row_array();
   }
 
   public function input_browser($data_browser) {

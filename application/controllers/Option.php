@@ -5,7 +5,7 @@ class Option extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('model_barang');
-		if(!$this->session->userdata('id_user')){
+		if(!$this->session->userdata('user_id')){
 			header('location:http://localhost:8080');
 		}
 	}
@@ -18,6 +18,7 @@ class Option extends CI_Controller {
 	// 	$this->load->view('kasir/contoh'); 
 	// }
 
+  // fix
 	public function find_all_product(){
 		$list = $this->model_barang->find_all_product();
     // var_dump($list);
@@ -29,10 +30,11 @@ class Option extends CI_Controller {
 			$n++;
 			$row = [];
 			$row[] = $n;
-      $row[] = $barang->product_image;
+      // $row[] = $barang->product_image;
 			$row[] = $barang->product_name;
 			$row[] = number_format($barang->purchase_price,0,".",".");
 			$row[] = number_format($barang->selling_price,0,".",".");
+      $row[] = number_format($barang->selling_price - $barang->purchase_price,0,".",".");
 			
 			// if($barang->jenis_promo == 'diskon'){
 			// 	$row[] = '<span class="text-danger">'.number_format($barang->selling_price - ($barang->selling_price * $barang->potongan / 100),0,".",".").'</span>';
@@ -59,9 +61,9 @@ class Option extends CI_Controller {
 			// 	$row[] = $barang->potongan;
 			// }
 			
-			if($this->session->userdata('level') == 1 ){
-				$row[] = '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="edit_barang('."'".$barang->id_barang."'".')"><i class="far fa-edit"></i></a>
-				  	  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_barang('."'".$barang->id_barang."'".')"><i class="far fa-trash-alt"></i></a>';
+			if($this->session->userdata('role') == 'admin' ){
+				$row[] = '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="edit_barang('."'".$barang->product_id."'".')"><i class="far fa-edit"></i></a>
+				  	  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_barang('."'".$barang->product_id."'".')"><i class="far fa-trash-alt"></i></a>';
 			}else{
 				$row[] = '<a class="btn btn-sm btn-warning disabled" href="javascript:void(0)" title="Edit" ><i class="far fa-edit"></i></a>
 				  	  <a class="btn btn-sm btn-danger disabled" href="javascript:void(0)" title="Hapus" ><i class="far fa-trash-alt"></i></a>';
@@ -77,6 +79,7 @@ class Option extends CI_Controller {
 		echo json_encode($output);
 	}
 	
+  // fix
 	public function data_barang(){
 		$this->load->view('kasir/barang_view');
 	}
@@ -111,36 +114,35 @@ class Option extends CI_Controller {
 		echo json_encode(array("status" => TRUE));
 	}
 	
+  // fix
 	function save_product(){
 		// $this->_validate();
-		// $data = [
-		// 	'setatus_barang' => $this->input->post('setatus_barang'),
-		// 	'nama_barang' => $this->input->post('nama_barang'),
-		// 	'harga_beli' => $this->input->post('harga_beli'),
-		// 	'harga_jual' => $this->input->post('harga_jual'),
-		// 	'laba' => $this->input->post('harga_jual') - $this->input->post('harga_beli'),
-		// 	'satuan' => $this->input->post('satuan'),
-		// 	'setok' => $this->input->post('setok'),
-		// 	'mulai_promo' => $this->input->post('mulai_promo'),
-		// 	'ahir_promo' => $this->input->post('ahir_promo'),
-		// 	'jenis_promo' => $this->input->post('jenis_promo'),
-		// 	'potongan' => $this->input->post('potongan'),
-		// 	'harga_ahir' => $this->input->post('harga_ahir'),
-		// 	'setatus_promo' => $this->input->post('setatus_promo'),
-		// ];
     $data = [
-      'product_name' => 'telur ayam',
-      'purchase_price' => 5000,
-      'selling_price' => 6000,
-      'product_qty' => 60,
+      'product_name' => $this->input->post('product_name'),
+      'purchase_price' => $this->input->post('purchase_price'),
+      'selling_price' => $this->input->post('selling_price'),
+      'product_qty' => $this->input->post('product_qty'),
       'is_promo' => false,
       'product_image' => 'telur.png',
       'is_active' => true,
-      // 'created_at' =>
     ];
 		$res = $this->model_barang->save_product($data);
-    echo json_encode($res);
-		// echo json_encode(array("status" => TRUE));
+    if(!$res){
+      echo json_encode(
+        array(
+          "status" => 400,
+          "message" => "internal server error",
+        )
+      );
+      return;
+    }
+    echo json_encode(
+      array(
+        "status" => 200,
+        "message" => "success login",
+        "data" => $data,
+      )
+    );
 	}
 	
   private function _validate(){
@@ -184,60 +186,93 @@ class Option extends CI_Controller {
       exit();
     }
   }
-    
+  
+  // fix
   public function cari_barang(){
     $data = $this->model_barang->search_product($_REQUEST['keyword']);
     echo json_encode( $data);
 	}
 	
+  // fix
 	public function add_keranjang(){
-		$data = [
-			'id' => $this->input->post('id'),
-			'name' => $this->input->post('nama'),
-			'jenis' => $this->input->post('jenis_promo'),
-			'potongan' => $this->input->post('potongan'),
-			'harga_potongan' => $this->input->post('harga_potongan'),
-			'price' => str_replace('.', '', $this->input->post('harga')),
-			'qty' => $this->input->post('qty')
-		];
-		$this->cart->insert($data);
-		echo json_encode(["status" => TRUE]);
+		// $data = [
+		// 	'id' => $this->input->post('id'),
+		// 	'name' => $this->input->post('nama'),
+		// 	'jenis' => $this->input->post('jenis_promo'),
+		// 	'potongan' => $this->input->post('potongan'),
+		// 	'harga_potongan' => $this->input->post('harga_potongan'),
+		// 	'price' => str_replace('.', '', $this->input->post('harga')),
+		// 	'qty' => $this->input->post('qty')
+		// ];
+    $data = [
+      'id' => $this->input->post('product_id'),
+      'name' => $this->input->post('product_name'),
+      // 'purchase_price' => $this->input->post('purchase_price'),
+      'price' => str_replace(".", "" , $this->input->post('selling_price')),
+      'qty' => $this->input->post('product_qty'),
+    ];
+		// $res = $this->cart->insert($data);
+		echo json_encode(["status" => $this->cart->insert($data)]);
+    // if(!$res){
+    //   echo json_encode(
+    //     array(
+    //       "status" => 400,
+    //       "message" => "internal server error",
+    //       "data" => $res,
+    //     )
+    //   );
+    //   return;  
+    // }
+    // echo json_encode(
+    //   array(
+    //     "status" => 200,
+    //     "message" => "success login",
+    //     "data" => $data,
+    //   )
+    // );
 	}
 	
-	public function list_transaksi(){
+  // fix
+	public function list_shoping_cart(){
 		$data = [];
 		$no = 1; 
-        foreach ($this->cart->contents() as $items){
+    foreach ($this->cart->contents() as $items){
 			$row = [];
 			$row[] = $no;
 			$row[] = $items["name"];
-			if($items["jenis"] == "minimal"){
-				$row[] = "min";
-			}else{
-				$row[] = "dis";
-			}
-			$row[] = $items["potongan"];
-			$row[] = $items["harga_potongan"];
+
+			// if($items["jenis"] == "minimal"){
+			// 	$row[] = "min";
+			// }
+      // else{
+			// 	$row[] = "dis";
+			// }
+
+			// $row[] = $items["potongan"];
+			// $row[] = $items["harga_potongan"];
 			$row[] = 'Rp. ' . number_format( $items['price'], 0 , '' , '.' ) . ',-';
 			$row[] = $items["qty"];
-			if($items["jenis"] == 'minimal'){
-				$induk = floor($items["qty"] / $items["potongan"]);
-				$sisa = $items["qty"] % $items["potongan"];
-				$sub = ($induk * $items["harga_potongan"]) + ($items['price'] * $sisa);
-				$row[] = 'Rp. ' . number_format( $sub, 0 , '' , '.' ) . ',-';
-			}else{
-				$diskon = $items['qty'] * ($items['price'] - ($items['price'] * $items['potongan']/100));
-				$row[] = 'Rp. ' . number_format( $diskon, 0 , '' , '.' ) . ',-';
-			}
+
+			// if($items["jenis"] == 'minimal'){
+			// 	$induk = floor($items["qty"] / $items["potongan"]);
+			// 	$sisa = $items["qty"] % $items["potongan"];
+			// 	$sub = ($induk * $items["harga_potongan"]) + ($items['price'] * $sisa);
+			// 	$row[] = 'Rp. ' . number_format( $sub, 0 , '' , '.' ) . ',-';
+			// }
+      // else{
+			// 	$diskon = $items['qty'] * ($items['price'] - ($items['price'] * $items['potongan']/100));
+			// 	$row[] = 'Rp. ' . number_format( $diskon, 0 , '' , '.' ) . ',-';
+			// }
+      $row[] = 'Rp. ' . number_format( $items['qty'] * $items['price'], 0 , '' , '.' ) . ',-';
 			//add html for action
-			$row[] = '<a 
-				href="javascript:void()" style="color:rgb(255,128,128);
-				text-decoration:none" onclick="deletebarang('
-					."'".$items["rowid"]."'".','."'".$items['subtotal'].
-					"'".')"> <i class="fas fa-times"></i></a>';
+			$row[] = '<a href="javascript:void(0)"
+                style="color: red; text-decoration: none; padding: 5px;"
+                onclick="delete_cart('
+                    ."'".$items["rowid"]."'".','."'".$items['subtotal'].
+                    "'".')"> <i class="fas fa-times"></i></a>';
 			$data[] = $row;
 			$no++;
-        }
+    }
 		$output = [
 			"data" => $data,
 		];
@@ -252,104 +287,151 @@ class Option extends CI_Controller {
     return true;
 	}
 	
-	public function cetak_nota(){
+
+	public function save_orders(){
 		$this->load->model('model_toko');
 		$bayar = $this->input->post('bayar');
 		$kembali = $this->input->post('kembali');
-		$toko = $this->model_toko->get_data_toko();
-		$no=1;
+		$toko = $this->model_toko->find_store();
+    // echo json_encode($toko);
+    // <p class="text-dark">'
+    //   .$toko->store_name.'<br>'
+    //   .$toko->store_address.'<br>tlp '
+    //   .$toko->store_phone.'<br>no &nbsp; &nbsp; &nbsp; : '
+    //   .$this->session->userdata('user_id').'<br>kasir &nbsp; : '
+    //   .$this->session->userdata('user_name').'<br>tgl &nbsp; &nbsp; &nbsp; : '
+    // .date('Y-m-d  h:i:s').'<br>
+
+		$no = 1;
 		$output = '';
-		$output = '<p class="text-dark">'.$toko->nama_toko.'<br>
-				                    	'.$toko->alamat_toko.'<br>
-				                    tlp '.$toko->telephon_toko.'<br>
-		no &nbsp; &nbsp; &nbsp; : '.$this->session->userdata('id').'<br>
-                    	kasir &nbsp; : '.$this->session->userdata('nama').'<br>
-		tgl &nbsp; &nbsp; &nbsp; : '.date('Y-m-d  h:i:s').'<br>
-					</p>
-					<table>
-					<thead>
-						<tr style="border-top:1px dashed">
-							<th width="50">No</th>
-							<th width="100">Nama</th>
-							<th width="50">qty</th>
-							<th>harga</th>
-						</tr>
-					</thead>
-					<tbody>';
-					foreach($this->cart->contents() as $row){
-		$output .= 		'<tr>
-							<td>'.$no++.'</td>
-							<td>'.$row["name"].'</td>
-							<td>'.$row["qty"].'</td>
-							<td>Rp.'.$row["price"] .'</td>
-						</tr>';
-						}
-		$output .= 		'<tr style="border-top:1px dashed">
-							<td colspan="3" style="text-align:right">Total :</td>
-							<td>Rp.'.number_format($this->cart->total(),0,',','.').'</td>
-						</tr>
-						<tr>
-							<td colspan="3" style="text-align:right">Bayar :</td>
-							<td>Rp.'.number_format($bayar,0,',','.').'</td>
-						</tr>
-						<tr style="border-bottom:1px dashed">
-							<td colspan="3" style="text-align:right">Kembali :</td>
-							<td>Rp.'.$kembali.'</td>
-						</tr>
-					</tbody>
-					</table>
-            <div style="text-align:center">terimakasih atas kunjungan anda</div>';
-        echo $output;
+
+    $output .='<div>'; // content
+
+		$output .= '
+              <div style="text-align: center; font-size: 20px; font-weight: bold;">'.$toko->store_name.'</div>
+              <div style="text-align: center">'.$toko->store_address.' '.$toko->store_phone.'</div>
+              <div style="text-align: center" id="time_transaction" data-transaction="'.date('Y-m-d  h:i:s').'">'.date('Y-m-d  h:i:s').'</div>
+              ';
+    $output .='<div style="border-top:1px dashed; border-bottom:1px dashed; margin: 20px 0;">'; // body
+
+    $output .='<div style="display: flex; border-bottom:1px dashed; margin-bottom: 10px;">
+                  <div style="width: 10%; font-weight: bold;">No</div>
+                  <div style="width: 40%; font-weight: bold;">Nama</div>
+                  <div style="width: 15%; font-weight: bold; text-align: center;">Qty</div>
+                  <div style="width: 35%; font-weight: bold;">Sub Total</div>
+                </div>
+              ';
+
+              foreach($this->cart->contents() as $row){
+    $output .= '
+                <div style="display: flex; margin-bottom: 10px;">
+                  <div style="width: 10%;">'.$no++.'</div>
+                  <div style="width: 40%;">'.$row["name"].'</div>
+                  <div style="width: 15%; text-align: center;">'.$row["qty"].'</div>
+                  <div style="width: 35%;">Rp.'.$row["price"] .'</div>
+                </div>';
+              }
+
+    $output .= '</div>'; // body
+
+    $output .= '
+                <div style="display: flex;">
+                  <div style="width: 60%; text-align: right;">Total</div>
+                  <div style="width: 5%; text-align: center;">:</div>
+                  <div style="width: 35%;">Rp.'.number_format($this->cart->total(),0,',','.').'</div>
+                </div>
+              ';
+
+    $output .= '
+                <div style="display: flex;">
+                  <div style="width: 60%; text-align: right;">Bayar</div>
+                  <div style="width: 5%; text-align: center;">:</div>
+                  <div style="width: 35%;">Rp.'.number_format($bayar,0,',','.').'</div>
+                </div>
+              ';
+
+    $output .= '
+                <div style="display: flex;">
+                  <div style="width: 60%; text-align: right;">Kembali</div>
+                  <div style="width: 5%; text-align: center;">:</div>
+                  <div style="width: 35%;">Rp.'.$kembali.'</div>
+                </div>
+              ';
+
+    $output .= '<div style="text-align:center; margin: 20px 0;">
+                  Terimakasih atas kunjungan anda
+                </div>';
+    $output .='</div>'; // content
+    echo $output;
 	}
 	
 	public function shoping(){
-		if($this->cart->contents() !==[]){
+    $time_transaction = $this->input->post("time_transaction");
+    $response = [];
+		if($this->cart->contents() != []){
+      $order_id = md5(date('Y-m-d  h:i:s'));
 			foreach ($this->cart->contents() as $insert){
-				$id 		= $insert['id'];
-				$q 			= $insert['qty'];
-				// $rowid 		= $insert['rowid'];
-				$tgl 		= date('Y-m-d');
-				$datestring = '%H:%i';
-				$time 		= time();
-				$waktu 		= mdate($datestring, $time);
-				
-				$data = [
-					'kode_brg' => $insert['id'],
-					'jumlah' => $insert['qty'],
-					'nama_brg' => $insert['name'],
-					'harga_brg' => $insert['price'],
-					'total_harga' => $insert['subtotal'],
-					'tgl_transaksi' => $tgl,
-					'waktu' => $waktu
+				$order = [
+          'order_code' => $order_id,
+          'user_id' => $this->session->userdata('user_id'),
+          'product_id' => $insert['id'],
+          'product_name' => $insert['name'],
+          'price' => $insert['price'],
+          'qty' => $insert['qty'],
+          'created_at' => $time_transaction,
 				];
+
+        $res = $this->model_barang->get_product_qty($insert['id']);
+        $last_qty = $res->product_qty - $insert['qty'];
+
+        $this->model_barang->create_order($order);
+        $this->model_barang->update_product_qty($insert['id'], $last_qty);
 			}
-			$insert =  $this->model_barang->insert_penjualan($data);
-			if($insert){
-				$hasil = $this->model_barang->get_setok($id);
-				$sisa =  $hasil->setok;
-				$qty = $sisa-$q;
-				$aksi = $this->model_barang->update_setok($id,$qty);
-				$this->cart->destroy();
-				echo json_encode(["status" => TRUE]);
-			}else{
-				echo json_encode(["status" => FALSE]);
-			}
+
+      $this->cart->destroy();
+      $response = array(
+        "status" => 200,
+        "message" => "success",
+      );
 		}else{
-			// echo('404');
+      $response = array(
+        "status" => 400,
+        "message" => "internal server error",
+      );
 		}
+    echo json_encode($response);
 	}
 	
-	public function deletebarang($rowid){
-		$this->cart->update([
-				'rowid'=>$rowid,
-				'qty'=>0,]);
-		echo json_encode(["status" => TRUE]);
+  // fix
+	public function delete_shoping_cart($rowid){
+		$res = $this->cart->update(
+      [
+				'rowid' => $rowid,
+				'qty' => 0,
+      ]
+    );
+    if(!$res){
+      echo json_encode(
+        array(
+          "status" => 200,
+          "message" => 'Internal server error',
+        )
+      );
+      return;
+    }
+    echo json_encode(
+      array(
+        "status" => 200,
+        "message" => "success",
+      )
+    );
 	}
 	
 	public function data_penjualan(){
 		$this->load->view('kasir/penjualan_view');
 	}
 	
+  // fix
 	public function get_penjualan(){
 		$this->load->model('model_penjualan');
 		$list = $this->model_penjualan->get_datatables();
@@ -360,11 +442,13 @@ class Option extends CI_Controller {
 			$n++;
 			$row = [];
 			$row[] = $n;
-			$row[] = $barang->nama_brg;
-			$row[] = $barang->jumlah;
-			$row[] = $barang->kasir;
-			$row[] = $barang->total_harga;
-			$row[] = $barang->tgl_transaksi.' '.$barang->waktu;
+			$row[] = $barang->order_code;
+      $row[] = $barang->product_name;
+			$row[] = $barang->qty;
+			$row[] = $barang->user_id;
+			$row[] = $barang->price;
+      $row[] = $barang->price * $barang->qty;
+			$row[] = $barang->created_at;
 			$data[] = $row;
 		}
 
@@ -377,13 +461,15 @@ class Option extends CI_Controller {
 		echo json_encode($output);
 	}
 	
+  // fix
 	public function data_toko(){
 		$this->load->view('profil/toko_view');
 	}
 	
-	public function get_data_toko(){
+  // fix
+	public function find_store(){
 		$this->load->model('model_toko');
-		$data = $this->model_toko->get_data_toko();
+		$data = $this->model_toko->find_store();
 		echo json_encode($data);
 	}
 	
@@ -511,8 +597,7 @@ class Option extends CI_Controller {
 		$this->load->view('profil/profil_view',$data);
 	}
 
-	public function edit_profil()
-	{
+	public function edit_profil(){
 		$this->load->model('model_member');
 		$data = $this->model_member->get_profil();
 		echo json_encode($data);
@@ -522,6 +607,7 @@ class Option extends CI_Controller {
 		$this->load->view('kasir/data_user_view');
 	}
 
+  // fix
 	public function get_data_user(){
 		$this->load->model('model_member');
 		$list = $this->model_member->get_datatables();
@@ -532,16 +618,16 @@ class Option extends CI_Controller {
 			$n++;
 			$row = [];
 			$row[] = $n;
-			$row[] = $user->nama;
+			$row[] = $user->user_name;
 			$row[] = $user->email;
-			$row[] = $user->jenis_kelamin;
+			$row[] = $user->gender;
 			$row[] = $user->telephone;
-			if($user->aktif == 1){
+			if($user->is_active){
 				$row[] = "aktif";
 			}else {
 				$row[] = "blokir";
 			}
-			$row[] = '<button class="btn btn-danger" roler="button" onClick="edit_user('."'".$user->id."'".')">edit</button>';
+			$row[] = '<button class="btn btn-danger" roler="button" onClick="edit_user('."'".$user->user_id."'".')">edit</button>';
 			$data[] = $row;
 		}
 		$output = [
