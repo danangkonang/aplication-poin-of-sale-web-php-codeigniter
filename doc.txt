@@ -1,0 +1,15 @@
+composer require robmorgan/phinx --dev
+mkdir -p db/{migrations,seeds}
+php vendor/bin/phinx init
+
+vendor/bin/phinx test
+vendor/bin/phinx create User
+vendor/bin/phinx migrate -e development
+
+vendor/bin/phinx rollback -e development
+
+vendor/bin/phinx create AddUserAddress
+
+vendor/bin/phinx seed:create Users
+
+vendor/bin/phinx seed:run
