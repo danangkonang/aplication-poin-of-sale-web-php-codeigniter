@@ -10,141 +10,6 @@ class Option extends CI_Controller {
 		}
 	}
 	
-	// public function index(){
-	// 	echo 'tes';
-	// }
-
-	// public function contoh(){
-	// 	$this->load->view('kasir/contoh'); 
-	// }
-
-  // fix
-	public function find_all_product(){
-		$list = $this->model_barang->find_all_product();
-    // var_dump($list);
-    // die;
-		$data = [];
-		$no = $_POST['start'];
-		$n=0;
-		foreach ($list as $barang) {
-			$n++;
-			$row = [];
-			$row[] = $n;
-      // $row[] = $barang->product_image;
-			$row[] = $barang->product_name;
-			$row[] = number_format($barang->purchase_price,0,".",".");
-			$row[] = number_format($barang->selling_price,0,".",".");
-      $row[] = number_format($barang->selling_price - $barang->purchase_price,0,".",".");
-			
-			// if($barang->jenis_promo == 'diskon'){
-			// 	$row[] = '<span class="text-danger">'.number_format($barang->selling_price - ($barang->selling_price * $barang->potongan / 100),0,".",".").'</span>';
-			// }else{
-			// 	$row[] = '<span class="text-danger">'.number_format($barang->harga_ahir / $barang->potongan,0,".",".").'</span>';
-			// }
-			
-			$row[] = $barang->product_qty;
-			// if($barang->potongan == 0){
-			// 	$row[] = "";
-			// }else{
-			// 	if($barang->jenis_promo == 'diskon'){
-			// 		$row[] = 'dis';
-			// 	}else{
-			// 		$row[] = 'min';
-			// 	}
-			// }
-			
-			// if($barang->jenis_promo == 'diskon' && $barang->potongan == 0){
-			// 	$row[] = "";
-			// }else if($barang->jenis_promo == 'diskon' && $barang->potongan > 0){
-			// 	$row[] = $barang->potongan."%";
-			// }else{
-			// 	$row[] = $barang->potongan;
-			// }
-			
-			if($this->session->userdata('role') == 'admin' ){
-				$row[] = '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="edit_barang('."'".$barang->product_id."'".')"><i class="far fa-edit"></i></a>
-				  	  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_barang('."'".$barang->product_id."'".')"><i class="far fa-trash-alt"></i></a>';
-			}else{
-				$row[] = '<a class="btn btn-sm btn-warning disabled" href="javascript:void(0)" title="Edit" ><i class="far fa-edit"></i></a>
-				  	  <a class="btn btn-sm btn-danger disabled" href="javascript:void(0)" title="Hapus" ><i class="far fa-trash-alt"></i></a>';
-			}
-			$data[] = $row;
-		}
-		$output = [
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->model_barang->count_all(),
-			"recordsFiltered" => $this->model_barang->count_filtered(),
-			"data" => $data,
-		];
-		echo json_encode($output);
-	}
-	
-  // fix
-	public function data_barang(){
-		$this->load->view('kasir/barang_view');
-	}
-	
-	public function hapus_barang($id){
-		$this->model_barang->delete_by_id($id);
-		echo json_encode(["status" => TRUE]);
-	}
-	
-	public function edit_barang($id){
-		$data = $this->model_barang->get_by_id($id);
-		echo json_encode($data);
-	}
-	
-	public function update_barang(){
-		$data =[
-			'setatus_barang'	=> $this->input->post('setatus_barang'),
-			'nama_barang' 		=> $this->input->post('nama_barang'),
-			'harga_beli' 		=> $this->input->post('harga_beli'),
-			'harga_jual' 		=> $this->input->post('harga_jual'),
-			'laba' 				=> $this->input->post('harga_jual')-$this->input->post('harga_beli'),
-			'satuan' 			=> $this->input->post('satuan'),
-			'setok' 			=> $this->input->post('setok'),
-			'mulai_promo' 		=> $this->input->post('mulai_promo'),
-			'ahir_promo' 		=> $this->input->post('ahir_promo'),
-			'jenis_promo' 		=> $this->input->post('jenis_promo'),
-			'potongan' 			=> $this->input->post('potongan'),
-			'harga_ahir' 		=> $this->input->post('harga_ahir'),
-			'setatus_promo' 	=> $this->input->post('setatus_promo'),
-		];
-		$this->model_barang->update(array('id_barang' => $this->input->post('id')), $data);
-		echo json_encode(array("status" => TRUE));
-	}
-	
-  // fix
-	function save_product(){
-		// $this->_validate();
-    $data = [
-      'product_name' => $this->input->post('product_name'),
-      'purchase_price' => $this->input->post('purchase_price'),
-      'selling_price' => $this->input->post('selling_price'),
-      'product_qty' => $this->input->post('product_qty'),
-      'is_promo' => false,
-      'product_image' => 'telur.png',
-      'is_active' => true,
-    ];
-		$res = $this->model_barang->save_product($data);
-    if(!$res){
-      echo json_encode(
-        array(
-          "status" => 400,
-          "message" => "internal server error",
-        )
-      );
-      return;
-    }
-    echo json_encode(
-      array(
-        "status" => 200,
-        "message" => "success login",
-        "data" => $data,
-      )
-    );
-	}
-	
   private function _validate(){
     $data = [];
     $data['error_string'] = [];
@@ -461,110 +326,16 @@ class Option extends CI_Controller {
 		echo json_encode($output);
 	}
 	
-  // fix
-	public function data_toko(){
-		$this->load->view('profil/toko_view');
-	}
+  
 	
-  // fix
-	public function find_store(){
-		$this->load->model('model_toko');
-		$data = $this->model_toko->find_store();
-		echo json_encode($data);
-	}
 	
-	public function simpan_data_toko(){
-		$this->load->model('model_toko');
-		$data = [
-			'nama_toko' => $this->input->post('nama_toko'),
-			'alamat_toko' => $this->input->post('alamat_toko'),
-			'telephon_toko' => $this->input->post('telephon_toko'),
-			'moto_toko' => $this->input->post('moto_toko')
-		];
-		$data2 = $this->model_toko->get_data_toko();
-		$id = $data2->id_toko;
-		if($data2 == null){
-			$insert = $this->model_toko->simpan_data_toko($data);
-		}else{
-			$insert = $this->model_toko->update_data_toko($data,$id);
-		}
-		
-		echo json_encode($data);
-	}
-	
-	public function edit_data_toko(){
-		$this->load->model('model_toko');
-		$data = $this->model_toko->get_data_toko();
-		if($data == null){
-			$data2 =[
-				'nama_toko' => 'toko',
-				'alamat_toko' => 'alamat',
-				'telephon_toko' => '123',
-				'moto_toko' => 'moto'
-			];
-			echo json_encode($data2);
-		}else{
-			echo json_encode($data);
-		}
-		
-	}
 	
 	public function laba(){
 		$this->load->view('kasir/laba_view');
 	}
 	
-	public function get_data_laba(){
-		$this->load->model('model_laba');
-		$list = $this->model_laba->get_data_laba();
-		$data = [];
-		$no = $_POST['start'];
-		$n=0;
-		foreach ($list as $barang) {
-			$n++;
-			$row = [];
-			$row[] = $n;
-			$row[] = $barang->nama_barang;
-			$row[] = $barang->jumlah;
-			$row[] = number_format($barang->total_harga);
-			$row[] = number_format($barang->harga_beli);
-			$row[] = number_format($barang->total_harga - ($barang->jumlah * $barang->harga_beli));
-			$data[] = $row;
-		}
-
-		$output = [
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->model_laba->count_all(),
-			"recordsFiltered" => $this->model_laba->count_filtered(),
-			"data" => $data,
-		];
-		echo json_encode($output);
-	}
 	
-	public function diagram(){
-		$min = date('Y-m-').'01';
-		$max = date('Y-m-').'31';
-		$this->db->select('tgl_transaksi');
-		$this->db->where('tgl_transaksi >=', $min);
-		$this->db->where('tgl_transaksi <=', $max);
-		$this->db->select_sum('total_harga');
-		$this->db->group_by('tgl_transaksi');
-		$query=    $this->db->get('penjualan');
-		$data=[];
-		foreach($query->result() as $row)
-		{
-			$data[]=$row;
-		}
-		print json_encode($data);
-	}
-
-	public function laba_tabel(){
-		$this->load->view('kasir/tabel_view');
-	}
-
-	public function laba_diagram(){
-		$this->load->view('kasir/diagram_view');
-	}
-
+	
 	public function cari_diagram(){
 		$bulan = $this->input->post('bulan')+1;
 		$tahun = $this->input->post('tahun');
@@ -590,52 +361,6 @@ class Option extends CI_Controller {
 		$this->load->view('admin/pengunjung_view');
 	}
 
-	public function akun(){
-		$this->load->model('model_member');
-		$data['judul'] = 'profil';
-		$data['akun'] = $this->model_member->get_profil();
-		$this->load->view('profil/profil_view',$data);
-	}
-
-	public function edit_profil(){
-		$this->load->model('model_member');
-		$data = $this->model_member->get_profil();
-		echo json_encode($data);
-	}
-
-	public function data_user(){
-		$this->load->view('kasir/data_user_view');
-	}
-
-  // fix
-	public function get_data_user(){
-		$this->load->model('model_member');
-		$list = $this->model_member->get_datatables();
-		$data = [];
-		$no = $_POST['start'];
-		$n=0;
-		foreach ($list as $user) {
-			$n++;
-			$row = [];
-			$row[] = $n;
-			$row[] = $user->user_name;
-			$row[] = $user->email;
-			$row[] = $user->gender;
-			$row[] = $user->telephone;
-			if($user->is_active){
-				$row[] = "aktif";
-			}else {
-				$row[] = "blokir";
-			}
-			$row[] = '<button class="btn btn-danger" roler="button" onClick="edit_user('."'".$user->user_id."'".')">edit</button>';
-			$data[] = $row;
-		}
-		$output = [
-			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->model_member->count_all(),
-			"recordsFiltered" => $this->model_member->count_filtered(),
-			"data" => $data,
-		];
-		echo json_encode($output);
-	}
+	
+	
 }

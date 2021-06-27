@@ -57,7 +57,7 @@ class Model_member extends CI_Model {
 
   public function get_member($id) {
     $this->db->where('id',$id);
-    return $this->db->get('user')->row_array();
+    return $this->db->get('users')->row_array();
   }
 
   public function validasi_cookie($user_cookie) {
@@ -114,8 +114,8 @@ class Model_member extends CI_Model {
 
   //
   public function get_profil() {
-    $this->db->where('id',$this->session->userdata('id'));
-    return $this->db->get('user')->row_array();
+    $this->db->where('user_id',$this->session->userdata('user_id'));
+    return $this->db->get('users')->row_array();
   }
 
     

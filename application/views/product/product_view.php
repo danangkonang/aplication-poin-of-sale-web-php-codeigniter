@@ -1,7 +1,4 @@
-<?php
-var_dump($this->session->userdata());
-die;
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -24,7 +21,7 @@ die;
 
   <div id="wrapper">
 
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <!-- <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= site_url() ?>">
         <div class="sidebar-brand-icon rotate-n-15">
@@ -44,14 +41,14 @@ die;
       <hr class="sidebar-divider">
 
       <li class="nav-item active">
-        <a class="nav-link" href="<?= site_url() ?>option/data_barang">
+        <a class="nav-link" href="<?= site_url() ?>product/data_barang">
           <i class="fas fa-fw fa-cubes"></i>
           <span>Data barang</span></a>
       </li>
       <hr class="sidebar-divider">
 
       <li class="nav-item">
-        <a class="nav-link" href="<?= site_url() ?>option/data_penjualan">
+        <a class="nav-link" href="<?= site_url() ?>product/data_penjualan">
         <i class="far fa-handshake"></i>
           <span>Data penjualan</span></a>
       </li>
@@ -64,8 +61,8 @@ die;
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="<?= site_url() ?>option/laba_tabel"><i class="fas fa-table"></i> Tabel</a>
-            <a class="collapse-item" href="<?= site_url() ?>option/laba_diagram"><i class="far fa-chart-bar"></i> Diagram</a>
+            <a class="collapse-item" href="<?= site_url() ?>product/laba_tabel"><i class="fas fa-table"></i> Tabel</a>
+            <a class="collapse-item" href="<?= site_url() ?>product/laba_diagram"><i class="far fa-chart-bar"></i> Diagram</a>
         </div>
       </li>
       <hr class="sidebar-divider">
@@ -73,21 +70,21 @@ die;
       <?php if($this->session->userdata('role') == 'admin'){ ?>
 
         <li class="nav-item">
-          <a class="nav-link" href="<?= site_url() ?>option/data_user">
+          <a class="nav-link" href="<?= site_url() ?>product/data_user">
           <i class="far fa-user"></i>
             <span>Data user</span></a>
         </li>
         <hr class="sidebar-divider">
 
         <li class="nav-item">
-          <a class="nav-link" href="<?= site_url() ?>option/pengunjung">
+          <a class="nav-link" href="<?= site_url() ?>product/pengunjung">
             <i class="fas fa-fw fa-globe-americas"></i>
             <span>Pengunjung</span></a>
         </li>
         <hr class="sidebar-divider">
 
         <li class="nav-item">
-          <a class="nav-link" href="<?= site_url() ?>option/data_toko">
+          <a class="nav-link" href="<?= site_url() ?>product/data_toko">
           <i class="fas fa-store"></i>
             <span>Toko</span></a>
         </li>
@@ -100,13 +97,13 @@ die;
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
 
-    </ul>
-    
+    </ul> -->
+    <?php $this->load->view('component/sidebar')?>
     <div id="content-wrapper" class="d-flex flex-column">
 
       <div id="content">
 
-        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <!-- <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
@@ -129,7 +126,7 @@ die;
                   Profile
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="<?= base_url() ?>option/logout">
+                <a class="dropdown-item" href="<?= base_url() ?>product/logout">
                 <i class="fas fa-power-off fa-sm fa-fw mr-2 text-gray-400"></i>
                   Logout
                 </a>
@@ -138,8 +135,8 @@ die;
 
           </ul>
 
-        </nav>
-
+        </nav> -->
+        <?php $this->load->view('component/header')?>
         <div class="container-fluid">
           <?php
             if($this->session->userdata('level') == 1) {
@@ -171,17 +168,7 @@ die;
         <!-- /.container-fluid -->
 
       </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; danang 2019</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
+      <?php $this->load->view('component/footer')?>
 
     </div>
 
@@ -229,7 +216,7 @@ die;
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/option/find_all_product",
+          "url": "http://localhost:8080/product/find_all_product",
           "type": "POST"
         },
         "lengthChange": false,
@@ -267,10 +254,10 @@ die;
     function save_product() {
       var url;
       if(save_method == 'add') {
-        url = "<?php echo site_url('option/save_product')?>";
+        url = "<?php echo site_url('product/save_product')?>";
       }
       else {
-        url = "<?php echo site_url('option/update_barang')?>";
+        url = "<?php echo site_url('product/update_barang')?>";
       }
       $.ajax({
         url : url,
@@ -319,7 +306,7 @@ die;
     function delete_barang(id) {
       if(confirm('yakin ingin di hapus?')){
         $.ajax({
-          url : "<?php echo site_url('option/hapus_barang')?>/"+id,
+          url : "<?php echo site_url('product/hapus_barang')?>/"+id,
           type: "POST",
           dataType: "JSON",
           success: function(data) {
@@ -336,7 +323,7 @@ die;
       save_method = 'update';
       $('#form')[0].reset();
       $.ajax({
-        url : "<?php echo site_url('option/edit_barang')?>/" + id,
+        url : "<?php echo site_url('product/edit_barang')?>/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {

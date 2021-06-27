@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Model_laba extends CI_Model {
+class Model_report extends CI_Model {
 	
-	var $table = 'penjualan';
-	var $column_order = array(null,'nama_barang'); //file table
-	var $column_search = array('nama_barang'); //pencarian yg d ijinkan
-	var $order = array('id_penjualan' => 'desc'); // default order
+	var $table = 'order';
+	var $column_order = array(null,'product_name');
+	var $column_search = array('product_name');
+	var $order = array('order_id' => 'desc');
 	
 	function get_data_laba() {
 		$this->_get_data_laba_query();
@@ -17,22 +17,21 @@ class Model_laba extends CI_Model {
     }
 	}
 	
-	private function _get_data_laba_query()
-	{
+	private function _get_data_laba_query(){
 		$this->db->from($this->table);
-		$this->db->join('barang', 'barang.id_barang = penjualan.kode_brg');
+		$this->db->join('product', 'product.product_id = order.product_id');
 		$i = 0;
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {
 				if($i===0) {
-					$this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+					$this->db->group_start();
 					$this->db->like($item, $_POST['search']['value']);
 				}
 				else {
 					$this->db->or_like($item, $_POST['search']['value']);
 				}
 				if(count($this->column_search) - 1 == $i){
-					$this->db->group_end(); //close bracket
+					$this->db->group_end();
         }
 			}
 			$i++;

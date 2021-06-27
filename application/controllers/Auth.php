@@ -8,7 +8,6 @@ class Auth extends CI_Controller {
 	}
 	
 	public function index(){
-    // var_dump($this->session->userdata());
 		$id = $this->session->userdata('user_id');
 		if(!$id){
 			$this->empty_sesion();
@@ -23,86 +22,82 @@ class Auth extends CI_Controller {
 		if(empty($user_cookie)){
 			$this->load->view('auth/form_login');
     }else{
-      $this->cek_cookie_ke_db($user_cookie);
+      $this->auth_valid_cookie($user_cookie);
     }
 	}
 	
-	public function cek_cookie_ke_db($user_cookie) {
-    // delete_cookie('cookie_id');
+	public function auth_valid_cookie($user_cookie) {
 		$data = $this->model_member->validasi_cookie($user_cookie);
     if($data == NULL){
       delete_cookie('cookie_id');
       $this->load->view('auth/form_login');
     }
-    var_dump($data);
-    // var_dump($user_cookie);
-		// if($data =="") {
-		// 	$this->load->view('auth/form_login');
-		// }
-		// else {
-		// 	$get = $this->model_member->get_member($data['id_user_cookie']);
-		// 	$this->load->library('user_agent');
-		// 	$data_browser =[
-		// 		'id_user' => $get["id"],
-		// 		'browser' => $this->agent->browser(),
-		// 		'browser_version' => $this->agent->version(),
-		// 		'os' => $this->agent->platform(),
-		// 		'waktu_login' => date("Y-m-m h:i:s"),
-		// 		'ip_address' => $this->input->ip_address()
-		// 	];
-		// 	$input_browser = $this->model_member->input_browser($data_browser);
-		// 	if($input_browser) {
-		// 		$cookie = $this->_acak($get['id']);
-		// 		$cookie_id = $get['id'];
-		// 		$data_input_cookie = [
-		// 			'cookie' => $cookie,
-		// 			'id_user_cookie' => $get['id']
-		// 		];
-		// 		$data_update_cookie = [
-		// 			'cookie' => $cookie,
-		// 			];
-		// 		$data_session = [
-		// 			'id'  => $get['id'],
-		// 			'username'  => $get['nama'],
-		// 			'email'  => $get['email'],
-		// 			'level'  => $get['level']
-		// 		];
-		// 		$this->_input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id);
-		// 		$this->_cookie_session($data_session,$cookie);
-		// 		header("location: http://localhost:9000");
-		// 	}
-		// }
+    if(!$data){
+      delete_cookie('cookie_id');
+      $this->load->view('auth/form_login');
+    }
+    if($data['token_login'] == $user_cookie){
+      $this->load->model('model_login');
+      $data_session = [
+        'user_id'  => $data['user_id'],
+        'user_name'  => $data['user_name'],
+        'email'  => $data['email'],
+        'role'  => $data['role']
+      ];
+      $cookie = $this->_rundom_string($data['user_id']);
+      $this->_cookie_session($data_session, $cookie);
+      $respon = $this->model_login->save_coocie($data['user_id'], ['token_login' => $cookie]);
+      header("location: http://localhost:8080");
+    }
 	}
-	
-	private function _acak($n) {
-		$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
-		$hasil = array();
-		$hasil = '';
+
+  private function _rundom_string($n) {
+		$strings = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
+		$result = '';
 			for($i = 0; $i < $n; $i++){
-				for($j = 0; $j < 32; $j++){
-					$buat = rand(0, strlen($key)-1);
-					$hasil .= $key[$buat];
+				for($j = 0; $j < 64; $j++){
+					$create = rand(0, strlen($strings) - 1);
+					$result .= $strings[$create];
 				}
 			}
-		return $hasil;
+		return $result;
 	}
 
-	private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id) {
-		$cek_cookie = $this->model_member->cek_cookie_db($cookie_id);
-		if($cek_cookie) {
-			$this->model_member->update_cookie($data_update_cookie,$cookie_id);
-		}
-		else {
-			$this->model_member->input_cookie($data_input_cookie);
-		}
-	}
-
-	private function _cookie_session($data_session,$cookie) {
+  private function _cookie_session($data_session, $data_cookie){
 		$this->load->helper('cookie');
-		delete_cookie('id');
-		set_cookie('id',$cookie,'604800');
-		$this->session->set_userdata($data_session);
+		set_cookie('cookie_id', $data_cookie, '604800');
+		return $this->session->set_userdata($data_session);
 	}
+	
+	// private function _acak($n) {
+	// 	$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
+	// 	$hasil = array();
+	// 	$hasil = '';
+	// 		for($i = 0; $i < $n; $i++){
+	// 			for($j = 0; $j < 32; $j++){
+	// 				$buat = rand(0, strlen($key)-1);
+	// 				$hasil .= $key[$buat];
+	// 			}
+	// 		}
+	// 	return $hasil;
+	// }
+
+	// private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id) {
+	// 	$cek_cookie = $this->model_member->cek_cookie_db($cookie_id);
+	// 	if($cek_cookie) {
+	// 		$this->model_member->update_cookie($data_update_cookie,$cookie_id);
+	// 	}
+	// 	else {
+	// 		$this->model_member->input_cookie($data_input_cookie);
+	// 	}
+	// }
+
+	// private function _cookie_session($data_session,$cookie) {
+	// 	$this->load->helper('cookie');
+	// 	delete_cookie('id');
+	// 	set_cookie('id',$cookie,'604800');
+	// 	$this->session->set_userdata($data_session);
+	// }
 
   public function logout(){
 		$this->load->helper('cookie');
