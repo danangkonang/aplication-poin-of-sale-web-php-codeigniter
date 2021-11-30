@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3306:3306"
+    networks:
+      - mysqldb
+    environment:
+      - MYSQL_ROOT_PASSWORD=danang
+      - MYSQL_USER=danang
+      - MYSQL_PASSWORD=danang
+      - MYSQL_DATABASE=poin-of-sale
+    container_name: mysql-db
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.7
+    depends_on:
+      - mysql
+    networks:
+      - mysqldb
+    ports:
+      - "5000:80"
+    environment:
+      - PMA_HOST=mysql-db
+      - PMA_PORT=3306
+    container_name: phpmyadmin-db
+networks:
+  mysqldb:
