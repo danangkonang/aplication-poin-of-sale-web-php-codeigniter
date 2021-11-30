@@ -3,7 +3,7 @@ Aplikasi penjualan berbasis web mempermudah pengusaha memantau penjualan harian/
 
 # Cara Install
 
-## Clonning repositori
+## Clonning repository
 
 ```bash
 git clone https://github.com/danangkonang/aplication-poin-of-sale-web-php-codeigniter.git pos
