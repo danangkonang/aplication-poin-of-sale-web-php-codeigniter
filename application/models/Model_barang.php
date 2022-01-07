@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_barang extends CI_Model {
 	
-	var $table = 'product';
+	var $table = 'products';
 	var $column_order = array(null, null, 'purchase_price');
 	var $column_search = array('product_name');
 	var $order = array('product_id' => 'desc');
@@ -24,7 +24,7 @@ class Model_barang extends CI_Model {
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {
 				if($i===0) {
-					$this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+					$this->db->group_start();
 					$this->db->like($item, $_POST['search']['value']);
 				}
 				else {

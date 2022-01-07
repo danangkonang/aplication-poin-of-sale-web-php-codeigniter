@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_report extends CI_Model {
 	
-	var $table = 'order';
+	var $table = 'orders';
 	var $column_order = array(null,'product_name');
 	var $column_search = array('product_name');
 	var $order = array('order_id' => 'desc');

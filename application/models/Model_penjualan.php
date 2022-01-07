@@ -3,10 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_penjualan extends CI_Model {
 	
-	var $table = 'order';
-	var $column_order = array(null,null,'product_name'); //file table
-	var $column_search = array('product_name'); //pencarian yg d ijinkan
-	var $order = array('order_id' => 'desc'); // default order
+	var $table = 'orders';
+	var $column_order = array(null,null,'product_name');
+	var $column_search = array('product_name');
+	var $order = array('order_id' => 'desc');
 	
 	function get_datatables() {
 		$this->_get_datatables_query();
@@ -23,14 +23,14 @@ class Model_penjualan extends CI_Model {
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {
 				if($i===0) {
-					$this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+					$this->db->group_start();
 					$this->db->like($item, $_POST['search']['value']);
 				}
 				else {
 					$this->db->or_like($item, $_POST['search']['value']);
 				}
 				if(count($this->column_search) - 1 == $i){
-					$this->db->group_end(); //close bracket
+					$this->db->group_end();
         }
 			}
 			$i++;
@@ -72,14 +72,14 @@ class Model_penjualan extends CI_Model {
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {
 				if($i===0) {
-					$this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+					$this->db->group_start();
 					$this->db->like($item, $_POST['search']['value']);
 				}
 				else {
 					$this->db->or_like($item, $_POST['search']['value']);
 				}
 				if(count($this->column_search) - 1 == $i){
-					$this->db->group_end(); //close bracket
+					$this->db->group_end();
         }
 			}
 			$i++;

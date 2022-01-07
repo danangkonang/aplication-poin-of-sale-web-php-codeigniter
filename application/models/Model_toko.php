@@ -8,8 +8,7 @@ class Model_toko extends CI_Model {
 	
 	public function find_store() {
 		$this->db->select('*');
-		// $this->db->limit(1);
-		return $this->db->get('store')->row();
+		return $this->db->get('stores')->row();
 	}
 	
 	public function update_data_toko($data,$id) {

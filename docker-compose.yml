@@ -14,6 +14,8 @@ services:
       - MYSQL_PASSWORD=danang
       - MYSQL_DATABASE=poin-of-sale
     container_name: mysql-db
+    volumes: 
+      - ./data-mysql:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.7
     depends_on:

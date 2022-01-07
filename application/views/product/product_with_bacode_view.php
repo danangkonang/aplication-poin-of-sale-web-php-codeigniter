@@ -8,6 +8,7 @@
     <meta name="keywords" content="camera based barcode reading">
     <title>Dynamsoft Barcode Reader Sample - Hello World (Decoding via Camera)</title>
     <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@8.8.3/dist/dbr.js"></script>
+    <script type="text/javascript" src="<?= base_url() ?>assets/js/instascan.min.js"></script>
 </head>
 
 <body>
