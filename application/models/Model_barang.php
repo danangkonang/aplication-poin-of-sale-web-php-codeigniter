@@ -19,6 +19,7 @@ class Model_barang extends CI_Model {
 	
 	private function _get_product_query() {
 		$this->db->from($this->table);
+		$this->db->join('kind_product', 'kind_product.kind_id = product.kind_id');
 		$i = 0;
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {
@@ -62,13 +63,13 @@ class Model_barang extends CI_Model {
 	}
 	
 	public function delete_by_id($id) {
-		$this->db->where('id_barang', $id);
+		$this->db->where('product_id', $id);
 		return $this->db->delete($this->table);
 	}
 	
 	public function get_by_id($id) {
 		$this->db->from($this->table);
-		$this->db->where('id_barang',$id);
+		$this->db->where('product_id',$id);
 		$query = $this->db->get();
 		return $query->row();
 	}

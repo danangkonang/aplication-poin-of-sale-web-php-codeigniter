@@ -17,7 +17,7 @@ class Users extends AbstractSeed
     {
       $data = array(
         array(
-            'user_name' => 'user admin',
+            'user_name' => 'resa',
             'email' => 'admin@email.com',
             'address' => 'jakarta',
             'is_active' => true,

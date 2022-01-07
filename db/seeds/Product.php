@@ -17,6 +17,8 @@ class Product extends AbstractSeed
     {
       $data = array(
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'telur ayam',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -28,6 +30,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'ayam',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -39,6 +43,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'indomi',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -50,6 +56,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'sampo',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -61,6 +69,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'kopi',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -72,6 +82,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'kecap manis',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -83,6 +95,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'pepsoden',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -94,6 +108,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'bawang merah',
           'purchase_price' => 5000,
           'selling_price' => 5700,
@@ -105,6 +121,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'sabun mandi',
           'purchase_price' => 2000,
           'selling_price' => 3200,
@@ -116,6 +134,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'minyak goreng',
           'purchase_price' => 6000,
           'selling_price' => 8000,
@@ -127,6 +147,8 @@ class Product extends AbstractSeed
           'is_delete' => false,
         ),
         array(
+          'barcode' => '123',
+          'kind_id' => '1',
           'product_name' => 'gula pasir',
           'purchase_price' => 3000,
           'selling_price' => 5000,

@@ -19,7 +19,9 @@ final class Product extends AbstractMigration
     public function change(): void
     {
       $product = $this->table('product', array('id' => 'product_id'));
-      $product->addColumn('product_name', 'string', ['limit' => 225])
+      $product->addColumn('barcode', 'string')
+            ->addColumn('kind_id', 'string')
+            ->addColumn('product_name', 'string', ['limit' => 225])
             ->addColumn('purchase_price', 'float')
             ->addColumn('selling_price', 'float')
             ->addColumn('unit', 'string', ['limit' => 225])

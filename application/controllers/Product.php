@@ -13,6 +13,7 @@ class Product extends CI_Controller {
   // fix
 	public function data_barang(){
 		$this->load->view('product/product_view');
+		// $this->load->view('product/product_with_bacode_view');
 	}
 
   // fix
@@ -27,7 +28,8 @@ class Product extends CI_Controller {
 			$n++;
 			$row = [];
 			$row[] = $n;
-      // $row[] = $barang->product_image;
+      $row[] = $barang->barcode;
+			$row[] = $barang->kind_name;
 			$row[] = $barang->product_name;
 			$row[] = number_format($barang->purchase_price,0,".",".");
 			$row[] = number_format($barang->selling_price,0,".",".");
@@ -55,6 +57,8 @@ class Product extends CI_Controller {
 	function save_product(){
 		// $this->_validate();
     $data = [
+			'barcode' => $this->input->post('barcode'),
+			'kind_id' => $this->input->post('jenis'),
       'product_name' => $this->input->post('product_name'),
       'purchase_price' => $this->input->post('purchase_price'),
       'selling_price' => $this->input->post('selling_price'),

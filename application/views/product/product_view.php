@@ -146,11 +146,17 @@
           <!-- // for develop -->
           <button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>
 
+          <!-- <div id="div-video-container">
+          
+            <video class="dbrScanner-video" playsinline="true" style="width:50%;height:50%;position:absolute;left:0;top:0;"></video>
+          </div> -->
+
             <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
               <thead>
                 <tr>
                   <th>no</th>
-                  <!-- <th>Gambar</th> -->
+                  <th>Barcode</th>
+                  <th>Jenis</th>
                   <th>Nama</th>
                   <th>H beli</th>
                   <th>H jual</th>
@@ -164,6 +170,7 @@
               <tbody>
               </tbody>
             </table>
+
         </div>
         <!-- /.container-fluid -->
 
@@ -197,13 +204,42 @@
   <!-- <script src="<-?= base_url() ?>aassets/demo/datatables-demo.js"></script> -->
   
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@8.6.1/dist/dbr.js"></script> -->
   <!-- <script src="<-?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> -->
   <script>
     var table;
     $(document).ready(function(){
       find_all_product();
       // add_product();
+      // barcode();
     });
+
+    // function barcode() {
+    //   Dynamsoft.DBR.BarcodeReader.productKeys = "t0068NQAAAC......"
+    //   let scanner = null;
+    //   (async()=>{
+    //       scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
+    //       // var allCameras = await scanner.getAllCameras();
+    //       // await scanner.setCurrentCamera(allCameras[0].deviceId);
+    //       // await scanner.setResolution(1280, 720);
+    //       // await scanner.setUIElement(document.getElementById('div-video-container'));
+    //       // await scanner.setResolution(720, 720);
+    //       scanner.onFrameRead = results => {
+    //         if (results.length > 0) {
+    //           console.log(results);
+    //         }
+    //       };
+    //       scanner.onUnduplicatedRead = (txt, result) => {};
+    //       // await scanner.setResolution(720, 720);
+    //       await scanner.show();
+    //   })();
+    // }
+
+    // async function closeCamera() {
+    //   scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
+    //   document.getElementById('div-video-container').appendChild(scanner.getUIElement());
+    //   document.getElementsByClassName('dbrScanner-btn-close')[0].hidden = true; // Hide the close button
+    // }
 
     function find_all_product() {
       table = $('#tabelBarang').DataTable({
@@ -233,6 +269,13 @@
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
       $('#modal_form').modal('show'); 
+    }
+
+    function close_modal(){
+      save_method = 'add';
+      $('#form_product')[0].reset();
+      $('.modal-title').text('tambah produk');
+      $('#modal_form').modal('hide'); 
     }
     
     $(function(){
@@ -265,18 +308,16 @@
         data: $('#form_product').serialize(),
         dataType: "JSON",
         success: function(data) {
-          console.log(data);
-          // if(data.status) {
-          //   $('#modal_form').modal('hide');
-          //   reload_table();
-          // }
-          // else {
-          //   for (var i = 0; i < data.inputerror.length; i++) {
-          //     //$('[name="'+data.inputerror[i]+'"]').parent().parent().addClass('has-error');
-          //     $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
-          //     $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
-          //   }
-          // }
+          if(data.status) {
+            $('#modal_form').modal('hide');
+            reload_table();
+          }
+          else {
+            for (var i = 0; i < data.inputerror.length; i++) {
+              $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
+              $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
+            }
+          }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert('error');
@@ -321,13 +362,16 @@
     
     function edit_barang(id) {
       save_method = 'update';
-      $('#form')[0].reset();
+      // $('#modal_form')[0].reset();
+      $('#form_product')[0].reset();
       $.ajax({
         url : "<?php echo site_url('product/edit_barang')?>/" + id,
         type: "GET",
         dataType: "JSON",
-        success: function(data) {
-          $('[name="id"]').val(data.id_barang);
+        success: function(data) { 
+          $('[name="id"]').val(data.product_id);
+          $('[name="barcode"]').val(data.barcode);
+          $('[name="jenis"]').val(data.kind_id);
           $('[name="setatus_barang"]').val(data.setatus_barang);
           $('[name="product_name"]').val(data.product_name);
           $('[name="purchase_price"]').val(data.purchase_price);
@@ -367,6 +411,21 @@
           <form id="form_product">
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
+
+                  <div class="form-group">
+                    <label for="barcode" class="col-form-label">Barcode</label>
+                    <input type="number" class="form-control" name="barcode" >
+                    <div class="invalid-feedback"></div>
+                  </div>
+
+                  <div class="form-group mt-2">
+                    <label for="jenis">Jenis</label>
+                    <select class="form-control " name="jenis" >
+                      <option value="2">Makanan</option>
+                      <option value="1">Minuman</option>
+                      <option value="1">peralatan kecantikan</option>
+                    </select>
+                  </div>
 
                   <div class="form-group mt-2">
                     <label for="setatus_barang">setatus barang</label>
@@ -467,103 +526,7 @@
               </div>
             </div>
           </form>
-          <!-- <form id="form" class="form-horizontal">
-            <input type="hidden" value="" name="id"/> 
-            <div class="form-body">
-              <div class="form-group mt-2">
-                <label for="setatus_barang">setatus barang</label>
-                <select class="form-control " name="setatus_barang" >
-                  <option value="1">jual</option>
-                  <option value="0">gudang</option>
-                </select>
-              </div>
-                    
-              <div class="form-group">
-                <label for="product_name" class="col-form-label">nama barang</label>
-                <input type="text" class="form-control " name="product_name" >
-                <div class="invalid-feedback"></div>
-              </div>
-                    
-              <div class="form-group">
-                <label for="purchase_price" class="col-form-label">harga beli</label>
-                <input type="number" class="form-control" name="purchase_price" >
-                <div class="invalid-feedback"></div>
-              </div>
-                    
-              <div class="form-group">
-                <label for="selling_price" class="col-form-label">harga jual</label>
-                <input type="number" class="form-control " name="selling_price"  >
-                <div class="invalid-feedback"></div>
-              </div>
-                    
-              <div class="form-group">
-                <label for="product_qty" class="col-form-label">product_qty</label>
-                <input type="number" class="form-control " name="product_qty" >
-                <div class="invalid-feedback"></div>
-              </div>
-
-              <div class="form-group">
-                <label for="unit">unit</label>
-                <select class="form-control " name="unit" >
-                  <option value=""></option>
-                  <option value="pcs">pcs</option>
-                  <option value="botol">botol</option>
-                  <option value="liter">liter</option>
-                  <option value="kg">kg</option>
-                  <option value="kardus">kardus</option>
-                  <option value="saset">saset</option>
-                </select>
-                <div class="invalid-feedback"></div>
-              </div>
-                    
-              <p>
-                <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">promo</button>
-              </p>
-
-              <div class="collapse" id="collapseExample">
-                <div class="card card-body">
-                  <div class="form-row mb-4">
-                    <div class="col">
-                      <label for="mulai_promo">awal promo</label>
-                      <input type="text" class="form-control" name="mulai_promo" data-toggle="mulai_promo" placeholder="tgl mulai">
-                    </div>
-                    <div class="col">
-                      <label for="ahir_promo">ahir promo</label>
-                      <input type="text" class="form-control" name="ahir_promo"  id="ahir_promo" data-toggle="ahir_promo" placeholder="tgl ahir">
-                    </div>
-                  </div>
-                            
-                  <div class="form-row mb-4">
-                    <div class="col">
-                      <label for="jenis_promo">jenis promo</label>
-                      <select class="form-control " name="jenis_promo" id="jenis_promo" >
-                        <option value="diskon">diskon</option>
-                        <option value="minimal">minimal</option>
-                      </select>
-                    </div>
-                    <div class="col">
-                      <label for="potongan">potongan</label>
-                      <input type="number" class="form-control reset" name="potongan"  id="potongan" data-toggle="min" placeholder="(%)">
-                    </div>
-                  </div>
-                          
-                  <div class="form-group d-none reset" id="harga_ahir">
-                    <label for="diskon">harga ahir</label>
-                    <input type="number" name="harga_ahir" id="diskon" class="form-control" placeholder="harga ahir">
-                  </div>
-                          
-                  <div class="form-group mt-2">
-                    <label for="setatus_promo">setatus promo</label>
-                    <select class="form-control " name="setatus_promo" >
-                      <option value="0">habis</option>
-                      <option value="1">aktif</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-        
-            </div>
-          </form> -->
+          
         </div>
         <div class="modal-footer">
           <button type="button" onClick="save_product()" class="btn btn-primary">Simpan</button>

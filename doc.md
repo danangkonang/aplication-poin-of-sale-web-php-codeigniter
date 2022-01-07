@@ -20,4 +20,6 @@ vendor/bin/phinx seed:create Product
 ## run seeder
 ```
 vendor/bin/phinx seed:run
+
+vendor/bin/phinx seed:run -e development -s KindProduct
 ```
