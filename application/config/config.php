@@ -1,6 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+include_once FCPATH . '/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
+$dotenv->load();
 /*
 |--------------------------------------------------------------------------
 | Base Site URL

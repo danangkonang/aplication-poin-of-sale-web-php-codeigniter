@@ -3,10 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_penjualan extends CI_Model {
 	
-	var $table = 'orders';
-	var $column_order = array(null,null,'product_name');
+	var $table = 'transactions';
+	var $column_transaction = array(null,null,'product_name');
 	var $column_search = array('product_name');
-	var $order = array('order_id' => 'desc');
+	var $transaction = array('transaction_id' => 'desc');
 	
 	function get_datatables() {
 		$this->_get_datatables_query();

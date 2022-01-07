@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Model_barang extends CI_Model {
+class Model_product extends CI_Model {
 	
 	var $table = 'products';
 	var $column_order = array(null, null, 'purchase_price');
@@ -19,7 +19,7 @@ class Model_barang extends CI_Model {
 	
 	private function _get_product_query() {
 		$this->db->from($this->table);
-		$this->db->join('kind_product', 'kind_product.kind_id = product.kind_id');
+		$this->db->join('kind_products', 'kind_products.kind_id = products.kind_id');
 		$i = 0;
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {
@@ -83,7 +83,7 @@ class Model_barang extends CI_Model {
 		$this->db->select('*');
 		$this->db->like('product_name', $key);
 		$this->db->or_like('product_id', $key);
-		$query = $this->db->get('product');
+		$query = $this->db->get($this->table);
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $data) {
 				$hasil[] = $data;
@@ -99,13 +99,13 @@ class Model_barang extends CI_Model {
 	function update_product_qty($id, $qty) {
 		$this->db->set('product_qty', $qty);
 		$this->db->where('product_id', $id);
-		return $this->db->update('product');
+		return $this->db->update($this->table);
 	}
 	
 	function get_product_qty($id) {
 		$this->db->select('product_qty');
 		$this->db->where('product_id', $id);
-		return $this->db->get('product')->row();
+		return $this->db->get($this->table)->row();
 	}
 	
 }

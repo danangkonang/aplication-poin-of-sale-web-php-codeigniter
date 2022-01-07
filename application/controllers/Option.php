@@ -326,15 +326,9 @@ class Option extends CI_Controller {
 		echo json_encode($output);
 	}
 	
-  
-	
-	
-	
 	public function laba(){
 		$this->load->view('kasir/laba_view');
 	}
-	
-	
 	
 	public function cari_diagram(){
 		$bulan = $this->input->post('bulan')+1;
@@ -360,7 +354,5 @@ class Option extends CI_Controller {
 	public function pengunjung(){
 		$this->load->view('admin/pengunjung_view');
 	}
-
-	
 	
 }

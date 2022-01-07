@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,64 +17,53 @@
 </head>
 
 <body id="page-top">
-
   <div id="wrapper">
 
   <?php $this->load->view('component/sidebar')?>
     
     <div id="content-wrapper" class="d-flex flex-column">
-
       <div id="content">
 
-      <?php $this->load->view('component/header')?>
-        
-        <div class="container-fluid">
-            
-            <div class="row h3">
-                <div class="col-8">
-                    
-                </div>
-                <div class="col-4">
-                    <a href="javascript:void(0)" onClick="edit_toko()"><i class="far fa-2x fa-edit"></i></a>
-                </div>
-                
-                <div class="col-5">
-                    nama
-                </div>
-                <div class="col-7" id="store_name">
-                    nama
-                </div>
-                
-                <div class="col-5">
-                    alamat
-                </div>
-                <div class="col-7" id="store_address">
-                    alamat
-                </div>
-                
-                <div class="col-5">
-                    telp
-                </div>
-                <div class="col-7" id="store_phone">
-                    phone
-                </div>
-                
-                <div class="col-5">
-                    moto
-                </div>
-                <div class="col-7" id="store_description">
-                    moto
-                </div>
-                
-            </div>
-        </div>
+        <?php $this->load->view('component/header')?>
 
+        <div class="container-fluid">
+          <div class="row h3">
+            <div class="col-8">
+            </div>
+            <div class="col-4">
+                <a href="javascript:void(0)" onClick="edit_toko()"><i class="far fa-2x fa-edit"></i></a>
+            </div>
+            <div class="col-5">
+                nama
+            </div>
+            <div class="col-7" id="store_name">
+                nama
+            </div>
+            <div class="col-5">
+                alamat
+            </div>
+            <div class="col-7" id="store_address">
+                alamat
+            </div>
+            <div class="col-5">
+                telp
+            </div>
+            <div class="col-7" id="store_phone">
+                phone
+            </div>
+            <div class="col-5">
+                moto
+            </div>
+            <div class="col-7" id="store_description">
+                moto
+            </div>
+          </div>
+        </div>
       </div>
       
       <?php $this->load->view('component/footer')?>
 
     </div>
-
   </div>
   
   <a class="scroll-to-top rounded" href="#page-top">
@@ -101,7 +89,6 @@
           $('[name="store_phone"]').val(data.store_phone);
           $('[name="store_description"]').val(data.store_description);
           $('#modal_store').modal('show');
-          //alert(data.store_name);
         },
         error: function (jqXHR, textStatus, errorThrown){
           alert('Jaringan eror');
@@ -116,10 +103,10 @@
         data: $('#form').serialize(),
         dataType: "JSON",
         success: function(data) {
-          $("#store_name").html(data.store_name);
-          $("#store_address").html(data.store_address);
-          $("#store_phone").html(data.store_phone);
-          $("#store_description").html(data.store_description);
+          $("#store_name").html(data.merchant_name);
+          $("#store_address").html(data.merchant_address);
+          $("#store_phone").html(data.merchant_phone);
+          $("#store_description").html(data.merchant_description);
           $('#modal_store').modal('hide'); 
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -134,12 +121,11 @@
         type: "GET",
         dataType: "JSON",
         success: function(data) {
-          $("#store_name").html(data.store_name);
-          $("#store_address").html(data.store_address);
-          $("#store_phone").html(data.store_phone);
-          $("#store_description").html(data.store_description);
+          $("#store_name").html(data.merchant_name);
+          $("#store_address").html(data.merchant_address);
+          $("#store_phone").html(data.merchant_phone);
+          $("#store_description").html(data.merchant_description);
           $('#modal_store').modal('hide');
-          //alert(data.store_name);
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert('Jaringan eror');
