@@ -70,27 +70,6 @@
 
 <script>
   let activeSession = "<?= $this->session->userdata('active_class') ?>";
-  console.log(activeSession);
   let element = document.getElementById(activeSession);
   element.classList.add("active");
-  // switch activeSession {
-  // case "kasir":
-  //   element.classList.add("active");
-  //   break;
-  // case "kasir":
-  //   element.classList.add("active");
-  //   break;
-  // case "kasir":
-  //   element.classList.add("active");
-  //   break;
-  // case "kasir":
-  //   element.classList.add("active");
-  //   break;
-  // case "kasir":
-  //   element.classList.add("active");
-  //   break;
-  // case "kasir":
-  //   element.classList.add("active");
-  //   break;
-  
 </script>
