@@ -10,10 +10,20 @@ class Report extends CI_Controller {
 	}
 
   public function view_report_chart(){
+		$data_session = [
+			'title' => 'Laporan Chart',
+			'active_class' => 'laporan-chart',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('report/chart_report_view');
 	}
 
   public function view_report_table(){
+		$data_session = [
+			'title' => 'Laporan table',
+			'active_class' => 'laporan-table',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('report/table_report_view');
 	}
 
@@ -25,7 +35,7 @@ class Report extends CI_Controller {
 		$this->db->where('created_at <=', $max);
 		$this->db->select_sum('price');
 		$this->db->group_by('created_at');
-		$query = $this->db->get('order');
+		$query = $this->db->get('transactions');
 		$data=[];
 		foreach($query->result() as $row){
 			$data[]=$row;
@@ -35,7 +45,7 @@ class Report extends CI_Controller {
 
   public function get_data_laba(){
 		$this->load->model('model_report');
-		$list = $this->model_laba->get_data_laba();
+		$list = $this->model_report->get_data_laba();
 		$data = [];
 		$no = $_POST['start'];
 		$n=0;
@@ -53,8 +63,8 @@ class Report extends CI_Controller {
 
 		$output = [
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->model_laba->count_all(),
-			"recordsFiltered" => $this->model_laba->count_filtered(),
+			"recordsTotal" => $this->model_report->count_all(),
+			"recordsFiltered" => $this->model_report->count_filtered(),
 			"data" => $data,
 		];
 		echo json_encode($output);

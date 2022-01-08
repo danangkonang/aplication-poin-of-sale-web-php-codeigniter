@@ -22,37 +22,37 @@
       <div id="content">
         <?php $this->load->view('component/header')?>
         <div class="container-fluid">
-          <div class="row m-3">
-            <div class="col-5 p-2">
+          <div class="row m-5">
+            <div class="col-10 p-2">
               <img class="img-profile rounded-circle" src="<?= site_url() ?>assets/images/p.jpeg">
             </div>
-            <div class="col-7 p-2">
+            <div class="col-2 p-2">
               <a href="javascript:void(0)" onClick="edit_profil()"><i class="far fa-2x fa-edit"></i></a>
             </div>
             
             <div class="col-5 p-2 font-weight-bold text-dark">
-              nama
+              Nama
             </div>
             <div class="col-7 p-2" id="nama_toko">
               : <?= $akun['user_name'] ?>
             </div>
             
             <div class="col-5 p-2 font-weight-bold text-dark">
-              email
+              Email
             </div>
             <div class="col-7 p-2" id="alamat_toko">
               : <?= $akun['email'] ?>
             </div>
             
             <div class="col-5 p-2 font-weight-bold text-dark">
-              no telepoh
+              Telephon
             </div>
             <div class="col-7 p-2" id="telephon_toko">
               : <?= $akun['telephone'] ?>
             </div>
             
             <div class="col-5 p-2 font-weight-bold text-dark">
-              jenis kelamin
+              Jenis Kelamin
             </div>
             <div class="col-7 p-2" id="moto_toko">
               : <?= $akun['gender'] ?>
@@ -93,7 +93,7 @@
 
   <!-- Modal -->
   <div class="modal fade" id="modalProfil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-sm">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				
 			  <div class="modal-header">
@@ -106,19 +106,19 @@
             <div class="form-group">
               <label for="nama" class="col-form-label">Nama</label>
               <input type="text" class="form-control " name="nama" >
-                <div class="invalid-feedback"></div>
+              <div class="invalid-feedback"></div>
             </div>
             
             <div class="form-group">
               <label for="email" class="col-form-label">Email</label>
               <input type="text" class="form-control " name="email" >
-                <div class="invalid-feedback"></div>
+              <div class="invalid-feedback"></div>
             </div>
             
             <div class="form-group">
               <label for="telephon" class="col-form-label">Telephon</label>
               <input type="number" class="form-control " name="telephon" >
-                <div class="invalid-feedback"></div>
+              <div class="invalid-feedback"></div>
             </div>
             
             <div class="form-group">
@@ -132,7 +132,7 @@
             <div class="form-group">
               <label for="foto" class="col-form-label">foto</label>
               <input type="file" class="form-control-file " name="foto" >
-                <div class="invalid-feedback"></div>
+              <div class="invalid-feedback"></div>
             </div>
           </form>
 				
@@ -145,7 +145,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- akhir kode modal dialog -->
 </body>
 
 </html>

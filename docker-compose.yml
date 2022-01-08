@@ -15,8 +15,8 @@ services:
       - MYSQL_DATABASE=kasir
       
     container_name: mysql-db
-    volumes:
-      ./ginmysql:/var/lib/mysql
+    volumes: 
+       - ./data-mysql:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.7
     depends_on:

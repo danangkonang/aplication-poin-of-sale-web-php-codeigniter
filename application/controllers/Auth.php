@@ -12,6 +12,11 @@ class Auth extends CI_Controller {
 		if(!$id){
 			$this->empty_sesion();
     }else{
+			$data_session = [
+        'title' => 'Kasir',
+				'active_class' => 'kasir',
+      ];
+			$this->session->set_userdata($data_session);
       $this->load->view('kasir/kasir_view');
     }
 	}

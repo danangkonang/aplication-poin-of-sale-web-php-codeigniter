@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
 
-final class KindProduct extends AbstractMigration
+final class Unit extends AbstractMigration
 {
   /**
    * Change Method.
@@ -18,8 +18,8 @@ final class KindProduct extends AbstractMigration
    */
   public function change(): void
   {
-    $product = $this->table('kind_products', array('id' => 'kind_id'));
-    $product->addColumn('kind_name', 'string', ['limit' => 225])
+    $units = $this->table('units', array('id' => 'unit_id'));
+    $units->addColumn('unit', 'string', ['limit' => 225])
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->create();

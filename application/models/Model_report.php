@@ -3,10 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Model_report extends CI_Model {
 	
-	var $table = 'order';
+	var $table = 'transactions';
 	var $column_order = array(null,'product_name');
 	var $column_search = array('product_name');
-	var $order = array('order_id' => 'desc');
+	var $order = array('transaction_id' => 'desc');
 	
 	function get_data_laba() {
 		$this->_get_data_laba_query();
@@ -19,7 +19,7 @@ class Model_report extends CI_Model {
 	
 	private function _get_data_laba_query(){
 		$this->db->from($this->table);
-		$this->db->join('product', 'product.product_id = order.product_id');
+		$this->db->join('products', 'products.product_id = transactions.product_id');
 		$i = 0;
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {

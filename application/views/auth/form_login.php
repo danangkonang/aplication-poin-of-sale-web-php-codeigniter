@@ -71,18 +71,15 @@
   <script type="text/javascript">
 
     $("#btn-login").click(function(){
-      // console.log("oke");
       let email = $("#email").val();
       let password = $("#password").val();
 
       $.ajax({
         url : 'http://localhost:8080/login/loginv2',
         type: "POST",
-        // data: $('#form').serialize(),
         data:{email:email, password:password},
         dataType: "JSON",
         success: function(response) {
-          // console.log(response);
           if (response.status === 200){
             window.location.replace("http://localhost:8080/");
           } else {

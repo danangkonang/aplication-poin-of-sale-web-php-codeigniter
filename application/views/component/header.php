@@ -4,7 +4,7 @@
     <i class="fa fa-bars"></i>
   </button>
 
-  <div class="h3 ml-auto">Pendapatan</div>
+  <div class="h3 ml-auto"><?= $this->session->userdata('title') ?></div>
   
   <ul class="navbar-nav ml-auto">
 
@@ -21,7 +21,7 @@
           Profile
         </a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="<?= base_url() ?>option/logout">
+        <a class="dropdown-item" href="<?= base_url() ?>auth/logout">
           <i class="fas fa-power-off fa-sm fa-fw mr-2 text-gray-400"></i>
           Logout
         </a>

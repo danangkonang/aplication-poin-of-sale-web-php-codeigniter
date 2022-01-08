@@ -20,7 +20,7 @@ return
       'name' => $_ENV['DB_NAME'],
       'user' => $_ENV['DB_USER'],
       'pass' => $_ENV['DB_PASSWORD'],
-      'port' => '3306',
+      'port' => $_ENV['BD_PORT'],
       'charset' => 'utf8',
     ],
     'development' => [
@@ -29,7 +29,7 @@ return
       'name' => $_ENV['DB_NAME'],
       'user' => $_ENV['DB_USER'],
       'pass' => $_ENV['DB_PASSWORD'],
-      'port' => '3306',
+      'port' => $_ENV['BD_PORT'],
       'charset' => 'utf8',
     ],
     'testing' => [
@@ -38,7 +38,7 @@ return
       'name' => $_ENV['DB_NAME'],
       'user' => $_ENV['DB_USER'],
       'pass' => $_ENV['DB_PASSWORD'],
-      'port' => '3306',
+      'port' => $_ENV['BD_PORT'],
       'charset' => 'utf8',
     ]
   ],

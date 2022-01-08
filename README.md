@@ -7,9 +7,9 @@ Aplikasi penjualan berbasis web mempermudah pengusaha memantau penjualan harian/
 ## Clonning repository
 
 ```bash
-git clone https://github.com/danangkonang/aplication-poin-of-sale-web-php-codeigniter.git pos
+git clone https://github.com/danangkonang/aplication-poin-of-sale-web-php-codeigniter.git aplikasi-kasir
 
-cd pos
+cd aplikasi-kasir
 cp .env.example .env
 ```
 
@@ -30,11 +30,11 @@ php composer.phar install
 Bisa juga menggunakan xampp, lamp, dll. sesuaikan config .env
 
 ```
-docker-compose up --build -d
+#start database
+docker-compose up -d
 
+#stop database
 docker-compose down
-
-
 ```
 
 ## Migrasi database

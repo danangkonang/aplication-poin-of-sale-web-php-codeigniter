@@ -16,9 +16,10 @@ die;
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/sb-admin-2.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
-  
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
+
+  
   <title>kasir</title>
   <style>
     @media print{
@@ -37,31 +38,35 @@ die;
 
 <body id="page-top">
   <div id="wrapper">
+
     <?php $this->load->view('component/sidebar')?>
+
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
+
         <?php $this->load->view('component/header')?>
+        
         <div class="container-fluid">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-12 col-md-6 ">
                 <form class="form-horizontal" id="form_order" role="form">
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Id / Nama Barang</label>
+                    <label class="col-md-3 col-form-label">Cari</label>
                     <div class="col-md-9">
-                      <input class="form-control reset" id="product_name"  name="product_name" type="text" placeholder="Cari id / nama" >
+                      <input class="form-control reset" id="search"  name="search" type="text" placeholder="Barcode atau Nama" >
+                    </div>
+                  </div>
+                  <input type="hidden" id="product_id" name="product_id">
+                  <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Nama</label>
+                    <div class="col-md-9">
+                      <input class="form-control reset" type="text" id="product_name" name="product_name" readonly="" placeholder="Nama" >
                     </div>
                   </div>
                   
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label"> Nama Barang</label>
-                    <div class="col-md-9">
-                      <input class="form-control reset" type="text" id="product_id" name="product_id" readonly="" placeholder="Id Barang" >
-                    </div>
-                  </div>
-                  
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label"> harga</label>
+                    <label class="col-md-3 col-form-label">Harga</label>
                     <div class="col-md-9">
                       <input class="form-control reset" type="text" name="selling_price" id="selling_price"  readonly="" placeholder="0"value="">
                     </div>
@@ -72,14 +77,14 @@ die;
                   <input type="hidden" class="reset" id="harga_potongan" name="harga_potongan">
                       
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label">qty</label>
+                    <label class="col-md-3 col-form-label">Qty</label>
                     <div class="col-md-9">
                       <input class="form-control reset" type="number" readonly="readonly" onkeyup="subTotal(this.value)" id="product_qty" min="0" name="product_qty" placeholder="qty">
                     </div>
                   </div>
                   
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label">sub total</label>
+                    <label class="col-md-3 col-form-label">Sub total</label>
                     <div class="col-md-9">
                       <input class="form-control reset" type="text" name="sub_total" id="sub_total"  readonly="" placeholder="0" value="">
                     </div>
@@ -91,21 +96,21 @@ die;
               <div class="col-sm-12 col-md-6 ">
 
                 <div class="form-group row">
-                  <label class="col-md-3 col-form-label">total</label>
+                  <label class="col-md-3 col-form-label">Total</label>
                   <div class="col-md-9">
                     <input class="form-control form-control-lg res" type="text" readonly="" name="total" id="total" value="<?= number_format( $this->cart->total(), 0 , '' , '.' ); ?>" >
                   </div>
                 </div>
     
                 <div class="form-group row">
-                  <label class="col-md-3 col-form-label">bayar</label>
+                  <label class="col-md-3 col-form-label">Bayar</label>
                     <div class="col-md-9">
                       <input class="form-control form-control-lg res" type="number" id="bayar" name="bayar" onkeyup="showKembali(this.value)"  placeholder="0">
                     </div>
                 </div>
                 
                 <div class="form-group row">
-                  <label class="col-md-3 col-form-label">kembali</label>
+                  <label class="col-md-3 col-form-label">Kembali</label>
                     <div class="col-md-9">
                       <input class="form-control form-control-lg res" type="text" id="kembali" readonly="" name="kembali"  >
                     </div>
@@ -120,9 +125,6 @@ die;
               <tr>
                 <th>no</th>
                 <th>Nama</th>
-                <!-- <th>jns</th>
-                <th>ptg</th>
-                <th>hrg ptg</th> -->
                 <th>Harga</th>
                 <th>Qty</th>
                 <th>Sub total</th>
@@ -149,6 +151,7 @@ die;
   <script src="<?= base_url() ?>assets/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
   <script src="<?= base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+  
   <script>
     let table;
     $(document).ready(function(){
@@ -165,10 +168,9 @@ die;
         "ajax": {
           "url": "http://localhost:8080/option/list_shoping_cart",
           "type": "POST"
-          },
+        },
         "columnDefs": [
           {
-            // "targets": [ 2,3,4,5,6,7,8 ],
             "orderable": false,
           },
         ],
@@ -176,12 +178,12 @@ die;
     }
 
     function listening_serch_product(params) {
-      $("#product_name").autocomplete({
+      $("#search").autocomplete({
         minLength: 1,
         delay : 400,
         source: function(request, response) { 
           jQuery.ajax({
-            url: "http://localhost:8080/option/cari_barang",
+            url: "http://localhost:8080/option/search_product",
             data: {
               keyword : request.term
             },
@@ -192,12 +194,10 @@ die;
           })
         },
         select:  function(e, ui){
-          $("#product_name").val(ui.item.product_name);
+          $("#search").val('');
           $("#product_id").val(ui.item.product_id);
+          $("#product_name").val(ui.item.product_name);
           $("#selling_price").val(convertToRupiah(ui.item.selling_price));
-          // $("#jenis_promo").val(ui.item.jenis_promo);
-          // $("#potongan").val(ui.item.potongan);
-          // $("#harga_potongan").val(ui.item.harga_ahir);
           $('#product_qty').removeAttr("readonly");
           $('#product_qty').focus();
           return false;
@@ -205,7 +205,7 @@ die;
       })
       .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
         return $( "<li>" )
-          .append( "<a style='display: flex;'><div style='width: 30px;'>" + item.product_id + "</div> " + item.product_name + "</a>" )
+          .append( "<a style='display: flex;'><div style='width: 100px;'>" + item.barcode + "</div> " + item.product_name + "</a>" )
           .appendTo( ul );
       };
     }
@@ -240,6 +240,7 @@ die;
         data: $('#form_order').serialize(),
         dataType: "JSON",
         success: function(data){
+          console.log(data);
           reload_table();
           $('#tambah').attr("disabled","disabled");
           $('#product_qty').attr("readonly","readonly");
@@ -319,7 +320,6 @@ die;
         },
         method: "POST",
         success: function(data){
-          // console.log(data);
           $('#modal_struck').modal('show');
           $('#content_struck').html(data);
         }
@@ -327,17 +327,20 @@ die;
     }
 
     function finish_transaction() {
-      var bayar=$('#bayar').val();
-        var kembali=$('#kembali').val();
-        $.ajax({
-          url:"http://localhost:8080/option/cetak_nota/",
-          data:{bayar:bayar,kembali:kembali},
-          method:"POST",
-          success:function(data){
-            $('#modal_struck').modal('show');
-            $('#content_struck').html(data);
-          }
-        });
+      let bayar = $('#bayar').val();
+      let kembali = $('#kembali').val();
+      $.ajax({
+        url:"http://localhost:8080/option/cetak_nota/",
+        data:{
+          bayar: bayar,
+          kembali: kembali
+        },
+        method:"POST",
+        success:function(data){
+          $('#modal_struck').modal('show');
+          $('#content_struck').html(data);
+        }
+      });
     }
 		
 		function save_cart_to_order() {
@@ -349,16 +352,11 @@ die;
         },
 				dataType:"json",
 				success:function(result){
-          console.log(result);
-					// if(result.status == true){
-            cetak_struk();
-						$('#modal_struck').modal('hide');
-						reload_table();
-						$('.res').val('');
-            $('#product_name').focus();
-					// }else{
-          //   alert('gagal melakukan transaksi')
-          // }
+          cetak_struk();
+          $('#modal_struck').modal('hide');
+          reload_table();
+          $('.res').val('');
+          $('#product_name').focus();
 				},
 				error: function(err){
 					alert('error transaksi')

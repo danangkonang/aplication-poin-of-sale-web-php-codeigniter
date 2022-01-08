@@ -1,11 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Model_barang extends CI_Model {
+class Model_product extends CI_Model {
 	
-	var $table = 'product';
+	var $table = 'products';
 	var $column_order = array(null, null, 'purchase_price');
-	var $column_search = array('product_name');
+	var $column_search = array('product_name', 'barcode');
 	var $order = array('product_id' => 'desc');
 	
 	function find_all_product() {
@@ -19,12 +19,12 @@ class Model_barang extends CI_Model {
 	
 	private function _get_product_query() {
 		$this->db->from($this->table);
-		$this->db->join('kind_product', 'kind_product.kind_id = product.kind_id');
+		$this->db->join('kind_products', 'kind_products.kind_id = products.kind_id');
 		$i = 0;
 		foreach ($this->column_search as $item) {
 			if($_POST['search']['value']) {
 				if($i===0) {
-					$this->db->group_start(); // open bracket. query Where with OR clause better with bracket. because maybe can combine with other WHERE with AND.
+					$this->db->group_start();
 					$this->db->like($item, $_POST['search']['value']);
 				}
 				else {
@@ -58,7 +58,7 @@ class Model_barang extends CI_Model {
 	}
 	
 	public function save_product($data) {
-		$this->db->insert('product', $data);
+		$this->db->insert($this->table, $data);
 		return $this->db->insert_id();
 	}
 	
@@ -82,8 +82,8 @@ class Model_barang extends CI_Model {
 	public function search_product($key) {
 		$this->db->select('*');
 		$this->db->like('product_name', $key);
-		$this->db->or_like('product_id', $key);
-		$query = $this->db->get('product');
+		$this->db->or_like('barcode', $key);
+		$query = $this->db->get($this->table);
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $data) {
 				$hasil[] = $data;
@@ -99,13 +99,13 @@ class Model_barang extends CI_Model {
 	function update_product_qty($id, $qty) {
 		$this->db->set('product_qty', $qty);
 		$this->db->where('product_id', $id);
-		return $this->db->update('product');
+		return $this->db->update($this->table);
 	}
 	
 	function get_product_qty($id) {
 		$this->db->select('product_qty');
 		$this->db->where('product_id', $id);
-		return $this->db->get('product')->row();
+		return $this->db->get($this->table)->row();
 	}
 	
 }
