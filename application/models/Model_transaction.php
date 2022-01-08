@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Model_penjualan extends CI_Model {
+class Model_transaction extends CI_Model {
 	
 	var $table = 'transactions';
 	var $column_transaction = array(null,null,'product_name');

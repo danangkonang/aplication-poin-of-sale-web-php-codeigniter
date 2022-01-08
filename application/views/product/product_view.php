@@ -145,7 +145,7 @@
           ?>
           <!-- // for develop -->
           <button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>
-
+          <video id="preview"></video>
           <!-- <div id="div-video-container">
           
             <video class="dbrScanner-video" playsinline="true" style="width:50%;height:50%;position:absolute;left:0;top:0;"></video>
@@ -206,48 +206,23 @@
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@8.6.1/dist/dbr.js"></script> -->
   <!-- <script src="<-?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> -->
+  <script type="text/javascript" src="<?= base_url() ?>assets/js/instascan.min.js"></script>
   <script>
     var table;
     $(document).ready(function(){
       find_all_product();
+      // showScanner();
       // add_product();
       // barcode();
     });
 
-    // function barcode() {
-    //   Dynamsoft.DBR.BarcodeReader.productKeys = "t0068NQAAAC......"
-    //   let scanner = null;
-    //   (async()=>{
-    //       scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
-    //       // var allCameras = await scanner.getAllCameras();
-    //       // await scanner.setCurrentCamera(allCameras[0].deviceId);
-    //       // await scanner.setResolution(1280, 720);
-    //       // await scanner.setUIElement(document.getElementById('div-video-container'));
-    //       // await scanner.setResolution(720, 720);
-    //       scanner.onFrameRead = results => {
-    //         if (results.length > 0) {
-    //           console.log(results);
-    //         }
-    //       };
-    //       scanner.onUnduplicatedRead = (txt, result) => {};
-    //       // await scanner.setResolution(720, 720);
-    //       await scanner.show();
-    //   })();
-    // }
-
-    // async function closeCamera() {
-    //   scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
-    //   document.getElementById('div-video-container').appendChild(scanner.getUIElement());
-    //   document.getElementsByClassName('dbrScanner-btn-close')[0].hidden = true; // Hide the close button
-    // }
-
     function find_all_product() {
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
-        {
-          "targets": [ 0,2,3,4,5],
-          "orderable": false,
-        },
+          {
+            "targets": [ 0,2,3,4,5],
+            "orderable": false,
+          },
         ],
         "order": [],
         "serverSide": true, 
@@ -268,7 +243,8 @@
       save_method = 'add';
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
-      $('#modal_form').modal('show'); 
+      $('#modal_form').modal('show');
+      showScanner();
     }
 
     function close_modal(){
@@ -362,7 +338,6 @@
     
     function edit_barang(id) {
       save_method = 'update';
-      // $('#modal_form')[0].reset();
       $('#form_product')[0].reset();
       $.ajax({
         url : "<?php echo site_url('product/edit_barang')?>/" + id,
@@ -396,10 +371,42 @@
       });
     }
 
+    async function showScanner() {
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      scanner.addListener('scan', function (content) {
+        console.log(content);
+      });
+      try {
+        let cameras = await Instascan.Camera.getCameras()
+        if (cameras.length > 0) {
+          await scanner.start(cameras[0]);
+        } else {
+          console.error('No cameras found.');
+        }
+        // .then(function (cameras) {
+        //   console.log(cameras[0]);
+        //   if (cameras.length > 0) {
+        //     await scanner.start(cameras[0]);
+        // })
+      } catch (err) {
+        console.error(err);
+      }
+      // Instascan.Camera.getCameras().then(function (cameras) {
+      //   console.log(cameras[0]);
+      //   if (cameras.length > 0) {
+      //     await scanner.start(cameras[0]);
+      //   } else {
+      //     console.error('No cameras found.');
+      //   }
+      // }).catch(function (e) {
+      //   console.error(e);
+      // });
+    }
+
   </script>
   
   <div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">tambah produk</h5>
@@ -411,6 +418,8 @@
           <form id="form_product">
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
+
+                  <video id="preview"></video>
 
                   <div class="form-group">
                     <label for="barcode" class="col-form-label">Barcode</label>

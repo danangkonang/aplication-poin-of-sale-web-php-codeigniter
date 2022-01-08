@@ -77,10 +77,10 @@
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script>
-    var url = "<?= site_url('store/simpan_data_toko') ?>";
+    var url = "<?= site_url('merchant/simpan_data_toko') ?>";
     function edit_toko() {
       $.ajax({
-        url : "<?= site_url('store/edit_data_toko') ?>",
+        url : "<?= site_url('merchant/edit_data_toko') ?>",
         type: "GET",
         dataType: "JSON",
         success: function(data){
@@ -117,7 +117,7 @@
 
     function find_my_shop() {
       $.ajax({
-        url : "<?= site_url('store/find_store') ?>",
+        url : "<?= site_url('merchant/find_merchant') ?>",
         type: "GET",
         dataType: "JSON",
         success: function(data) {

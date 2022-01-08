@@ -61,7 +61,7 @@
     <hr class="sidebar-divider"> -->
 
     <li class="nav-item">
-      <a class="nav-link" href="<?= site_url() ?>store/my_store">
+      <a class="nav-link" href="<?= site_url() ?>merchant/my_merchant">
       <i class="fas fa-store"></i>
       <span>Toko</span></a>
     </li>

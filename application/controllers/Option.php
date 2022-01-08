@@ -4,7 +4,7 @@ class Option extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('model_barang');
+		$this->load->model('model_product');
 		if(!$this->session->userdata('user_id')){
 			header('location:http://localhost:8080');
 		}
@@ -154,10 +154,10 @@ class Option extends CI_Controller {
 	
 
 	public function save_orders(){
-		$this->load->model('model_toko');
+		$this->load->model('model_merchant');
 		$bayar = $this->input->post('bayar');
 		$kembali = $this->input->post('kembali');
-		$toko = $this->model_toko->find_store();
+		$toko = $this->model_merchant->find_store();
     // echo json_encode($toko);
     // <p class="text-dark">'
     //   .$toko->store_name.'<br>'
@@ -298,8 +298,8 @@ class Option extends CI_Controller {
 	
   // fix
 	public function get_penjualan(){
-		$this->load->model('model_penjualan');
-		$list = $this->model_penjualan->get_datatables();
+		$this->load->model('model_transaction');
+		$list = $this->model_transaction->get_datatables();
 		$data = [];
 		$no = $_POST['start'];
 		$n=0;
@@ -319,8 +319,8 @@ class Option extends CI_Controller {
 
 		$output = [
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->model_penjualan->count_all(),
-			"recordsFiltered" => $this->model_penjualan->count_filtered(),
+			"recordsTotal" => $this->model_transaction->count_all(),
+			"recordsFiltered" => $this->model_transaction->count_filtered(),
 			"data" => $data,
 		];
 		echo json_encode($output);
