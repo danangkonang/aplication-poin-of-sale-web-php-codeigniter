@@ -12,8 +12,11 @@ services:
       - MYSQL_ROOT_PASSWORD=danang
       - MYSQL_USER=danang
       - MYSQL_PASSWORD=danang
-      - MYSQL_DATABASE=poin-of-sale
+      - MYSQL_DATABASE=kasir
+      
     container_name: mysql-db
+    volumes:
+      ./ginmysql:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:4.7
     depends_on:
