@@ -60,41 +60,13 @@ class Option extends CI_Controller {
 	
   // fix
 	public function add_keranjang(){
-		// $data = [
-		// 	'id' => $this->input->post('id'),
-		// 	'name' => $this->input->post('nama'),
-		// 	'jenis' => $this->input->post('jenis_promo'),
-		// 	'potongan' => $this->input->post('potongan'),
-		// 	'harga_potongan' => $this->input->post('harga_potongan'),
-		// 	'price' => str_replace('.', '', $this->input->post('harga')),
-		// 	'qty' => $this->input->post('qty')
-		// ];
     $data = [
       'id' => $this->input->post('product_id'),
       'name' => $this->input->post('product_name'),
-      // 'purchase_price' => $this->input->post('purchase_price'),
       'price' => str_replace(".", "" , $this->input->post('selling_price')),
       'qty' => $this->input->post('product_qty'),
     ];
-		// $res = $this->cart->insert($data);
 		echo json_encode(["status" => $this->cart->insert($data)]);
-    // if(!$res){
-    //   echo json_encode(
-    //     array(
-    //       "status" => 400,
-    //       "message" => "internal server error",
-    //       "data" => $res,
-    //     )
-    //   );
-    //   return;  
-    // }
-    // echo json_encode(
-    //   array(
-    //     "status" => 200,
-    //     "message" => "success login",
-    //     "data" => $data,
-    //   )
-    // );
 	}
 	
   // fix
@@ -105,31 +77,10 @@ class Option extends CI_Controller {
 			$row = [];
 			$row[] = $no;
 			$row[] = $items["name"];
-
-			// if($items["jenis"] == "minimal"){
-			// 	$row[] = "min";
-			// }
-      // else{
-			// 	$row[] = "dis";
-			// }
-
-			// $row[] = $items["potongan"];
-			// $row[] = $items["harga_potongan"];
 			$row[] = 'Rp. ' . number_format( $items['price'], 0 , '' , '.' ) . ',-';
 			$row[] = $items["qty"];
 
-			// if($items["jenis"] == 'minimal'){
-			// 	$induk = floor($items["qty"] / $items["potongan"]);
-			// 	$sisa = $items["qty"] % $items["potongan"];
-			// 	$sub = ($induk * $items["harga_potongan"]) + ($items['price'] * $sisa);
-			// 	$row[] = 'Rp. ' . number_format( $sub, 0 , '' , '.' ) . ',-';
-			// }
-      // else{
-			// 	$diskon = $items['qty'] * ($items['price'] - ($items['price'] * $items['potongan']/100));
-			// 	$row[] = 'Rp. ' . number_format( $diskon, 0 , '' , '.' ) . ',-';
-			// }
       $row[] = 'Rp. ' . number_format( $items['qty'] * $items['price'], 0 , '' , '.' ) . ',-';
-			//add html for action
 			$row[] = '<a href="javascript:void(0)"
                 style="color: red; text-decoration: none; padding: 5px;"
                 onclick="delete_cart('
@@ -158,15 +109,6 @@ class Option extends CI_Controller {
 		$bayar = $this->input->post('bayar');
 		$kembali = $this->input->post('kembali');
 		$toko = $this->model_merchant->find_store();
-    // echo json_encode($toko);
-    // <p class="text-dark">'
-    //   .$toko->store_name.'<br>'
-    //   .$toko->store_address.'<br>tlp '
-    //   .$toko->store_phone.'<br>no &nbsp; &nbsp; &nbsp; : '
-    //   .$this->session->userdata('user_id').'<br>kasir &nbsp; : '
-    //   .$this->session->userdata('user_name').'<br>tgl &nbsp; &nbsp; &nbsp; : '
-    // .date('Y-m-d  h:i:s').'<br>
-
 		$no = 1;
 		$output = '';
 
@@ -293,6 +235,11 @@ class Option extends CI_Controller {
 	}
 	
 	public function data_penjualan(){
+    $data_session = [
+			'title' => 'Penjualan',
+			'active_class' => 'penjualan',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('kasir/penjualan_view');
 	}
 	

@@ -11,6 +11,11 @@ class User extends CI_Controller {
 	}
 
   public function data_user(){
+		$data_session = [
+			'title' => 'User',
+			'active_class' => 'user',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('admin/user_data_view');
 	}
 

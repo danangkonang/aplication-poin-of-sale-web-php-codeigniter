@@ -4,7 +4,7 @@
     <i class="fa fa-bars"></i>
   </button>
 
-  <div class="h3 ml-auto">Pendapatan</div>
+  <div class="h3 ml-auto"><?= $this->session->userdata('title') ?></div>
   
   <ul class="navbar-nav ml-auto">
 

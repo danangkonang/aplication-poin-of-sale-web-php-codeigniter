@@ -5,7 +5,7 @@ class Model_product extends CI_Model {
 	
 	var $table = 'products';
 	var $column_order = array(null, null, 'purchase_price');
-	var $column_search = array('product_name');
+	var $column_search = array('product_name', 'barcode');
 	var $order = array('product_id' => 'desc');
 	
 	function find_all_product() {

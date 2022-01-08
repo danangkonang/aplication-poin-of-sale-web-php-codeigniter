@@ -16,15 +16,17 @@ class Product extends CI_Controller {
 
   // fix
 	public function data_barang(){
+		$data_session = [
+			'title' => 'Produk',
+			'active_class' => 'product',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('product/product_view');
-		// $this->load->view('product/product_with_bacode_view');
 	}
 
   // fix
 	public function find_all_product(){
 		$list = $this->model_product->find_all_product();
-    // var_dump($list);
-    // die;
 		$data = [];
 		$no = $_POST['start'];
 		$n=0;
@@ -59,7 +61,6 @@ class Product extends CI_Controller {
 
   // fix
 	function save_product(){
-		// $this->_validate();
     $data = [
 			'barcode' => $this->input->post('barcode'),
 			'kind_id' => $this->input->post('jenis'),

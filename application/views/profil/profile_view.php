@@ -145,7 +145,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- akhir kode modal dialog -->
 </body>
 
 </html>

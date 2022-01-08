@@ -10,10 +10,20 @@ class Report extends CI_Controller {
 	}
 
   public function view_report_chart(){
+		$data_session = [
+			'title' => 'Laporan Chart',
+			'active_class' => 'laporan-chart',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('report/chart_report_view');
 	}
 
   public function view_report_table(){
+		$data_session = [
+			'title' => 'Laporan table',
+			'active_class' => 'laporan-table',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('report/table_report_view');
 	}
 

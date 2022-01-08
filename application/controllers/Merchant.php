@@ -12,6 +12,11 @@ class Merchant extends CI_Controller {
 
   // fix
 	public function my_merchant(){
+		$data_session = [
+			'title' => 'TOko',
+			'active_class' => 'merchant',
+		];
+		$this->session->set_userdata($data_session);
 		$this->load->view('merchant/merchant_view');
 	}
 	

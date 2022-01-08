@@ -37,10 +37,14 @@ die;
 
 <body id="page-top">
   <div id="wrapper">
+
     <?php $this->load->view('component/sidebar')?>
+
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
+
         <?php $this->load->view('component/header')?>
+        
         <div class="container-fluid">
           <div class="col-sm-12">
             <div class="row">
@@ -120,9 +124,6 @@ die;
               <tr>
                 <th>no</th>
                 <th>Nama</th>
-                <!-- <th>jns</th>
-                <th>ptg</th>
-                <th>hrg ptg</th> -->
                 <th>Harga</th>
                 <th>Qty</th>
                 <th>Sub total</th>
@@ -165,10 +166,9 @@ die;
         "ajax": {
           "url": "http://localhost:8080/option/list_shoping_cart",
           "type": "POST"
-          },
+        },
         "columnDefs": [
           {
-            // "targets": [ 2,3,4,5,6,7,8 ],
             "orderable": false,
           },
         ],
@@ -195,9 +195,6 @@ die;
           $("#product_name").val(ui.item.product_name);
           $("#product_id").val(ui.item.product_id);
           $("#selling_price").val(convertToRupiah(ui.item.selling_price));
-          // $("#jenis_promo").val(ui.item.jenis_promo);
-          // $("#potongan").val(ui.item.potongan);
-          // $("#harga_potongan").val(ui.item.harga_ahir);
           $('#product_qty').removeAttr("readonly");
           $('#product_qty').focus();
           return false;
@@ -319,7 +316,6 @@ die;
         },
         method: "POST",
         success: function(data){
-          // console.log(data);
           $('#modal_struck').modal('show');
           $('#content_struck').html(data);
         }
@@ -327,17 +323,20 @@ die;
     }
 
     function finish_transaction() {
-      var bayar=$('#bayar').val();
-        var kembali=$('#kembali').val();
-        $.ajax({
-          url:"http://localhost:8080/option/cetak_nota/",
-          data:{bayar:bayar,kembali:kembali},
-          method:"POST",
-          success:function(data){
-            $('#modal_struck').modal('show');
-            $('#content_struck').html(data);
-          }
-        });
+      let bayar = $('#bayar').val();
+      let kembali = $('#kembali').val();
+      $.ajax({
+        url:"http://localhost:8080/option/cetak_nota/",
+        data:{
+          bayar: bayar,
+          kembali: kembali
+        },
+        method:"POST",
+        success:function(data){
+          $('#modal_struck').modal('show');
+          $('#content_struck').html(data);
+        }
+      });
     }
 		
 		function save_cart_to_order() {
@@ -349,16 +348,11 @@ die;
         },
 				dataType:"json",
 				success:function(result){
-          console.log(result);
-					// if(result.status == true){
-            cetak_struk();
-						$('#modal_struck').modal('hide');
-						reload_table();
-						$('.res').val('');
-            $('#product_name').focus();
-					// }else{
-          //   alert('gagal melakukan transaksi')
-          // }
+          cetak_struk();
+          $('#modal_struck').modal('hide');
+          reload_table();
+          $('.res').val('');
+          $('#product_name').focus();
 				},
 				error: function(err){
 					alert('error transaksi')

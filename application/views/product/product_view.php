@@ -15,127 +15,25 @@
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <title>kasir</title>
+  <style>
+    #preview{
+      height: auto;
+      width: 100%;
+      transform: scaleX(-1);
+    }
+  </style>
 </head>
 
 <body id="page-top">
 
   <div id="wrapper">
 
-    <!-- <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= site_url() ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-cash-register"></i>
-        </div>
-        <div class="sidebar-brand-text mx-3">
-          <?= $this->session->userdata('role') ?>
-        </div>
-      </a>
-      <hr class="sidebar-divider my-0">
-
-      <li class="nav-item ">
-        <a class="nav-link" href="<?= site_url() ?>">
-          <i class="fas fa-fw fa-cash-register"></i>
-          <span>Kasir</span></a>
-      </li>
-      <hr class="sidebar-divider">
-
-      <li class="nav-item active">
-        <a class="nav-link" href="<?= site_url() ?>product/data_barang">
-          <i class="fas fa-fw fa-cubes"></i>
-          <span>Data barang</span></a>
-      </li>
-      <hr class="sidebar-divider">
-
-      <li class="nav-item">
-        <a class="nav-link" href="<?= site_url() ?>product/data_penjualan">
-        <i class="far fa-handshake"></i>
-          <span>Data penjualan</span></a>
-      </li>
-      <hr class="sidebar-divider">
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-        <i class="fas fa-money-bill-wave"></i>
-          <span>Keuntungan</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="<?= site_url() ?>product/laba_tabel"><i class="fas fa-table"></i> Tabel</a>
-            <a class="collapse-item" href="<?= site_url() ?>product/laba_diagram"><i class="far fa-chart-bar"></i> Diagram</a>
-        </div>
-      </li>
-      <hr class="sidebar-divider">
-
-      <?php if($this->session->userdata('role') == 'admin'){ ?>
-
-        <li class="nav-item">
-          <a class="nav-link" href="<?= site_url() ?>product/data_user">
-          <i class="far fa-user"></i>
-            <span>Data user</span></a>
-        </li>
-        <hr class="sidebar-divider">
-
-        <li class="nav-item">
-          <a class="nav-link" href="<?= site_url() ?>product/pengunjung">
-            <i class="fas fa-fw fa-globe-americas"></i>
-            <span>Pengunjung</span></a>
-        </li>
-        <hr class="sidebar-divider">
-
-        <li class="nav-item">
-          <a class="nav-link" href="<?= site_url() ?>product/data_toko">
-          <i class="fas fa-store"></i>
-            <span>Toko</span></a>
-        </li>
-        <hr class="sidebar-divider">
-
-      <?php } ?>
-
-
-      <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
-      </div>
-
-    </ul> -->
     <?php $this->load->view('component/sidebar')?>
+
     <div id="content-wrapper" class="d-flex flex-column">
 
       <div id="content">
 
-        <!-- <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-
-          <div class="h3 ml-auto">Barang</div>
-
-          <ul class="navbar-nav ml-auto">
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $this->session->userdata('username') ?></span>
-                <img class="img-profile rounded-circle" src="<?= site_url() ?>assets/images/p.jpeg">
-              </a>
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="tes">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="<?= base_url() ?>product/logout">
-                <i class="fas fa-power-off fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-
-          </ul>
-
-        </nav> -->
         <?php $this->load->view('component/header')?>
         <div class="container-fluid">
           <?php
@@ -143,14 +41,7 @@
               echo '<button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>';
             }
           ?>
-          <!-- // for develop -->
           <button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>
-          <video id="preview"></video>
-          <!-- <div id="div-video-container">
-          
-            <video class="dbrScanner-video" playsinline="true" style="width:50%;height:50%;position:absolute;left:0;top:0;"></video>
-          </div> -->
-
             <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
               <thead>
                 <tr>
@@ -163,8 +54,6 @@
                   <th>Untung</th>
                   <th>Qty</th>
                   <th>Opsi</th>
-                  <!-- <th>Promo</th>
-                  <th>Opsi</th> -->
                 </tr>
               </thead>
               <tbody>
@@ -187,33 +76,22 @@
 
   <script src="<?= base_url() ?>assets/jquery/jquery-3.2.1.min.js"></script>
   <script src="<?= base_url() ?>assets/bootstrap-4.1.3/js/bootstrap.min.js"></script>
-  <!-- <script src="<-?= base_url() ?>aassets/js/bootstrap.bundle.min.js"></script> -->
-
-  <!-- Core plugin JavaScript-->
-  <!-- <script src="<-?= base_url() ?>aassets/js/jquery.easing.min.js"></script> -->
-
-  <!-- Custom scripts for all pages-->
   <script src="<?= base_url() ?>assets/js/sb-admin-2.js"></script>
-  
-  <!-- Page level plugins -->
   <script src="<?= base_url() ?>assets/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
   <script src="<?= base_url() ?>assets/DataTables-1.10.18/js/dataTables.bootstrap4.min.js"></script>
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/responsive.bootstrap4.min.js"></script>
-
-  <!-- <script src="<-?= base_url() ?>aassets/demo/datatables-demo.js"></script> -->
-  
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/dynamsoft-javascript-barcode@8.6.1/dist/dbr.js"></script> -->
-  <!-- <script src="<-?php echo base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script> -->
-  <script type="text/javascript" src="<?= base_url() ?>assets/js/instascan.min.js"></script>
+  <script type="text/javascript" src="<?= base_url() ?>assets/js/scan.min.js"></script>
   <script>
-    var table;
+    let table;
+    let scanner;
+    let video;
     $(document).ready(function(){
+      video = document.getElementById('preview');
+      scanner = new Instascan.Scanner({ video: video });
       find_all_product();
-      // showScanner();
-      // add_product();
-      // barcode();
+      setup();
     });
 
     function find_all_product() {
@@ -248,13 +126,21 @@
     }
 
     function close_modal(){
+      scanner.stop();
+      let stream = video.srcObject;
+      let tracks = stream.getTracks();
+      for (let i = 0; i < tracks.length; i++) {
+        let track = tracks[i];
+        track.stop();
+      }
+      video.srcObject = null;
       save_method = 'add';
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
       $('#modal_form').modal('hide'); 
     }
     
-    $(function(){
+    function setup(){
       $("#jenis_promo").change(function(){
         if($(this).val() =="minimal") {
           $("#harga_ahir").removeClass('d-none');
@@ -268,7 +154,7 @@
         }
       });
       tanggal();
-    });
+    }
 
     function save_product() {
       var url;
@@ -371,110 +257,93 @@
       });
     }
 
-    async function showScanner() {
-      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+    function showScanner() {
       scanner.addListener('scan', function (content) {
-        console.log(content);
+        alert(content);
       });
-      try {
-        let cameras = await Instascan.Camera.getCameras()
+      Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
-          await scanner.start(cameras[0]);
+          scanner.start(cameras[0]);
         } else {
           console.error('No cameras found.');
         }
-        // .then(function (cameras) {
-        //   console.log(cameras[0]);
-        //   if (cameras.length > 0) {
-        //     await scanner.start(cameras[0]);
-        // })
-      } catch (err) {
-        console.error(err);
-      }
-      // Instascan.Camera.getCameras().then(function (cameras) {
-      //   console.log(cameras[0]);
-      //   if (cameras.length > 0) {
-      //     await scanner.start(cameras[0]);
-      //   } else {
-      //     console.error('No cameras found.');
-      //   }
-      // }).catch(function (e) {
-      //   console.error(e);
-      // });
+      }).catch(function (e) {
+        console.error(e);
+      });
     }
 
   </script>
-  
+
   <div class="modal fade" id="modal_form" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">tambah produk</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button type="button" class="close" onClick="close_modal()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body form">
+        <div class="modal-body form" style="position: static">
           <form id="form_product">
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
 
-                  <video id="preview"></video>
+                <video class="bg-success" id="preview"></video>
 
-                  <div class="form-group">
-                    <label for="barcode" class="col-form-label">Barcode</label>
-                    <input type="number" class="form-control" name="barcode" >
-                    <div class="invalid-feedback"></div>
-                  </div>
+                <div class="form-group">
+                  <label for="barcode" class="col-form-label">Barcode</label>
+                  <input type="number" class="form-control" id="barcode" name="barcode" >
+                  <div class="invalid-feedback"></div>
+                </div>
 
-                  <div class="form-group mt-2">
-                    <label for="jenis">Jenis</label>
-                    <select class="form-control " name="jenis" >
-                      <option value="2">Makanan</option>
-                      <option value="1">Minuman</option>
-                      <option value="1">peralatan kecantikan</option>
-                    </select>
-                  </div>
+                <div class="form-group mt-2">
+                  <label for="jenis">Jenis</label>
+                  <select class="form-control " name="jenis" >
+                    <option value="2">Makanan</option>
+                    <option value="1">Minuman</option>
+                    <option value="1">peralatan kecantikan</option>
+                  </select>
+                </div>
 
-                  <div class="form-group mt-2">
-                    <label for="setatus_barang">setatus barang</label>
-                    <select class="form-control " name="setatus_barang" >
-                      <option value="1">jual</option>
-                      <option value="0">gudang</option>
-                    </select>
-                  </div>
-                        
-                  <div class="form-group">
-                    <label for="product_name" class="col-form-label">Nama barang</label>
-                    <input type="text" class="form-control " name="product_name" >
-                    <div class="invalid-feedback"></div>
-                  </div>
+                <div class="form-group mt-2">
+                  <label for="setatus_barang">setatus barang</label>
+                  <select class="form-control " name="setatus_barang" >
+                    <option value="1">jual</option>
+                    <option value="0">gudang</option>
+                  </select>
+                </div>
+                      
+                <div class="form-group">
+                  <label for="product_name" class="col-form-label">Nama barang</label>
+                  <input type="text" class="form-control " name="product_name" >
+                  <div class="invalid-feedback"></div>
+                </div>
 
-                  <div class="form-group">
-                    <label for="unit">Satuan</label>
-                    <select class="form-control" name="unit" >
-                      <option value=""></option>
-                      <option value="pcs">pcs</option>
-                      <option value="botol">botol</option>
-                      <option value="liter">liter</option>
-                      <option value="kg">kg</option>
-                      <option value="kardus">kardus</option>
-                      <option value="saset">saset</option>
-                    </select>
-                    <div class="invalid-feedback"></div>
-                  </div>
-                        
-                  <div class="form-group">
-                    <label for="purchase_price" class="col-form-label">Harga beli</label>
-                    <input type="number" class="form-control" name="purchase_price" >
-                    <div class="invalid-feedback"></div>
-                  </div>
-                        
-                  <div class="form-group">
-                    <label for="selling_price" class="col-form-label">Harga jual</label>
-                    <input type="number" class="form-control " name="selling_price"  >
-                    <div class="invalid-feedback"></div>
-                  </div>
+                <div class="form-group">
+                  <label for="unit">Satuan</label>
+                  <select class="form-control" name="unit" >
+                    <option value=""></option>
+                    <option value="pcs">pcs</option>
+                    <option value="botol">botol</option>
+                    <option value="liter">liter</option>
+                    <option value="kg">kg</option>
+                    <option value="kardus">kardus</option>
+                    <option value="saset">saset</option>
+                  </select>
+                  <div class="invalid-feedback"></div>
+                </div>
+                      
+                <div class="form-group">
+                  <label for="purchase_price" class="col-form-label">Harga beli</label>
+                  <input type="number" class="form-control" name="purchase_price" >
+                  <div class="invalid-feedback"></div>
+                </div>
+                      
+                <div class="form-group">
+                  <label for="selling_price" class="col-form-label">Harga jual</label>
+                  <input type="number" class="form-control " name="selling_price"  >
+                  <div class="invalid-feedback"></div>
+                </div>
 
               </div>
 
@@ -539,7 +408,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" onClick="save_product()" class="btn btn-primary">Simpan</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-danger" onClick="close_modal()">Batal</button>
         </div>
       </div>
     </div>

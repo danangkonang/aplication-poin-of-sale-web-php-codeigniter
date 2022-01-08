@@ -19,61 +19,41 @@
 
 <body id="page-top">
 
-  <!-- Page Wrapper -->
   <div id="wrapper">
 
   <?php $this->load->view('component/sidebar')?>
 
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
       <div id="content">
 
-      <?php $this->load->view('component/header')?>
+        <?php $this->load->view('component/header')?>
 
-        <!-- Begin Page Content -->
         <div class="container-fluid">
-            
-			
-			<table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
-				<thead>
-					<tr>
-						<th>no</th>
-						<th>Id</th>
-						<th>Nama</th>
-						<th>Qty</th>
-						<th>Kasir</th>
-						<th>Harga satuan</th>
-            <th>Jumlah Bayar</th>
-						<!--th>satuan</th-->
-						<!--th>S P</th-->
-						<th>Tanggal</th>
-						<!--th>Jam</th-->
-					</tr>
-				</thead>
-				<tbody>
-        </tbody>
-        <!-- <tfoot>
-          <tr>
-            <th colspan="5" style="text-align:right">Total:</th>
-            <th></th>
-          </tr>
-        </tfoot> -->
-			</table>
+          <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
+            <thead>
+              <tr>
+                <th>no</th>
+                <th>Id</th>
+                <th>Nama</th>
+                <th>Qty</th>
+                <th>Kasir</th>
+                <th>Harga satuan</th>
+                <th>Jumlah Bayar</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
         </div>
-        <!-- /.container-fluid -->
 
       </div>
       <?php $this->load->view('component/footer')?>
 
     </div>
-    <!-- End of Content Wrapper -->
 
   </div>
-  <!-- End of Page Wrapper -->
-
-  <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
