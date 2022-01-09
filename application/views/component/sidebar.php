@@ -72,4 +72,7 @@
   let activeSession = "<?= $this->session->userdata('active_class') ?>";
   let element = document.getElementById(activeSession);
   element.classList.add("active");
+  if(activeSession === 'laporan-table' || activeSession === 'laporan-chart'){
+    $("#collapseTwo").collapse('show');
+  }
 </script>

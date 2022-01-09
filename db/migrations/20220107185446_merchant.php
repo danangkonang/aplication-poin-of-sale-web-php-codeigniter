@@ -20,7 +20,7 @@ final class Merchant extends AbstractMigration
   {
     $merchant = $this->table('merchants', array('id' => 'merchant_id'));
     $merchant->addColumn('merchant_name', 'string', ['limit' => 225])
-          ->addColumn('merchant_phone', 'string', ['limit' => 225, 'null' => true])
+          ->addColumn('merchant_telephone', 'string', ['limit' => 225, 'null' => true])
           ->addColumn('merchant_address', 'string', ['limit' => 225, 'null' => true])
           ->addColumn('merchant_description','string', ['limit' => 255, 'null' => true])
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])

@@ -13,7 +13,7 @@ class Merchant extends CI_Controller {
   // fix
 	public function my_merchant(){
 		$data_session = [
-			'title' => 'TOko',
+			'title' => 'Toko',
 			'active_class' => 'merchant',
 		];
 		$this->session->set_userdata($data_session);
@@ -26,22 +26,21 @@ class Merchant extends CI_Controller {
 		echo json_encode($data);
 	}
 
-  public function simpan_data_toko(){
+  public function simpan_data_merchant(){
 		$this->load->model('model_merchant');
 		$data = [
-			'nama_toko' => $this->input->post('nama_toko'),
-			'alamat_toko' => $this->input->post('alamat_toko'),
-			'telephon_toko' => $this->input->post('telephon_toko'),
-			'moto_toko' => $this->input->post('moto_toko')
+			'merchant_name' => $this->input->post('store_name'),
+			'merchant_address' => $this->input->post('store_address'),
+			'merchant_telephone' => $this->input->post('store_telephone'),
+			'merchant_description' => $this->input->post('textarea_store_description')
 		];
-		$data2 = $this->model_merchant->get_data_toko();
-		$id = $data2->id_toko;
-		if($data2 == null){
-			$insert = $this->model_merchant->simpan_data_toko($data);
+		$merchant = $this->model_merchant->find_merchant();
+		$id = $merchant->merchant_id;
+		if($merchant == null){
+			$insert = $this->model_merchant->simpan_data_merchant($data);
 		}else{
-			$insert = $this->model_merchant->update_data_toko($data,$id);
+			$insert = $this->model_merchant->update_data_merchant($data, $id);
 		}
-		
 		echo json_encode($data);
 	}
 	

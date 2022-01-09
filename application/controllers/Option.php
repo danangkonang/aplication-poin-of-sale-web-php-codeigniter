@@ -53,12 +53,11 @@ class Option extends CI_Controller {
   }
   
   // fix
-  public function cari_barang(){
-    $data = $this->model_barang->search_product($_REQUEST['keyword']);
+  public function search_product(){
+    $data = $this->model_product->search_product($_REQUEST['keyword']);
     echo json_encode( $data);
 	}
 	
-  // fix
 	public function add_keranjang(){
     $data = [
       'id' => $this->input->post('product_id'),
@@ -69,7 +68,6 @@ class Option extends CI_Controller {
 		echo json_encode(["status" => $this->cart->insert($data)]);
 	}
 	
-  // fix
 	public function list_shoping_cart(){
 		$data = [];
 		$no = 1; 
@@ -188,11 +186,11 @@ class Option extends CI_Controller {
           'created_at' => $time_transaction,
 				];
 
-        $res = $this->model_barang->get_product_qty($insert['id']);
+        $res = $this->model_product->get_product_qty($insert['id']);
         $last_qty = $res->product_qty - $insert['qty'];
 
-        $this->model_barang->create_order($order);
-        $this->model_barang->update_product_qty($insert['id'], $last_qty);
+        $this->model_product->create_order($order);
+        $this->model_product->update_product_qty($insert['id'], $last_qty);
 			}
 
       $this->cart->destroy();

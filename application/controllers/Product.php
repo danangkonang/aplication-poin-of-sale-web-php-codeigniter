@@ -14,7 +14,6 @@ class Product extends CI_Controller {
 		}
 	}
 
-  // fix
 	public function data_barang(){
 		$data_session = [
 			'title' => 'Produk',
@@ -24,7 +23,6 @@ class Product extends CI_Controller {
 		$this->load->view('product/product_view');
 	}
 
-  // fix
 	public function find_all_product(){
 		$list = $this->model_product->find_all_product();
 		$data = [];
@@ -59,18 +57,23 @@ class Product extends CI_Controller {
 		echo json_encode($output);
 	}
 
-  // fix
 	function save_product(){
     $data = [
 			'barcode' => $this->input->post('barcode'),
 			'kind_id' => $this->input->post('jenis'),
       'product_name' => $this->input->post('product_name'),
+			'unit' => $this->input->post('unit'),
       'purchase_price' => $this->input->post('purchase_price'),
       'selling_price' => $this->input->post('selling_price'),
       'product_qty' => $this->input->post('product_qty'),
-      'is_promo' => false,
-      'product_image' => 'telur.png',
-      'is_active' => true,
+      'product_image' => $this->input->post('product_image'),
+      'is_promo' => $this->input->post('is_promo'),
+			'start_promo' => $this->input->post('start_promo'),
+			'end_promo' => $this->input->post('end_promo'),
+			'promo_type' => $this->input->post('promo_type'),
+			'piece' => $this->input->post('piece'),
+			'end_price' => $this->input->post('end_price'),
+      'is_active' => $this->input->post('is_active'),
     ];
 		$res = $this->model_product->save_product($data);
     if(!$res){
@@ -93,21 +96,23 @@ class Product extends CI_Controller {
 	
   public function update_barang(){
 		$data =[
-			'setatus_barang'	=> $this->input->post('setatus_barang'),
-			'nama_barang' 		=> $this->input->post('nama_barang'),
-			'harga_beli' 		=> $this->input->post('harga_beli'),
-			'harga_jual' 		=> $this->input->post('harga_jual'),
-			'laba' 				=> $this->input->post('harga_jual')-$this->input->post('harga_beli'),
-			'satuan' 			=> $this->input->post('satuan'),
-			'setok' 			=> $this->input->post('setok'),
-			'mulai_promo' 		=> $this->input->post('mulai_promo'),
-			'ahir_promo' 		=> $this->input->post('ahir_promo'),
-			'jenis_promo' 		=> $this->input->post('jenis_promo'),
-			'potongan' 			=> $this->input->post('potongan'),
-			'harga_ahir' 		=> $this->input->post('harga_ahir'),
-			'setatus_promo' 	=> $this->input->post('setatus_promo'),
+			'barcode' => $this->input->post('barcode'),
+			'kind_id' => $this->input->post('jenis'),
+      'product_name' => $this->input->post('product_name'),
+			'unit' => $this->input->post('unit'),
+      'purchase_price' => $this->input->post('purchase_price'),
+      'selling_price' => $this->input->post('selling_price'),
+      'product_qty' => $this->input->post('product_qty'),
+      'product_image' => $this->input->post('product_image'),
+      'is_promo' => $this->input->post('is_promo'),
+			'start_promo' => $this->input->post('start_promo'),
+			'end_promo' => $this->input->post('end_promo'),
+			'promo_type' => $this->input->post('promo_type'),
+			'piece' => $this->input->post('piece'),
+			'end_price' => $this->input->post('end_price'),
+      'is_active' => $this->input->post('is_active'),
 		];
-		$this->model_product->update(array('id_barang' => $this->input->post('id')), $data);
+		$this->model_product->update(array('product_id' => $this->input->post('product_id')), $data);
 		echo json_encode(array("status" => TRUE));
 	}
 

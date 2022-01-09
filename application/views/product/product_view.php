@@ -83,6 +83,7 @@
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/responsive.bootstrap4.min.js"></script>
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="<?= base_url() ?>assets/js/scan.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script>
     let table;
     let scanner;
@@ -141,7 +142,7 @@
     }
     
     function setup(){
-      $("#jenis_promo").change(function(){
+      $("#promo_type").change(function(){
         if($(this).val() =="minimal") {
           $("#harga_ahir").removeClass('d-none');
           $("#potongan").attr("placeholder", "minimal beli");
@@ -170,8 +171,9 @@
         data: $('#form_product').serialize(),
         dataType: "JSON",
         success: function(data) {
+          console.log(data);
           if(data.status) {
-            $('#modal_form').modal('hide');
+            close_modal();
             reload_table();
           }
           else {
@@ -207,19 +209,48 @@
     }
     
     function delete_barang(id) {
-      if(confirm('yakin ingin di hapus?')){
-        $.ajax({
-          url : "<?php echo site_url('product/hapus_barang')?>/"+id,
-          type: "POST",
-          dataType: "JSON",
-          success: function(data) {
-            reload_table();
-          },
-          error: function (jqXHR, textStatus, errorThrown) {
-            alert('Error deleting data');
-          }
-        });
-      }
+      // if(confirm('yakin ingin di hapus?')){
+      //   $.ajax({
+      //     url : "<?php echo site_url('product/hapus_barang')?>/"+id,
+      //     type: "POST",
+      //     dataType: "JSON",
+      //     success: function(data) {
+      //       reload_table();
+      //     },
+      //     error: function (jqXHR, textStatus, errorThrown) {
+      //       alert('Error deleting data');
+      //     }
+      //   });
+      // }
+      swal({
+        title: "Hapus Produk?",
+        text: "Produk akan dihapus permanen",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.ajax({
+            url : "<?php echo site_url('product/hapus_barang')?>/"+id,
+            type: "POST",
+            dataType: "JSON",
+            success: function(data) {
+              swal("Produk berhasil dihapus", {
+                icon: "success",
+              });
+              reload_table();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+              swal("Produk gagal dihapus", {
+                icon: "success",
+              });
+            }
+          });
+        } else {
+          swal("Terima kasih");
+        }
+      });
     }
     
     function edit_barang(id) {
@@ -229,8 +260,9 @@
         url : "<?php echo site_url('product/edit_barang')?>/" + id,
         type: "GET",
         dataType: "JSON",
-        success: function(data) { 
-          $('[name="id"]').val(data.product_id);
+        success: function(data) {
+          console.log(data);
+          $('[name="product_id"]').val(data.product_id);
           $('[name="barcode"]').val(data.barcode);
           $('[name="jenis"]').val(data.kind_id);
           $('[name="setatus_barang"]').val(data.setatus_barang);
@@ -241,15 +273,16 @@
           $('[name="unit"]').val(data.unit);
           $('[name="mulai_promo"]').val(data.mulai_promo);
           $('[name="ahir_promo"]').val(data.ahir_promo);
-          $('[name="jenis_promo"]').val(data.jenis_promo);
+          $('[name="promo_type"]').val(data.promo_type);
           $('[name="potongan"]').val(data.potongan);
           $('[name="harga_ahir"]').val(data.harga_ahir);
           $('[name="setatus_promo"]').val(data.setatus_promo);
           $('#modal_form').modal('show');
           $('.modal-title').text('Edit barang');
-          if(data.jenis_promo == 'minimal') {
+          if(data.promo_type == 'minimal') {
             $("#harga_ahir").removeClass('d-none');
           }
+          showScanner();
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert('Error get data from ajax');
@@ -285,6 +318,7 @@
         </div>
         <div class="modal-body form" style="position: static">
           <form id="form_product">
+            <input type="hidden" id="product_id" name="product_id" >
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
 
@@ -299,17 +333,17 @@
                 <div class="form-group mt-2">
                   <label for="jenis">Jenis</label>
                   <select class="form-control " name="jenis" >
-                    <option value="2">Makanan</option>
-                    <option value="1">Minuman</option>
+                    <option value="3">Makanan</option>
+                    <option value="2">Minuman</option>
                     <option value="1">peralatan kecantikan</option>
                   </select>
                 </div>
 
                 <div class="form-group mt-2">
-                  <label for="setatus_barang">setatus barang</label>
-                  <select class="form-control " name="setatus_barang" >
-                    <option value="1">jual</option>
-                    <option value="0">gudang</option>
+                  <label for="is_active">Status Barang</label>
+                  <select class="form-control " name="is_active" >
+                    <option value="1">Active</option>
+                    <option value="0">Tidak Active</option>
                   </select>
                 </div>
                       
@@ -348,59 +382,55 @@
               </div>
 
               <div class="col-sm-12 col-lg-6 col-xl-6">
-
                 <div class="form-group">
                   <label for="product_qty" class="col-form-label">Stok</label>
                   <input type="number" class="form-control " name="product_qty" >
                   <div class="invalid-feedback"></div>
                 </div>
-
                 <p>
                   <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">promo</button>
                 </p>
-
                 <div class="collapse" id="collapseExample">
                   <div class="card card-body">
                     <div class="form-row mb-4">
                       <div class="col">
-                        <label for="mulai_promo">awal promo</label>
-                        <input type="text" class="form-control" name="mulai_promo" data-toggle="mulai_promo" placeholder="tgl mulai">
+                        <label for="start_promo">awal promo</label>
+                        <input type="text" class="form-control" name="start_promo" id="start_promo" data-toggle="start_promo" placeholder="tgl mulai">
                       </div>
                       <div class="col">
-                        <label for="ahir_promo">ahir promo</label>
-                        <input type="text" class="form-control" name="ahir_promo"  id="ahir_promo" data-toggle="ahir_promo" placeholder="tgl ahir">
+                        <label for="end_promo">ahir promo</label>
+                        <input type="text" class="form-control" name="end_promo"  id="end_promo" data-toggle="end_promo" placeholder="tgl ahir">
                       </div>
                     </div>
                               
                     <div class="form-row mb-4">
                       <div class="col">
-                        <label for="jenis_promo">jenis promo</label>
-                        <select class="form-control " name="jenis_promo" id="jenis_promo" >
-                          <option value="diskon">diskon</option>
-                          <option value="minimal">minimal</option>
+                        <label for="promo_type">Jenis Promo</label>
+                        <select class="form-control " name="promo_type" id="promo_type" >
+                          <option value="diskon">Diskon</option>
+                          <option value="minimal">Minimal</option>
                         </select>
                       </div>
                       <div class="col">
-                        <label for="potongan">potongan</label>
-                        <input type="number" class="form-control reset" name="potongan"  id="potongan" data-toggle="min" placeholder="(%)">
+                        <label for="piece">piece</label>
+                        <input type="number" class="form-control reset" name="piece"  id="potongan" data-toggle="min" placeholder="(%)">
                       </div>
                     </div>
                             
-                    <div class="form-group d-none reset" id="harga_ahir">
-                      <label for="diskon">harga ahir</label>
-                      <input type="number" name="harga_ahir" id="diskon" class="form-control" placeholder="harga ahir">
+                    <div class="form-group d-none reset" id="end_price">
+                      <label for="diskon">Harga Ahir</label>
+                      <input type="number" name="end_price" id="diskon" class="form-control" placeholder="harga ahir">
                     </div>
                             
                     <div class="form-group mt-2">
-                      <label for="setatus_promo">setatus promo</label>
-                      <select class="form-control " name="setatus_promo" >
-                        <option value="0">habis</option>
-                        <option value="1">aktif</option>
+                      <label for="is_promo">Setatus Promo</label>
+                      <select class="form-control " name="is_promo" >
+                        <option value="0">Tidak Aktif</option>
+                        <option value="1">Aktif</option>
                       </select>
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </form>

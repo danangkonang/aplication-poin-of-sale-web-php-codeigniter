@@ -58,7 +58,7 @@ class Model_product extends CI_Model {
 	}
 	
 	public function save_product($data) {
-		$this->db->insert('product', $data);
+		$this->db->insert($this->table, $data);
 		return $this->db->insert_id();
 	}
 	
@@ -82,7 +82,7 @@ class Model_product extends CI_Model {
 	public function search_product($key) {
 		$this->db->select('*');
 		$this->db->like('product_name', $key);
-		$this->db->or_like('product_id', $key);
+		$this->db->or_like('barcode', $key);
 		$query = $this->db->get($this->table);
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $data) {
