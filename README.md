@@ -27,8 +27,10 @@ php composer.phar install
 ## Database
 Bisa juga menggunakan xampp, lamp, dll. sesuaikan config .env
 ```
-docker-compose up --build -d
+#start database
+docker-compose up -d
 
+#stop database
 docker-compose down
 ```
 

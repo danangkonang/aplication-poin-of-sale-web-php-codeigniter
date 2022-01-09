@@ -358,11 +358,9 @@
                   <select class="form-control" name="unit" >
                     <option value=""></option>
                     <option value="pcs">pcs</option>
-                    <option value="botol">botol</option>
                     <option value="liter">liter</option>
                     <option value="kg">kg</option>
-                    <option value="kardus">kardus</option>
-                    <option value="saset">saset</option>
+                    <option value="karton">karton</option>
                   </select>
                   <div class="invalid-feedback"></div>
                 </div>
