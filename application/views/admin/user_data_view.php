@@ -62,6 +62,12 @@
   <script>
     var table;
     $(document).ready(function(){
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
+      find_user();
+    });
+
+    function find_user() {
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
           {
@@ -78,7 +84,7 @@
         "lengthChange": false,
         "responsive": true,
       });
-    });
+    }
     
     function reload_table(){
       table.ajax.reload(null,false);

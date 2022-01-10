@@ -5,6 +5,7 @@ class Auth extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('model_member');
+		$this->load->model('model_permision');
 	}
 	
 	public function index(){
@@ -15,6 +16,10 @@ class Auth extends CI_Controller {
 			$data_session = [
         'title' => 'Kasir',
 				'active_class' => 'kasir',
+				'read' => $this->model_permision->is_read($id),
+				'create' => $this->model_permision->is_create($id),
+				'update' => $this->model_permision->is_update($id),
+				'delete' => $this->model_permision->is_delete($id),
       ];
 			$this->session->set_userdata($data_session);
       $this->load->view('kasir/kasir_view');
@@ -36,10 +41,12 @@ class Auth extends CI_Controller {
     if($data == NULL){
       delete_cookie('cookie_id');
       $this->load->view('auth/form_login');
+			return;
     }
     if(!$data){
       delete_cookie('cookie_id');
       $this->load->view('auth/form_login');
+			return;
     }
     if($data['token_login'] == $user_cookie){
       $this->load->model('model_login');
@@ -47,7 +54,11 @@ class Auth extends CI_Controller {
         'user_id'  => $data['user_id'],
         'user_name'  => $data['user_name'],
         'email'  => $data['email'],
-        'role'  => $data['role']
+        'role'  => $data['role'],
+				'read' => $this->model_permision->is_read($data['user_id']),
+				'create' => $this->model_permision->is_create($data['user_id']),
+				'update' => $this->model_permision->is_update($data['user_id']),
+				'delete' => $this->model_permision->is_delete($data['user_id']),
       ];
       $cookie = $this->_rundom_string($data['user_id']);
       $this->_cookie_session($data_session, $cookie);
@@ -74,36 +85,6 @@ class Auth extends CI_Controller {
 		return $this->session->set_userdata($data_session);
 	}
 	
-	// private function _acak($n) {
-	// 	$key = 'q6w7ert4yu8iop3asd2fgh0jk5lzx9cvb1nm';
-	// 	$hasil = array();
-	// 	$hasil = '';
-	// 		for($i = 0; $i < $n; $i++){
-	// 			for($j = 0; $j < 32; $j++){
-	// 				$buat = rand(0, strlen($key)-1);
-	// 				$hasil .= $key[$buat];
-	// 			}
-	// 		}
-	// 	return $hasil;
-	// }
-
-	// private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id) {
-	// 	$cek_cookie = $this->model_member->cek_cookie_db($cookie_id);
-	// 	if($cek_cookie) {
-	// 		$this->model_member->update_cookie($data_update_cookie,$cookie_id);
-	// 	}
-	// 	else {
-	// 		$this->model_member->input_cookie($data_input_cookie);
-	// 	}
-	// }
-
-	// private function _cookie_session($data_session,$cookie) {
-	// 	$this->load->helper('cookie');
-	// 	delete_cookie('id');
-	// 	set_cookie('id',$cookie,'604800');
-	// 	$this->session->set_userdata($data_session);
-	// }
-
   public function logout(){
 		$this->load->helper('cookie');
 		delete_cookie('cookie_id');

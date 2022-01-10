@@ -60,6 +60,13 @@
     </li>
     <hr class="sidebar-divider">
 
+    <li class="nav-item" id="permision">
+      <a class="nav-link" href="<?= site_url() ?>permision">
+      <i class="fas fa-store"></i>
+      <span>Permision</span></a>
+    </li>
+    <hr class="sidebar-divider">
+
   <?php } ?>
 
   <div class="text-center d-none d-md-inline">
@@ -72,7 +79,9 @@
   let activeSession = "<?= $this->session->userdata('active_class') ?>";
   let element = document.getElementById(activeSession);
   element.classList.add("active");
-  if(activeSession === 'laporan-table' || activeSession === 'laporan-chart'){
-    $("#collapseTwo").collapse('show');
-  }
+  (function($){
+    if(activeSession === 'laporan-table' || activeSession === 'laporan-chart'){
+      $("#collapseTwo").collapse('show');
+    }
+  });
 </script>

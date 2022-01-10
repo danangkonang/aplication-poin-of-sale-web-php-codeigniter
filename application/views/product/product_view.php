@@ -1,3 +1,7 @@
+<?php
+// var_dump($this->session->userdata('create') ==  false);
+// die;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,11 +41,10 @@
         <?php $this->load->view('component/header')?>
         <div class="container-fluid">
           <?php
-            if($this->session->userdata('level') == 1) {
-              echo '<button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>';
+            if($this->session->userdata('create')) {
+              echo('<button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>');
             }
           ?>
-          <button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>
             <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
               <thead>
                 <tr>
@@ -93,6 +96,8 @@
       scanner = new Instascan.Scanner({ video: video });
       find_all_product();
       setup();
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
     });
 
     function find_all_product() {
@@ -209,19 +214,6 @@
     }
     
     function delete_barang(id) {
-      // if(confirm('yakin ingin di hapus?')){
-      //   $.ajax({
-      //     url : "<?php echo site_url('product/hapus_barang')?>/"+id,
-      //     type: "POST",
-      //     dataType: "JSON",
-      //     success: function(data) {
-      //       reload_table();
-      //     },
-      //     error: function (jqXHR, textStatus, errorThrown) {
-      //       alert('Error deleting data');
-      //     }
-      //   });
-      // }
       swal({
         title: "Hapus Produk?",
         text: "Produk akan dihapus permanen",

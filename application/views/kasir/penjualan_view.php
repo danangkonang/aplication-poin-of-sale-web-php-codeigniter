@@ -70,6 +70,12 @@
   <script>
     let table;
     $(document).ready(function(){
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
+      find_transaction();
+    });
+
+    function find_transaction() {
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
           {
@@ -86,7 +92,7 @@
         "lengthChange": false,
         "responsive": true,
       });
-    });
+    }
     
     function reload_table(){
       table.ajax.reload(null,false);

@@ -127,6 +127,8 @@
     
     $(document).ready(function(){
       find_my_shop();
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
     });
   </script>
   

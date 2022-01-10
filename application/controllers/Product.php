@@ -39,13 +39,10 @@ class Product extends CI_Controller {
 			$row[] = number_format($barang->selling_price,0,".",".");
       $row[] = number_format($barang->selling_price - $barang->purchase_price,0,".",".");
 			$row[] = $barang->product_qty;
-			if($this->session->userdata('role') == 'admin' ){
-				$row[] = '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="edit_barang('."'".$barang->product_id."'".')"><i class="far fa-edit"></i></a>
-				  	  <a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_barang('."'".$barang->product_id."'".')"><i class="far fa-trash-alt"></i></a>';
-			}else{
-				$row[] = '<a class="btn btn-sm btn-warning disabled" href="javascript:void(0)" title="Edit" ><i class="far fa-edit"></i></a>
-				  	  <a class="btn btn-sm btn-danger disabled" href="javascript:void(0)" title="Hapus" ><i class="far fa-trash-alt"></i></a>';
-			}
+			$btn_edit = $this->session->userdata('update') ? '<a class="btn btn-sm btn-warning" href="javascript:void(0)" title="Edit" onclick="edit_barang('."'".$barang->product_id."'".')"><i class="far fa-edit"></i></a>' : '';
+			$btn_delete = $this->session->userdata('delete') ? '<a class="btn btn-sm btn-danger" href="javascript:void(0)" title="Hapus" onclick="delete_barang('."'".$barang->product_id."'".')"><i class="far fa-trash-alt"></i></a>' : '';
+			$row[] = $btn_edit .' '.$btn_delete;
+			
 			$data[] = $row;
 		}
 		$output = [

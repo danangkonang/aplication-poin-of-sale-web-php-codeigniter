@@ -18,6 +18,7 @@ die;
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
+
   
   <title>kasir</title>
   <style>
@@ -48,24 +49,25 @@ die;
         <div class="container-fluid">
           <div class="col-sm-12">
             <div class="row">
-              <div class="col-sm-12 col-md-4">
+              <div class="col-sm-12 col-md-6 ">
                 <form class="form-horizontal" id="form_order" role="form">
                   <div class="form-group row">
-                    <!-- <label class="col-md-3 col-form-label">Cari</label> -->
-                    <div class="col">
+                    <label class="col-md-3 col-form-label">Cari</label>
+                    <div class="col-md-9">
                       <input class="form-control reset" id="search"  name="search" type="text" placeholder="Barcode atau Nama" >
                     </div>
                   </div>
                   <input type="hidden" id="product_id" name="product_id">
                   <div class="form-group row">
-                    <!-- <label class="col-md-3 col-form-label">Nama</label> -->
-                    <div class="col">
+                    <label class="col-md-3 col-form-label">Nama</label>
+                    <div class="col-md-9">
                       <input class="form-control reset" type="text" id="product_name" name="product_name" readonly="" placeholder="Nama" >
                     </div>
                   </div>
                   
                   <div class="form-group row">
-                    <div class="col">
+                    <label class="col-md-3 col-form-label">Harga</label>
+                    <div class="col-md-9">
                       <input class="form-control reset" type="text" name="selling_price" id="selling_price"  readonly="" placeholder="0"value="">
                     </div>
                   </div>
@@ -75,71 +77,25 @@ die;
                   <input type="hidden" class="reset" id="harga_potongan" name="harga_potongan">
                       
                   <div class="form-group row">
-                    <div class="col">
-                      <input class="form-control reset" type="number" readonly="readonly" oninput="subTotal(this.value)" id="product_qty" min="0" name="product_qty" placeholder="qty">
+                    <label class="col-md-3 col-form-label">Qty</label>
+                    <div class="col-md-9">
+                      <input class="form-control reset" type="number" readonly="readonly" onkeyup="subTotal(this.value)" id="product_qty" min="0" name="product_qty" placeholder="qty">
                     </div>
                   </div>
                   
                   <div class="form-group row">
-                    <div class="col">
+                    <label class="col-md-3 col-form-label">Sub total</label>
+                    <div class="col-md-9">
                       <input class="form-control reset" type="text" name="sub_total" id="sub_total"  readonly="" placeholder="0" value="">
                     </div>
                   </div>
                 </form>
-
-                <button type="button" class="btn btn-primary btn-sm mb-2" id="tambah" disabled="disabled" onclick="save_to_cart()"><i class="fa fa-shopping-cart"></i>Input</button>
-
-                <input class="res" type="hidden" name="total" id="total" value="<?= number_format( $this->cart->total(), 0 , '' , '.' ); ?>" >
-                <!-- <div class="form-group row">
-                  <div class="col">
-                    <input class="form-control form-control-lg res" type="text" readonly="" name="total" id="total" value="<-?= number_format( $this->cart->total(), 0 , '' , '.' ); ?>" >
-                  </div>
-                </div> -->
-    
-                <div class="form-group row">
-                  <div class="col">
-                    <label class="col-md-3 col-form-label">Bayar</label>
-                    <input class="form-control form-control-lg res" type="number" id="bayar" name="bayar" onkeyup="showKembali(this.value)"  placeholder="0">
-                  </div>
-                </div>
-                
-                <!-- <div class="form-group row">
-                  <div class="col">
-                    <input class="form-control form-control-lg res" type="text" id="kembali" readonly="" name="kembali"  >
-                  </div>
-                </div> -->
-                <input class="res" type="hidden" id="kembali" readonly="" name="kembali"  >
-
+                <button type="button" class="btn btn-md btn-primary" id="tambah" disabled="disabled" onclick="save_to_cart()"><i class="fa fa-shopping-cart"></i> input</button>
               </div>
 
-              <div class="col-sm-12 col-md-8">
-                <h1 class="">
-                  <div class="d-flex justify-content-between">
-                    <div class="">Total : </div>
-                    <div class="d-flex">
-                      <div class="">Rp. </div>
-                      <div class="text-danger">
-                        <?= number_format( $this->cart->total(), 0 , '' , '.' ); ?>
-                      </div>
-                    </div>
-                  </div>
-                </h1>
-                <table id="shoping_cart_table" class="table table-striped table-bordered nowrap" style="width:100%">
-                  <thead>
-                    <tr>
-                      <th>no</th>
-                      <th>Nama</th>
-                      <th>Harga</th>
-                      <th>Qty</th>
-                      <th>Sub total</th>
-                      <th>opsi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  </tbody>
-                </table>
-                <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()" >selesai </button>
-                <!-- <div class="form-group row">
+              <div class="col-sm-12 col-md-6 ">
+
+                <div class="form-group row">
                   <label class="col-md-3 col-form-label">Total</label>
                   <div class="col-md-9">
                     <input class="form-control form-control-lg res" type="text" readonly="" name="total" id="total" value="<?= number_format( $this->cart->total(), 0 , '' , '.' ); ?>" >
@@ -158,13 +114,13 @@ die;
                     <div class="col-md-9">
                       <input class="form-control form-control-lg res" type="text" id="kembali" readonly="" name="kembali"  >
                     </div>
-                </div> -->
+                </div>
       
               </div>
             </div>
           </div>
     
-          <!-- <table id="shoping_cart_table" class="table table-striped table-bordered nowrap" style="width:100%">
+          <table id="shoping_cart_table" class="table table-striped table-bordered nowrap" style="width:100%">
             <thead>
               <tr>
                 <th>no</th>
@@ -178,7 +134,7 @@ die;
             <tbody>
             </tbody>
           </table>
-          <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()" >selesai </button> -->
+          <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()" >selesai </button>
         </div>
       </div>
       <?php $this->load->view('component/footer')?>
@@ -205,10 +161,6 @@ die;
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
     });
-
-    function changeQty(val) {
-      console.log("oke", val);
-    }
 
     function list_transaction() {
       table = $('#shoping_cart_table').DataTable({
@@ -330,10 +282,9 @@ die;
     };
     
     function showTotal(){
-      let total = $('#total').val().replace(".", "").replace(".", "");
-      let sub_total = $('#sub_total').val().replace(".", "").replace(".", "");
-      $('#total').val(convertToRupiah((Number(total) + Number(sub_total))));
-      $("#total-bayar").text(convertToRupiah((Number(total) + Number(sub_total))))
+      var total = $('#total').val().replace(".", "").replace(".", "");
+      var sub_total = $('#sub_total').val().replace(".", "").replace(".", "");
+      $('#total').val(convertToRupiah((Number(total)+Number(sub_total))));
     }
     
     function showKembali(str) {

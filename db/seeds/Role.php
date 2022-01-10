@@ -24,7 +24,7 @@ class Role extends AbstractSeed
       ),
     );
 
-    $user = $this->table('roles');
-    $user->insert($data)->save();
+    $role = $this->table('roles');
+    $role->insert($data)->save();
   }
 }

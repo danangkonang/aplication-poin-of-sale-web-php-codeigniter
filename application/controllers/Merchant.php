@@ -10,7 +10,6 @@ class Merchant extends CI_Controller {
 		}
 	}
 
-  // fix
 	public function my_merchant(){
 		$data_session = [
 			'title' => 'Toko',
@@ -20,7 +19,6 @@ class Merchant extends CI_Controller {
 		$this->load->view('merchant/merchant_view');
 	}
 	
-  // fix
 	public function find_merchant(){
 		$data = $this->model_merchant->find_merchant();
 		echo json_encode($data);
