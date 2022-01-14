@@ -19,17 +19,20 @@ die;
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
 
-  
+
   <title>kasir</title>
   <style>
-    @media print{
+    @media print {
       #wrapper {
-        display:none;
+        display: none;
       }
-      .modal-footer, .modal-header {
-        display:none;
+
+      .modal-footer,
+      .modal-header {
+        display: none;
       }
-      title{
+
+      title {
         display: none;
       }
     }
@@ -39,13 +42,13 @@ die;
 <body id="page-top">
   <div id="wrapper">
 
-    <?php $this->load->view('component/sidebar')?>
+    <?php $this->load->view('component/sidebar') ?>
 
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
 
-        <?php $this->load->view('component/header')?>
-        
+        <?php $this->load->view('component/header') ?>
+
         <div class="container-fluid">
           <div class="col-sm-12">
             <div class="row">
@@ -54,39 +57,39 @@ die;
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Cari</label>
                     <div class="col-md-9">
-                      <input class="form-control reset" id="search"  name="search" type="text" placeholder="Barcode atau Nama" >
+                      <input class="form-control reset" id="search" name="search" type="text" placeholder="Barcode atau Nama">
                     </div>
                   </div>
                   <input type="hidden" id="product_id" name="product_id">
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Nama</label>
                     <div class="col-md-9">
-                      <input class="form-control reset" type="text" id="product_name" name="product_name" readonly="" placeholder="Nama" >
+                      <input class="form-control reset" type="text" id="product_name" name="product_name" readonly="" placeholder="Nama">
                     </div>
                   </div>
-                  
+
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Harga</label>
                     <div class="col-md-9">
-                      <input class="form-control reset" type="text" name="selling_price" id="selling_price"  readonly="" placeholder="0"value="">
+                      <input class="form-control reset" type="text" name="selling_price" id="selling_price" readonly="" placeholder="0" value="">
                     </div>
                   </div>
-    
+
                   <input type="hidden" class="reset" id="jenis_promo" name="jenis_promo">
                   <input type="hidden" class="reset" id="potongan" name="potongan">
                   <input type="hidden" class="reset" id="harga_potongan" name="harga_potongan">
-                      
+
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Qty</label>
                     <div class="col-md-9">
                       <input class="form-control reset" type="number" readonly="readonly" onkeyup="subTotal(this.value)" id="product_qty" min="0" name="product_qty" placeholder="qty">
                     </div>
                   </div>
-                  
+
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label">Sub total</label>
                     <div class="col-md-9">
-                      <input class="form-control reset" type="text" name="sub_total" id="sub_total"  readonly="" placeholder="0" value="">
+                      <input class="form-control reset" type="text" name="sub_total" id="sub_total" readonly="" placeholder="0" value="">
                     </div>
                   </div>
                 </form>
@@ -98,28 +101,28 @@ die;
                 <div class="form-group row">
                   <label class="col-md-3 col-form-label">Total</label>
                   <div class="col-md-9">
-                    <input class="form-control form-control-lg res" type="text" readonly="" name="total" id="total" value="<?= number_format( $this->cart->total(), 0 , '' , '.' ); ?>" >
+                    <input class="form-control form-control-lg res" type="text" readonly="" name="total" id="total" value="<?= number_format($this->cart->total(), 0, '', '.'); ?>">
                   </div>
                 </div>
-    
+
                 <div class="form-group row">
                   <label class="col-md-3 col-form-label">Bayar</label>
-                    <div class="col-md-9">
-                      <input class="form-control form-control-lg res" type="number" id="bayar" name="bayar" onkeyup="showKembali(this.value)"  placeholder="0">
-                    </div>
+                  <div class="col-md-9">
+                    <input class="form-control form-control-lg res" type="number" id="bayar" name="bayar" onkeyup="showKembali(this.value)" placeholder="0">
+                  </div>
                 </div>
-                
+
                 <div class="form-group row">
                   <label class="col-md-3 col-form-label">Kembali</label>
-                    <div class="col-md-9">
-                      <input class="form-control form-control-lg res" type="text" id="kembali" readonly="" name="kembali"  >
-                    </div>
+                  <div class="col-md-9">
+                    <input class="form-control form-control-lg res" type="text" id="kembali" readonly="" name="kembali">
+                  </div>
                 </div>
-      
+
               </div>
             </div>
           </div>
-    
+
           <table id="shoping_cart_table" class="table table-striped table-bordered nowrap" style="width:100%">
             <thead>
               <tr>
@@ -134,10 +137,10 @@ die;
             <tbody>
             </tbody>
           </table>
-          <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()" >selesai </button>
+          <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()">selesai </button>
         </div>
       </div>
-      <?php $this->load->view('component/footer')?>
+      <?php $this->load->view('component/footer') ?>
     </div>
   </div>
 
@@ -151,10 +154,10 @@ die;
   <script src="<?= base_url() ?>assets/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
   <script src="<?= base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-  
+
   <script>
     let table;
-    $(document).ready(function(){
+    $(document).ready(function() {
       list_transaction();
       $('#product_name').focus();
       listening_serch_product();
@@ -169,84 +172,81 @@ die;
           "url": "http://localhost:8080/option/list_shoping_cart",
           "type": "POST"
         },
-        "columnDefs": [
-          {
-            "orderable": false,
-          },
-        ],
+        "columnDefs": [{
+          "orderable": false,
+        }, ],
       });
     }
 
     function listening_serch_product(params) {
       $("#search").autocomplete({
-        minLength: 1,
-        delay : 400,
-        source: function(request, response) { 
-          jQuery.ajax({
-            url: "http://localhost:8080/option/search_product",
-            data: {
-              keyword : request.term
-            },
-            dataType: "json",
-            success: function(data){
-              response(data);
-            }
-          })
-        },
-        select:  function(e, ui){
-          $("#search").val('');
-          $("#product_id").val(ui.item.product_id);
-          $("#product_name").val(ui.item.product_name);
-          $("#selling_price").val(convertToRupiah(ui.item.selling_price));
-          $('#product_qty').removeAttr("readonly");
-          $('#product_qty').focus();
-          return false;
-        }
-      })
-      .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-        return $( "<li>" )
-          .append( "<a style='display: flex;'><div style='width: 100px;'>" + item.barcode + "</div> " + item.product_name + "</a>" )
-          .appendTo( ul );
-      };
+          minLength: 1,
+          delay: 400,
+          source: function(request, response) {
+            jQuery.ajax({
+              url: "http://localhost:8080/option/search_product",
+              data: {
+                keyword: request.term
+              },
+              dataType: "json",
+              success: function(data) {
+                response(data);
+              }
+            })
+          },
+          select: function(e, ui) {
+            $("#search").val('');
+            $("#product_id").val(ui.item.product_id);
+            $("#product_name").val(ui.item.product_name);
+            $("#selling_price").val(convertToRupiah(ui.item.selling_price));
+            $('#product_qty').removeAttr("readonly");
+            $('#product_qty').focus();
+            return false;
+          }
+        })
+        .data("ui-autocomplete")._renderItem = function(ul, item) {
+          return $("<li>")
+            .append("<a style='display: flex;'><div style='width: 100px;'>" + item.barcode + "</div> " + item.product_name + "</a>")
+            .appendTo(ul);
+        };
     }
-      
-    function reload_table(){
-      table.ajax.reload(null,false);
+
+    function reload_table() {
+      table.ajax.reload(null, false);
     }
-      
-    function subTotal(qty){
+
+    function subTotal(qty) {
       var harga = $('#selling_price').val().replace(".", "").replace(".", "");
       var promo = $('#jenis_promo').val();
       var potongan = $('#potongan').val();
       var hrg_potong = $('#harga_potongan').val();
-      if(promo == 'minimal'){
+      if (promo == 'minimal') {
         var induk = Math.floor(qty / potongan);
         var sisa = qty % potongan;
-        var sub = (induk*hrg_potong)+(harga*sisa);
+        var sub = (induk * hrg_potong) + (harga * sisa);
         $('#sub_total').val(convertToRupiah(sub));
         $('#tambah').removeAttr("disabled");
-      }
-      else{
-        var diskon = harga - (harga*potongan/100);
+      } else {
+        var diskon = harga - (harga * potongan / 100);
         $('#sub_total').val(convertToRupiah(diskon * qty));
         $('#tambah').removeAttr("disabled");
       }
     }
-    
-    function save_to_cart(){
+
+    function save_to_cart() {
       $.ajax({
-        url : "http://localhost:8080/option/add_keranjang",
+        url: "http://localhost:8080/option/add_keranjang",
         type: "POST",
         data: $('#form_order').serialize(),
         dataType: "JSON",
-        success: function(data){
+        success: function(data) {
           console.log(data);
           reload_table();
-          $('#tambah').attr("disabled","disabled");
-          $('#product_qty').attr("readonly","readonly");
+          $('#tambah').attr("disabled", "disabled");
+          $('#product_qty').attr("readonly", "readonly");
           $('#bayar').focus();
         },
-        error: function (jqXHR, textStatus, errorThrown){
+        error: function(jqXHR, textStatus, errorThrown) {
           alert('Error adding data');
         }
       });
@@ -254,72 +254,71 @@ die;
       showKembali($('#bayar').val());
       $('.reset').val('');
     }
-    
-    document.onkeydown = function(e){
+
+    document.onkeydown = function(e) {
       let qty = $('#product_qty').val();
       let bill = $('#bayar').val();
-      if(qty !== ''){
-        switch(e.keyCode){
+      if (qty !== '') {
+        switch (e.keyCode) {
           case 13:
             save_to_cart();
-          break;
+            break;
         }
       }
-      if(bill !== ''){
-        switch(e.keyCode){
+      if (bill !== '') {
+        switch (e.keyCode) {
           case 13:
             finish_transaction();
-          break;
+            break;
         }
       }
-      switch(e.keyCode){
+      switch (e.keyCode) {
         case 113:
           $('#product_name').focus();
-        break;
+          break;
       }
     };
-    
-    function showTotal(){
+
+    function showTotal() {
       var total = $('#total').val().replace(".", "").replace(".", "");
       var sub_total = $('#sub_total').val().replace(".", "").replace(".", "");
-      $('#total').val(convertToRupiah((Number(total)+Number(sub_total))));
+      $('#total').val(convertToRupiah((Number(total) + Number(sub_total))));
     }
-    
+
     function showKembali(str) {
       let total = $('#total').val().replace(".", "").replace(".", "");
       let bayar = str.replace(".", "").replace(".", "");
-      let kembali = bayar-total;
+      let kembali = bayar - total;
       $('#kembali').val(convertToRupiah(kembali));
-      if (kembali >= 0){
+      if (kembali >= 0) {
         $('#selesai').removeAttr("disabled");
+      } else {
+        $('#selesai').attr("disabled", "disabled");
       }
-      else{
-        $('#selesai').attr("disabled","disabled");
-      }
-      if (total == 0){
-        $('#selesai').attr("disabled","disabled");
+      if (total == 0) {
+        $('#selesai').attr("disabled", "disabled");
       }
     }
-    
+
     function convertToRupiah(angka) {
       var rupiah = '';
       var angkarev = angka.toString().split('').reverse().join('');
-      for(var i = 0; i < angkarev.length; i++)
-      if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
-      return rupiah.split('',rupiah.length-1).reverse().join('');
+      for (var i = 0; i < angkarev.length; i++)
+        if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+      return rupiah.split('', rupiah.length - 1).reverse().join('');
     }
-    
+
     function preview_struck() {
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
         url: "http://localhost:8080/option/save_orders/",
         data: {
-          bayar:bayar,
-          kembali:kembali
+          bayar: bayar,
+          kembali: kembali
         },
         method: "POST",
-        success: function(data){
+        success: function(data) {
           $('#modal_struck').modal('show');
           $('#content_struck').html(data);
         }
@@ -330,79 +329,80 @@ die;
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
-        url:"http://localhost:8080/option/cetak_nota/",
-        data:{
+        url: "http://localhost:8080/option/cetak_nota/",
+        data: {
           bayar: bayar,
           kembali: kembali
         },
-        method:"POST",
-        success:function(data){
+        method: "POST",
+        success: function(data) {
           $('#modal_struck').modal('show');
           $('#content_struck').html(data);
         }
       });
     }
-		
-		function save_cart_to_order() {
-			$.ajax({
-				url : "http://localhost:8080/option/shoping/",
-				type: "POST",
-        data:{
+
+    function save_cart_to_order() {
+      $.ajax({
+        url: "http://localhost:8080/option/shoping/",
+        type: "POST",
+        data: {
           time_transaction: $("#time_transaction")[0].dataset.transaction,
         },
-				dataType:"json",
-				success:function(result){
-          cetak_struk();
+        dataType: "json",
+        success: function(result) {
+          //cetak_struk();
+          window.print();
           $('#modal_struck').modal('hide');
           reload_table();
           $('.res').val('');
           $('#product_name').focus();
-				},
-				error: function(err){
-					alert('error transaksi')
-				}
-			});
-		}
-		
+        },
+        error: function(err) {
+          alert('error transaksi')
+        }
+      });
+    }
+
     // fix
-		function delete_cart(id, sub_total) {
-			$.ajax({
-				url : "<?= site_url('option/delete_shoping_cart')?>/" + id,
-				type: "POST",
-				dataType: "JSON",
-				success: function(data){
-					reload_table();
+    function delete_cart(id, sub_total) {
+      $.ajax({
+        url: "<?= site_url('option/delete_shoping_cart') ?>/" + id,
+        type: "POST",
+        dataType: "JSON",
+        success: function(data) {
+          reload_table();
           let total = $('#total').val().replace(".", "");
           $('#total').val(convertToRupiah(total - sub_total));
           showKembali($('#bayar').val());
-				},
-				error: function (jqXHR, textStatus, errorThrown){
-					alert('Gagal hapus barang');
-				}
-			});
-		}
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Gagal hapus barang');
+        }
+      });
+    }
   </script>
-  
+
   <div class="modal fade" id="modal_struck" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      
-      <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+
+        <div class="modal-body" id="content_struck">
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" OnClick="save_cart_to_order()"><span class="fa fa-print"></span> Cetak</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> Tutup</button>
+        </div>
       </div>
-    
-      <div class="modal-body" id="content_struck">
-      
-      </div>
-    
-      <div class="modal-footer">
-      <button type="button" class="btn btn-success" OnClick="save_cart_to_order()"><span class="fa fa-print"></span>  Cetak</button>
-      <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span>  Tutup</button>
-      </div>
-    </div>
     </div>
   </div>
-      
+
 </body>
 
 </html>
