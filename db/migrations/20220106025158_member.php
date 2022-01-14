@@ -23,6 +23,7 @@ final class Member extends AbstractMigration
           ->addColumn('member_email', 'string', ['limit' => 225])
           ->addColumn('member_telephone', 'string', ['limit' => 225])
           ->addColumn('discount', 'integer', ['default' => 0])
+          ->addColumn('created_by', 'integer')
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->create();

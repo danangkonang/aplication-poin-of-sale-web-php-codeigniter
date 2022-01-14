@@ -20,13 +20,17 @@ final class Transaction extends AbstractMigration
   {
     $transaction = $this->table('transactions', array('id' => 'transaction_id'));
     $transaction->addColumn('transaction_code', 'string', ['limit' => 225])
-          ->addColumn('user_id', 'integer')
+          ->addColumn('member_id', 'integer', ['null' => true])
           ->addColumn('product_id', 'integer')
           ->addColumn('product_name','string', ['limit' => 255])
           ->addColumn('price', 'float')
           ->addColumn('qty', 'integer')
+          ->addColumn('created_by', 'integer')
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+          ->addIndex(array('member_id'), array('unique' => true))
+          ->addForeignKey('member_id', 'members', 'member_id', array('delete'=> 'SET_NULL', 'update'=> 'NO_ACTION'))
+          ->addForeignKey('created_by', 'users', 'user_id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
           ->create();
   }
 }

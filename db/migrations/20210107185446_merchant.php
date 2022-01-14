@@ -23,6 +23,7 @@ final class Merchant extends AbstractMigration
           ->addColumn('merchant_telephone', 'string', ['limit' => 225, 'null' => true])
           ->addColumn('merchant_address', 'string', ['limit' => 225, 'null' => true])
           ->addColumn('merchant_description','string', ['limit' => 255, 'null' => true])
+          ->addColumn('created_by', 'integer')
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->create();

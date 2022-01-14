@@ -22,6 +22,7 @@ final class Unit extends AbstractMigration
     $units->addColumn('unit', 'string', ['limit' => 225])
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+          ->addIndex(array('unit'), array('unique' => true))
           ->create();
   }
 }
