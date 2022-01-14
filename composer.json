@@ -3,6 +3,7 @@
         "robmorgan/phinx": "^0.12.7"
     },
     "require": {
-        "vlucas/phpdotenv": "^5.3"
+        "vlucas/phpdotenv": "^5.3",
+        "fzaninotto/faker": "^1.9"
     }
 }

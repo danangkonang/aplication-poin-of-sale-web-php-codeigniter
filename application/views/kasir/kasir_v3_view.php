@@ -18,7 +18,6 @@ die;
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
-
   
   <title>kasir</title>
   <style>
@@ -49,92 +48,86 @@ die;
         <div class="container-fluid">
           <div class="col-sm-12">
             <div class="row">
-              <div class="col-sm-12 col-md-6 ">
+              <div class="col-sm-12 col-md-4">
                 <form class="form-horizontal" id="form_order" role="form">
+
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Cari</label>
-                    <div class="col-md-9">
-                      <input class="form-control reset" id="search"  name="search" type="text" placeholder="Barcode atau Nama" >
-                    </div>
-                  </div>
-                  <input type="hidden" id="product_id" name="product_id">
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Nama</label>
-                    <div class="col-md-9">
-                      <input class="form-control reset" type="text" id="product_name" name="product_name" readonly="" placeholder="Nama" >
+                    <div class="col">
+                      <input class="form-control reset border-primary" id="search"  name="search" type="text" placeholder="Cari Barcode atau Nama" >
                     </div>
                   </div>
                   
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Harga</label>
-                    <div class="col-md-9">
-                      <input class="form-control reset" type="text" name="selling_price" id="selling_price"  readonly="" placeholder="0"value="">
-                    </div>
-                  </div>
-    
+                  <input type="hidden" class="reset"  id="product_id" name="product_id">
+                  <input type="hidden" class="reset" id="val_selling_price" name="selling_price">
+                  <input type="hidden" class="reset" id="val_product_name" name="product_name">
+                  <input type="hidden" class="reset" id="val_product_qty" name="stock_product_qty">
+
                   <input type="hidden" class="reset" id="jenis_promo" name="jenis_promo">
                   <input type="hidden" class="reset" id="potongan" name="potongan">
                   <input type="hidden" class="reset" id="harga_potongan" name="harga_potongan">
-                      
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Qty</label>
-                    <div class="col-md-9">
-                      <input class="form-control reset" type="number" readonly="readonly" onkeyup="subTotal(this.value)" id="product_qty" min="0" name="product_qty" placeholder="qty">
-                    </div>
-                  </div>
+                  <input type="hidden" class="reset" name="total" id="val_total" value="<?= $this->cart->total() ?>">
+                  <input type="hidden" class="reset" id="kembali" readonly="" name="kembali"  >
                   
-                  <div class="form-group row">
-                    <label class="col-md-3 col-form-label">Sub total</label>
-                    <div class="col-md-9">
-                      <input class="form-control reset" type="text" name="sub_total" id="sub_total"  readonly="" placeholder="0" value="">
-                    </div>
-                  </div>
                 </form>
-                <button type="button" class="btn btn-md btn-primary" id="tambah" disabled="disabled" onclick="save_to_cart()"><i class="fa fa-shopping-cart"></i> input</button>
-              </div>
 
-              <div class="col-sm-12 col-md-6 ">
-
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label">Total</label>
-                  <div class="col-md-9">
-                    <input class="form-control form-control-lg res" type="text" readonly="" name="total" id="total" value="<?= number_format( $this->cart->total(), 0 , '' , '.' ); ?>" >
-                  </div>
-                </div>
-    
-                <div class="form-group row">
-                  <label class="col-md-3 col-form-label">Bayar</label>
-                    <div class="col-md-9">
-                      <input class="form-control form-control-lg res" type="number" id="bayar" name="bayar" onkeyup="showKembali(this.value)"  placeholder="0">
-                    </div>
-                </div>
                 
                 <div class="form-group row">
-                  <label class="col-md-3 col-form-label">Kembali</label>
-                    <div class="col-md-9">
-                      <input class="form-control form-control-lg res" type="text" id="kembali" readonly="" name="kembali"  >
-                    </div>
+                  <div class="col">
+                    <label class="col-form-label">Bayar</label>
+                    <input class="form-control form-control-lg border-danger" type="number" id="bayar" name="bayar" oninput="showKembali(this.value)"  placeholder="0">
+                  </div>
                 </div>
-      
+              </div>
+
+              <div class="col-sm-12 col-md-8">
+                <h1 class="">
+                  <div class="d-flex justify-content-between">
+                    <div class="">Total : </div>
+                    <div class="d-flex">
+                      <div class="">Rp. </div>
+                      <div class="text-danger" id="total_belanja">
+                        <?= number_format($this->cart->total(), 0, '', '.') ?>
+                      </div>
+                    </div>
+                  </div>
+                </h1>
+                <h1 class="">
+                  <div class="d-flex justify-content-between">
+                    <div class="">Bayar : </div>
+                    <div class="d-flex">
+                      <div class="">Rp. </div>
+                      <div class="text-danger" id="total_bayar">0</div>
+                    </div>
+                  </div>
+                </h1>
+                <h1 class="">
+                  <div class="d-flex justify-content-between">
+                    <div class="">Kembali : </div>
+                    <div class="d-flex">
+                      <div class="">Rp. </div>
+                      <div class="text-danger" id="total_kembali">0</div>
+                    </div>
+                  </div>
+                </h1>
+                <table id="shoping_cart_table" class="table table-striped table-bordered nowrap" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th>no</th>
+                      <th>Nama</th>
+                      <th>Harga</th>
+                      <th>Qty</th>
+                      <th>Sub total</th>
+                      <th>opsi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  </tbody>
+                </table>
+                <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()" >Selesai Transaksi</button>
               </div>
             </div>
           </div>
     
-          <table id="shoping_cart_table" class="table table-striped table-bordered nowrap" style="width:100%">
-            <thead>
-              <tr>
-                <th>no</th>
-                <th>Nama</th>
-                <th>Harga</th>
-                <th>Qty</th>
-                <th>Sub total</th>
-                <th>opsi</th>
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-          <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()" >selesai </button>
         </div>
       </div>
       <?php $this->load->view('component/footer')?>
@@ -151,9 +144,11 @@ die;
   <script src="<?= base_url() ?>assets/DataTables-1.10.18/js/jquery.dataTables.min.js"></script>
   <script src="<?= base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-  
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
   <script>
     let table;
+
     $(document).ready(function(){
       list_transaction();
       $('#product_name').focus();
@@ -182,7 +177,7 @@ die;
     function listening_serch_product(params) {
       $("#search").autocomplete({
         minLength: 1,
-        delay : 400,
+        delay : 100,
         source: function(request, response) { 
           jQuery.ajax({
             url: "http://localhost:8080/option/search_product",
@@ -197,63 +192,101 @@ die;
         },
         select:  function(e, ui){
           $("#search").val('');
+          $("#product_name").text(ui.item.product_name);
+          $("#product_stock").text(ui.item.product_qty);
+          $("#selling_price").text(convertToRupiah(ui.item.selling_price));
           $("#product_id").val(ui.item.product_id);
-          $("#product_name").val(ui.item.product_name);
-          $("#selling_price").val(convertToRupiah(ui.item.selling_price));
-          $('#product_qty').removeAttr("readonly");
-          $('#product_qty').focus();
+          $("#val_selling_price").val(ui.item.selling_price);
+          $("#val_product_name").val(ui.item.product_name);
+          $("#val_product_qty").val(ui.item.product_qty);
+          save_to_cartv2(ui.item.product_id, ui.item.product_name, ui.item.selling_price)
           return false;
         }
       })
-      .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-        return $( "<li>" )
-          .append( "<a style='display: flex;'><div style='width: 100px;'>" + item.barcode + "</div> " + item.product_name + "</a>" )
-          .appendTo( ul );
+      .data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $("<li>")
+          .append("<a style='display: flex;'><div style='width: 150px;'>" + item.barcode + "</div> " + item.product_name + "</a>")
+          .appendTo(ul);
       };
     }
       
     function reload_table(){
-      table.ajax.reload(null,false);
+      table.ajax.reload(null, false);
     }
-      
+
     function subTotal(qty){
-      var harga = $('#selling_price').val().replace(".", "").replace(".", "");
-      var promo = $('#jenis_promo').val();
-      var potongan = $('#potongan').val();
-      var hrg_potong = $('#harga_potongan').val();
+      if (qty > $("#val_product_qty").val()) {
+        swal({
+          title: "Ups?",
+          text: "Qty Melebihi Stok",
+          dangerMode: true,
+        });
+      }
+      let harga = $('#val_selling_price').val();
+      let promo = $('#jenis_promo').val();
+      let potongan = $('#potongan').val();
+      let hrg_potong = $('#harga_potongan').val();
       if(promo == 'minimal'){
-        var induk = Math.floor(qty / potongan);
-        var sisa = qty % potongan;
-        var sub = (induk*hrg_potong)+(harga*sisa);
+        let induk = Math.floor(qty / potongan);
+        let sisa = qty % potongan;
+        let sub = (induk*hrg_potong)+(harga*sisa);
         $('#sub_total').val(convertToRupiah(sub));
         $('#tambah').removeAttr("disabled");
-      }
-      else{
-        var diskon = harga - (harga*potongan/100);
-        $('#sub_total').val(convertToRupiah(diskon * qty));
+      } else {
+        let diskon = harga - (harga * potongan / 100);
+        $('#sub_total').text(convertToRupiah(diskon * qty));
         $('#tambah').removeAttr("disabled");
       }
     }
-    
+      
     function save_to_cart(){
       $.ajax({
         url : "http://localhost:8080/option/add_keranjang",
         type: "POST",
-        data: $('#form_order').serialize(),
         dataType: "JSON",
+        data: $('#form_order').serialize(),
         success: function(data){
-          console.log(data);
+          $("#total_belanja").text(convertToRupiah(data.total));
           reload_table();
+          $('#val_total').val(data.total);
+          $("#product_name").text('');
+          $("#product_stock").text('');
+          $("#selling_price").text('');
+          $('#sub_total').text('');
           $('#tambah').attr("disabled","disabled");
-          $('#product_qty').attr("readonly","readonly");
-          $('#bayar').focus();
         },
         error: function (jqXHR, textStatus, errorThrown){
           alert('Error adding data');
         }
       });
-      showTotal();
-      showKembali($('#bayar').val());
+      $('.reset').val('');
+    }
+
+    function save_to_cartv2(id, name, price) {
+      $.ajax({
+        url : "http://localhost:8080/option/add_keranjang",
+        type: "POST",
+        dataType: "JSON",
+        data: {
+          product_id: id,
+          product_name: name,
+          selling_price: price,
+          product_qty: 1,
+        },
+        success: function(data){
+          $("#total_belanja").text(convertToRupiah(data.total));
+          reload_table();
+          $('#val_total').val(data.total);
+          $("#product_name").text('');
+          $("#product_stock").text('');
+          $("#selling_price").text('');
+          $('#sub_total').text('');
+          $('#tambah').attr("disabled","disabled");
+        },
+        error: function (jqXHR, textStatus, errorThrown){
+          alert('Error adding data');
+        }
+      });
       $('.reset').val('');
     }
     
@@ -281,33 +314,32 @@ die;
       }
     };
     
-    function showTotal(){
-      var total = $('#total').val().replace(".", "").replace(".", "");
-      var sub_total = $('#sub_total').val().replace(".", "").replace(".", "");
-      $('#total').val(convertToRupiah((Number(total)+Number(sub_total))));
-    }
-    
-    function showKembali(str) {
-      let total = $('#total').val().replace(".", "").replace(".", "");
-      let bayar = str.replace(".", "").replace(".", "");
-      let kembali = bayar-total;
-      $('#kembali').val(convertToRupiah(kembali));
-      if (kembali >= 0){
-        $('#selesai').removeAttr("disabled");
-      }
-      else{
-        $('#selesai').attr("disabled","disabled");
-      }
-      if (total == 0){
-        $('#selesai').attr("disabled","disabled");
+    function showKembali(bayar) {
+      if (bayar === '') {
+        $("#total_bayar").text(0);
+        $("#total_kembali").text(0);
+        $('#selesai').attr("disabled", "disabled");
+      } else {
+        let total = $('#val_total').val();
+        let kembalian = bayar - total
+        $("#total_bayar").text(convertToRupiah(bayar));
+        $("#total_kembali").text(convertToRupiah(kembalian));
+        if (kembalian >= 0) {
+          $('#selesai').removeAttr("disabled");
+        } else {
+          $('#selesai').attr("disabled", "disabled");
+        }
       }
     }
     
     function convertToRupiah(angka) {
-      var rupiah = '';
-      var angkarev = angka.toString().split('').reverse().join('');
-      for(var i = 0; i < angkarev.length; i++)
-      if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+      let rupiah = '';
+      let angkarev = angka.toString().split('').reverse().join('');
+      for(let i = 0; i < angkarev.length; i++) {
+        if (i%3 == 0) {
+          rupiah += angkarev.substr(i,3)+'.';
+        }
+      }
       return rupiah.split('',rupiah.length-1).reverse().join('');
     }
     
@@ -366,22 +398,71 @@ die;
 			});
 		}
 		
-    // fix
-		function delete_cart(id, sub_total) {
+		function delete_cart(rowid) {
 			$.ajax({
-				url : "<?= site_url('option/delete_shoping_cart')?>/" + id,
+				url : "<?= site_url('option/delete_shoping_cart')?>/" + rowid,
 				type: "POST",
 				dataType: "JSON",
 				success: function(data){
+          $("#total_belanja").text(convertToRupiah(data.total));
 					reload_table();
-          let total = $('#total').val().replace(".", "");
-          $('#total').val(convertToRupiah(total - sub_total));
+          $('#val_total').val(data.total);
           showKembali($('#bayar').val());
 				},
 				error: function (jqXHR, textStatus, errorThrown){
 					alert('Gagal hapus barang');
 				}
 			});
+		}
+
+    function plus_cart(id, name, price) {
+			$.ajax({
+        url : "http://localhost:8080/option/add_keranjang",
+        type: "POST",
+        data: {
+          product_id: id,
+          product_name: name,
+          selling_price: price,
+          product_qty: 1,
+        },
+        dataType: "JSON",
+        success: function(data){
+          $("#total_belanja").text(convertToRupiah(data.total));
+          reload_table();
+          $('#val_total').val(data.total);
+          $('#sub_total').text('');
+        },
+        error: function (jqXHR, textStatus, errorThrown){
+          alert('Error adding data');
+        }
+      });
+		}
+
+    function minus_cart(id, name, price, qty, rowid) {
+      if(qty < 2) {
+        delete_cart(rowid);
+      } else {
+        $.ajax({
+          url : "http://localhost:8080/option/add_keranjang",
+          type: "POST",
+          data: {
+            product_id: id,
+            product_name: name,
+            selling_price: price,
+            product_qty: -1,
+          },
+          dataType: "JSON",
+          success: function(data){
+            $("#total_belanja").text(convertToRupiah(data.total));
+            reload_table();
+            $('#val_total').val(data.total);
+            $('#sub_total').text('');
+          },
+          error: function (jqXHR, textStatus, errorThrown){
+            alert('Error adding data');
+          }
+        });
+      }
 		}
   </script>
   

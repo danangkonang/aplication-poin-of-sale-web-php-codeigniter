@@ -22,6 +22,7 @@ final class Role extends AbstractMigration
     $roles->addColumn('role', 'string', ['limit' => 225])
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+          ->addIndex(array('role'), array('unique' => true))
           ->create();
   }
 }

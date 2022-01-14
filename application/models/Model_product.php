@@ -83,6 +83,7 @@ class Model_product extends CI_Model {
 		$this->db->select('*');
 		$this->db->like('product_name', $key);
 		$this->db->or_like('barcode', $key);
+		$this->db->limit(10);
 		$query = $this->db->get($this->table);
 		if($query->num_rows() > 0) {
 			foreach($query->result() as $data) {

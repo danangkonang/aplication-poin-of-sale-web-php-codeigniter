@@ -1,7 +1,16 @@
-# Aplikasi (POS) poin of sale web php codeigniter
-Aplikasi penjualan berbasis web mempermudah pengusaha memantau penjualan harian/bulanan, stok barang, laba/rugi dan laporan-laporan. Dibuat dengan Codeigniter, MySQL, dan Bootstrap
+# Aplikasi (POS) Poin Of Sale web php codeigniter
+Aplikasi penjualan berbasis web Dibuat dengan Codeigniter, MySQL, dan Bootstrap.
 
-# Cara Install
+## fitur
+- login/registrasi
+- seting hak akses user
+- multi level
+- member
+- penjualan harian/bulanan
+- stok barang
+- barcode
+
+# Installasi
 
 ## Clonning repository
 
@@ -17,15 +26,17 @@ cp .env.example .env
 kalau sudah memiliki coposer silahkan install vendor seperti biasanya dan skip langkah ini 
 
 ```php
-wget "https://raw.githubusercontent.com/composer/getcomposer.org/main/web/installer"
+// wget "https://raw.githubusercontent.com/composer/getcomposer.org/main/web/installer"
 
-php installer
+// php installer
 
 php composer.phar install
 ```
 
 ## Database
+
 Bisa juga menggunakan xampp, lamp, dll. sesuaikan config .env
+
 ```
 #start database
 docker-compose up -d

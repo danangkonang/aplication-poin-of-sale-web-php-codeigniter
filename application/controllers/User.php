@@ -4,7 +4,7 @@ class User extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('model_member');
+		$this->load->model('model_user');
 		if(!$this->session->userdata('user_id')){
 			header('location:http://localhost:8080');
 		}
@@ -20,7 +20,7 @@ class User extends CI_Controller {
 	}
 
 	public function get_data_user(){
-		$list = $this->model_member->get_datatables();
+		$list = $this->model_user->get_datatables();
 		$data = [];
 		$no = $_POST['start'];
 		$n=0;
@@ -42,8 +42,8 @@ class User extends CI_Controller {
 		}
 		$output = [
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->model_member->count_all(),
-			"recordsFiltered" => $this->model_member->count_filtered(),
+			"recordsTotal" => $this->model_user->count_all(),
+			"recordsFiltered" => $this->model_user->count_filtered(),
 			"data" => $data,
 		];
 		echo json_encode($output);

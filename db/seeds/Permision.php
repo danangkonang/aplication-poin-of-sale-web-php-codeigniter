@@ -30,6 +30,13 @@ class Permision extends AbstractSeed
         'update' => false,
         'delete' => false,
       ),
+      array(
+        'user_id' => 3,
+        'read' => true,
+        'create' => true,
+        'update' => false,
+        'delete' => false,
+      ),
     );
 
     $permision = $this->table('permisions');

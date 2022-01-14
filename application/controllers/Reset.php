@@ -5,7 +5,7 @@ class Reset extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('model_member');
+		$this->load->model('model_user');
 		$this->load->library('form_validation');
 	}
 	
@@ -24,7 +24,7 @@ class Reset extends CI_Controller {
 	}
 	
 	public function forgot_password($email) {
-		$cek = $this->model_member->cek_data_email($email);
+		$cek = $this->model_user->cek_data_email($email);
     if($cek) {
       $this->make_token($email);
     }
@@ -74,19 +74,19 @@ class Reset extends CI_Controller {
 	}
 	
 	public function simpan_token($email, $data_token, $token) {
-		$cek_token = $this->model_member->cek_data_token($email, $token);
+		$cek_token = $this->model_user->cek_data_token($email, $token);
     if($cek_token) {
-      return $this->model_member->update_token($email, $data_token);
+      return $this->model_user->update_token($email, $data_token);
     }
     else {
-      return $this->model_member->simpan_token($data_token);
+      return $this->model_user->simpan_token($data_token);
     }
 	}
 	
 	public function reset_password() {
 		$email = $this->input->get('email');
 		$token = $this->input->get('token');
-		$data = $this->model_member->cek_data_token($email, $token);
+		$data = $this->model_user->cek_data_token($email, $token);
     if($data) {
       if(time() - $data['waktu'] < (60*60*24)) {
         $this->session->set_userdata('reset',$data['email']);
@@ -133,6 +133,6 @@ class Reset extends CI_Controller {
 		$data = [
 		  'password' => password_hash($password, PASSWORD_BCRYPT)
 		];
-		return $this->model_member->save_new_password($email, $data);
+		return $this->model_user->save_new_password($email, $data);
 	}
 }

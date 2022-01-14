@@ -27,7 +27,15 @@ class User extends AbstractSeed
       array(
         'user_name' => 'user seller',
         'email' => 'seller@email.com',
-        'address' => 'surabaya',
+        'address' => 'bandung',
+        'is_active' => true,
+        'role' => 'seller',
+        'password' => password_hash("password", PASSWORD_BCRYPT)
+      ),
+      array(
+        'user_name' => 'user seller02',
+        'email' => 'seller2@email.com',
+        'address' => 'jakarta',
         'is_active' => true,
         'role' => 'seller',
         'password' => password_hash("password", PASSWORD_BCRYPT)

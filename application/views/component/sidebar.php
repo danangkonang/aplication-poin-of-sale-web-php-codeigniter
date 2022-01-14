@@ -1,5 +1,5 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
     <div class="sidebar-brand-icon rotate-n-15">
       <i class="fas fa-laugh-wink"></i>
     </div>
@@ -16,10 +16,25 @@
   </li>
   <hr class="sidebar-divider">
 
-  <li class="nav-item" id="product">
-    <a class="nav-link" href="<?= site_url() ?>product/data_barang">
+  <li class="nav-item" id="member">
+    <a class="nav-link" href="<?= site_url() ?>member">
     <i class="fas fa-fw fa-cubes"></i>
-    <span>Produk</span></a>
+    <span>Member</span></a>
+  </li>
+  <hr class="sidebar-divider">
+
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseProduct" aria-expanded="true" aria-controls="collapseProduct">
+      <i class="fas fa-money-bill-wave"></i>
+      <span>Produk</span>
+    </a>
+    <div id="collapseProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" id="product" href="<?= site_url() ?>product/data_barang"><i class="fas fa-table"></i>Produk</a>
+        <a class="collapse-item" id="product_kind" href="<?= site_url() ?>product_kind"><i class="far fa-chart-bar"></i>Jenis</a>
+        <a class="collapse-item" id="product_unit" href="<?= site_url() ?>product_unit"><i class="far fa-chart-bar"></i>Satuan</a>
+      </div>
+    </div>
   </li>
   <hr class="sidebar-divider">
 
@@ -45,6 +60,20 @@
   <hr class="sidebar-divider">
 
   <?php if($this->session->userdata('role')== 'admin'){ ?>
+
+    <!-- <li class="nav-item" id="product_kind">
+      <a class="nav-link" href="<?= site_url() ?>product_kind">
+      <i class="far fa-user"></i>
+      <span>Kind</span></a>
+    </li>
+    <hr class="sidebar-divider">
+
+    <li class="nav-item" id="product_unit">
+      <a class="nav-link" href="<?= site_url() ?>product_unit">
+      <i class="far fa-user"></i>
+      <span>Unit</span></a>
+    </li>
+    <hr class="sidebar-divider"> -->
 
     <li class="nav-item" id="user">
       <a class="nav-link" href="<?= site_url() ?>user/data_user">

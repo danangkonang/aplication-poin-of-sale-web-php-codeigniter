@@ -4,7 +4,7 @@ class Auth extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('model_member');
+		$this->load->model('model_user');
 		$this->load->model('model_permision');
 	}
 	
@@ -22,7 +22,7 @@ class Auth extends CI_Controller {
 				'delete' => $this->model_permision->is_delete($id),
       ];
 			$this->session->set_userdata($data_session);
-      $this->load->view('kasir/kasir_view');
+      $this->load->view('kasir/kasir_v3_view');
     }
 	}
 	
@@ -37,7 +37,7 @@ class Auth extends CI_Controller {
 	}
 	
 	public function auth_valid_cookie($user_cookie) {
-		$data = $this->model_member->validasi_cookie($user_cookie);
+		$data = $this->model_user->validasi_cookie($user_cookie);
     if($data == NULL){
       delete_cookie('cookie_id');
       $this->load->view('auth/form_login');

@@ -1,13 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Model_member extends CI_Model {
 
-  var $table = 'members';
-  var $column_order = array('member_name');
-  var $column_search = array('member_name');
-  var $order = array('member_id' => 'desc');
+class Model_product_unit extends CI_Model {
 
-  function get_member_datatables() {
+  var $table = 'units';
+  var $column_order = array('unit_id');
+  var $column_search = array(null);
+  var $order = array('unit_id' => 'desc');
+
+	function get_unit_datatables() {
     $this->_get_datatables_query();
     if($_POST['length'] != -1){
       $this->db->limit($_POST['length'], $_POST['start']);
@@ -34,7 +35,6 @@ class Model_member extends CI_Model {
       }
       $i++;
     }
-
     if(isset($_POST['order'])) {
       $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
     } 
@@ -55,17 +55,23 @@ class Model_member extends CI_Model {
     return $this->db->count_all_results();
   }
 
-  public function find_member($member_id) {
-    $this->db->where('member_id', $member_id);
-    return $this->db->get($this->table)->row_array();
+  public function find_unit($unit_id) {
+    $this->db->from($this->table);
+		$this->db->where('unit_id', $unit_id);
+		return $this->db->get()->row();
   }
 
-  function save_member($data) {
+  public function find_units() {
+    $this->db->select('unit_id, unit');
+		return $this->db->get($this->table)->result();
+  }
+
+  function save_unit($data) {
 		return $this->db->insert($this->table, $data);
 	}
 
-  function update_member($member_id, $data) {
-		$this->db->where('member_id', $member_id);
+  function update_unit($unit_id, $data) {
+		$this->db->where('unit_id', $unit_id);
 		return $this->db->update($this->table, $data);
 	}
 

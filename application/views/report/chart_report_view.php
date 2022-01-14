@@ -100,12 +100,14 @@
           diagram(obj);
         },
         error: function(err){
-          console.log(err);
+          alert(err);
         }
       });
     }
       
     $(function(){
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
       $.ajax({
         url:"http://localhost:8080/report/find_all_report_transaction",
         method: "GET",
@@ -114,7 +116,7 @@
           diagram(obj);
         },
         error: function(err){
-          console.log(err);
+          alert(err);
         }
       });
     });

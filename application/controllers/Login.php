@@ -150,7 +150,7 @@ class Login extends CI_Controller {
 			}
 			else {
 				if(password_verify($password, $data['password'])) {
-					$this->load->model('model_member');
+					$this->load->model('model_user');
 					$this->load->library('user_agent');
 					$data_browser =[
 						'id_user' => $data["id"],
@@ -160,7 +160,7 @@ class Login extends CI_Controller {
 						'waktu_login' => date("Y-m-m h:i:s"),
 						'ip_address' => $this->input->ip_address()
 					];
-					// $input_browser = $this->model_member->input_browser($data_browser);
+					// $input_browser = $this->model_user->input_browser($data_browser);
 					// if($input_browser)
 					// {
 						$cookie = $this->_acak($data['id']);
@@ -192,13 +192,13 @@ class Login extends CI_Controller {
 	}
 	
 	private function _input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id){
-		$cek_cookie = $this->model_member->cek_cookie_db($cookie_id);
+		$cek_cookie = $this->model_user->cek_cookie_db($cookie_id);
 		if($cek_cookie) {
-			return $this->model_member->update_cookie($data_update_cookie,$cookie_id);
+			return $this->model_user->update_cookie($data_update_cookie,$cookie_id);
 		}
 		else {
-			// $input_cookie = $this->model_member->input_cookie($data_input_cookie);
-			return $this->model_member->input_cookie($data_input_cookie);
+			// $input_cookie = $this->model_user->input_cookie($data_input_cookie);
+			return $this->model_user->input_cookie($data_input_cookie);
 		}
 	}
 

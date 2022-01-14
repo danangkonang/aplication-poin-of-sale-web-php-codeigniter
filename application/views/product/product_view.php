@@ -1,5 +1,5 @@
 <?php
-// var_dump($this->session->userdata('create') ==  false);
+// var_dump($units);
 // die;
 ?>
 
@@ -18,6 +18,7 @@
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
+  <link href="<?php echo base_url() ?>assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
   <title>kasir</title>
   <style>
     #preview{
@@ -35,9 +36,7 @@
     <?php $this->load->view('component/sidebar')?>
 
     <div id="content-wrapper" class="d-flex flex-column">
-
       <div id="content">
-
         <?php $this->load->view('component/header')?>
         <div class="container-fluid">
           <?php
@@ -45,30 +44,26 @@
               echo('<button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>');
             }
           ?>
-            <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
-              <thead>
-                <tr>
-                  <th>no</th>
-                  <th>Barcode</th>
-                  <th>Jenis</th>
-                  <th>Nama</th>
-                  <th>H beli</th>
-                  <th>H jual</th>
-                  <th>Untung</th>
-                  <th>Qty</th>
-                  <th>Opsi</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
-
+          <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
+            <thead>
+              <tr>
+                <th>no</th>
+                <th>Barcode</th>
+                <th>Jenis</th>
+                <th>Nama</th>
+                <th>H beli</th>
+                <th>H jual</th>
+                <th>Untung</th>
+                <th>Qty</th>
+                <th>Opsi</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
         </div>
-        <!-- /.container-fluid -->
-
       </div>
       <?php $this->load->view('component/footer')?>
-
     </div>
 
   </div>
@@ -87,6 +82,7 @@
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="<?= base_url() ?>assets/js/scan.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
   <script>
     let table;
     let scanner;
@@ -98,6 +94,8 @@
       setup();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
+      $('#start_promo').datepicker();
+      $('#end_promo').datepicker();
     });
 
     function find_all_product() {
@@ -128,18 +126,18 @@
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
       $('#modal_form').modal('show');
-      showScanner();
+      // showScanner();
     }
 
     function close_modal(){
-      scanner.stop();
-      let stream = video.srcObject;
-      let tracks = stream.getTracks();
-      for (let i = 0; i < tracks.length; i++) {
-        let track = tracks[i];
-        track.stop();
-      }
-      video.srcObject = null;
+      // scanner.stop();
+      // let stream = video.srcObject;
+      // let tracks = stream.getTracks();
+      // for (let i = 0; i < tracks.length; i++) {
+      //   let track = tracks[i];
+      //   track.stop();
+      // }
+      // video.srcObject = null;
       save_method = 'add';
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
@@ -176,7 +174,6 @@
         data: $('#form_product').serialize(),
         dataType: "JSON",
         success: function(data) {
-          console.log(data);
           if(data.status) {
             close_modal();
             reload_table();
@@ -253,7 +250,6 @@
         type: "GET",
         dataType: "JSON",
         success: function(data) {
-          console.log(data);
           $('[name="product_id"]').val(data.product_id);
           $('[name="barcode"]').val(data.barcode);
           $('[name="jenis"]').val(data.kind_id);
@@ -325,9 +321,9 @@
                 <div class="form-group mt-2">
                   <label for="jenis">Jenis</label>
                   <select class="form-control " name="jenis" >
-                    <option value="3">Makanan</option>
-                    <option value="2">Minuman</option>
-                    <option value="1">peralatan kecantikan</option>
+                    <?php foreach ($kinds as $row) { ?>
+                      <option value="<?= $row->kind_id ?>"><?= $row->kind_name ?></option>
+                    <?php } ?>
                   </select>
                 </div>
 
@@ -348,11 +344,9 @@
                 <div class="form-group">
                   <label for="unit">Satuan</label>
                   <select class="form-control" name="unit" >
-                    <option value=""></option>
-                    <option value="pcs">pcs</option>
-                    <option value="liter">liter</option>
-                    <option value="kg">kg</option>
-                    <option value="karton">karton</option>
+                    <?php foreach ($units as $row) { ?>
+                      <option value="<?= $row->unit ?>"><?= $row->unit ?></option>
+                    <?php } ?>
                   </select>
                   <div class="invalid-feedback"></div>
                 </div>
@@ -385,11 +379,12 @@
                     <div class="form-row mb-4">
                       <div class="col">
                         <label for="start_promo">awal promo</label>
-                        <input type="text" class="form-control" name="start_promo" id="start_promo" data-toggle="start_promo" placeholder="tgl mulai">
+                        <input type="text" class="form-control" name="start_promo" id="start_promo" data-toggle="start_promo" placeholder="Tanggal mulai">
                       </div>
+
                       <div class="col">
                         <label for="end_promo">ahir promo</label>
-                        <input type="text" class="form-control" name="end_promo"  id="end_promo" data-toggle="end_promo" placeholder="tgl ahir">
+                        <input type="text" class="form-control" name="end_promo"  id="end_promo" data-toggle="end_promo" placeholder="Tanggal ahir">
                       </div>
                     </div>
                               

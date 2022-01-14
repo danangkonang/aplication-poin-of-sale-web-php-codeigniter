@@ -9,6 +9,8 @@ class Product extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('model_product');
+		$this->load->model('model_product_unit');
+		$this->load->model('model_product_kind');
 		if(!$this->session->userdata('user_id')){
 			header('location:'.$_ENV['APP_HOST'].':'.$_ENV['APP_PORT']);
 		}
@@ -20,7 +22,9 @@ class Product extends CI_Controller {
 			'active_class' => 'product',
 		];
 		$this->session->set_userdata($data_session);
-		$this->load->view('product/product_view');
+		$data['units'] = $this->model_product_unit->find_units();
+		$data['kinds'] = $this->model_product_kind->find_kinds();
+		$this->load->view('product/product_view', $data);
 	}
 
 	public function find_all_product(){

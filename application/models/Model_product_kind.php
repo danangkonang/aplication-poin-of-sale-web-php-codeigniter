@@ -1,13 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Model_member extends CI_Model {
 
-  var $table = 'members';
-  var $column_order = array('member_name');
-  var $column_search = array('member_name');
-  var $order = array('member_id' => 'desc');
+class Model_product_kind extends CI_Model {
 
-  function get_member_datatables() {
+  var $table = 'kind_products';
+  var $column_order = array('kind_id');
+  var $column_search = array('kind_name');
+  var $order = array('kind_id' => 'desc');
+
+	function get_kind_datatables() {
     $this->_get_datatables_query();
     if($_POST['length'] != -1){
       $this->db->limit($_POST['length'], $_POST['start']);
@@ -34,7 +35,6 @@ class Model_member extends CI_Model {
       }
       $i++;
     }
-
     if(isset($_POST['order'])) {
       $this->db->order_by($this->column_order[$_POST['order']['0']['column']], $_POST['order']['0']['dir']);
     } 
@@ -55,17 +55,23 @@ class Model_member extends CI_Model {
     return $this->db->count_all_results();
   }
 
-  public function find_member($member_id) {
-    $this->db->where('member_id', $member_id);
-    return $this->db->get($this->table)->row_array();
+  public function find_kinds() {
+    $this->db->select('kind_id, kind_name');
+		return $this->db->get($this->table)->result();
   }
 
-  function save_member($data) {
+  public function find_kind($kind_id) {
+    $this->db->from($this->table);
+		$this->db->where('kind_id', $kind_id);
+		return $this->db->get()->row();
+  }
+
+  function save_kind($data) {
 		return $this->db->insert($this->table, $data);
 	}
 
-  function update_member($member_id, $data) {
-		$this->db->where('member_id', $member_id);
+  function update_kind($kind_id, $data) {
+		$this->db->where('kind_id', $kind_id);
 		return $this->db->update($this->table, $data);
 	}
 

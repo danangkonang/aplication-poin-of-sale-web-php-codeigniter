@@ -52,7 +52,6 @@ class Option extends CI_Controller {
     }
   }
   
-  // fix
   public function search_product(){
     $data = $this->model_product->search_product($_REQUEST['keyword']);
     echo json_encode( $data);
@@ -62,10 +61,26 @@ class Option extends CI_Controller {
     $data = [
       'id' => $this->input->post('product_id'),
       'name' => $this->input->post('product_name'),
-      'price' => str_replace(".", "" , $this->input->post('selling_price')),
+      'price' => $this->input->post('selling_price'),
       'qty' => $this->input->post('product_qty'),
     ];
-		echo json_encode(["status" => $this->cart->insert($data)]);
+		echo json_encode([
+      "status" => $this->cart->insert($data),
+      "total" => $this->cart->total(),
+    ]);
+	}
+
+  public function minus_keranjang(){
+    $data = [
+      'id' => $this->input->post('product_id'),
+      'name' => $this->input->post('product_name'),
+      'price' => $this->input->post('selling_price'),
+      'qty' => $this->input->post('product_qty'),
+    ];
+		echo json_encode([
+      "status" => $this->cart->update($data),
+      "total" => $this->cart->total(),
+    ]);
 	}
 	
 	public function list_shoping_cart(){
@@ -76,14 +91,30 @@ class Option extends CI_Controller {
 			$row[] = $no;
 			$row[] = $items["name"];
 			$row[] = 'Rp. ' . number_format( $items['price'], 0 , '' , '.' ) . ',-';
-			$row[] = $items["qty"];
+			$row[] = '
+                  <nav aria-label="Page navigation example">
+                    <ul class="pagination pagination-sm">
+                      <li class="page-item">
+                        <a class="page-link bg-danger" href="javascript:void(0)" onclick="minus_cart('.$items["id"].', '."'".$items["name"]."'".', '.$items["price"].', '.$items["qty"].', '."'".$items["rowid"]."'".')">
+                          <i class="fas fa-minus fas-xs text-white"></i>
+                        </a>
+                      </li>
+                      <li class="page-item border border-light pl-2 pr-2">
+                        '.$items["qty"].'
+                      </li>
+                      <li class="page-item">
+                        <a class="page-link bg-success" href="javascript:void(0)" onclick="plus_cart('.$items["id"].', '."'".$items["name"]."'".', '.$items["price"].' )">
+                          <i class="fas fa-plus fas-xs text-white"></i>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+                ';
 
       $row[] = 'Rp. ' . number_format( $items['qty'] * $items['price'], 0 , '' , '.' ) . ',-';
-			$row[] = '<a href="javascript:void(0)"
-                style="color: red; text-decoration: none; padding: 5px;"
-                onclick="delete_cart('
-                    ."'".$items["rowid"]."'".','."'".$items['subtotal'].
-                    "'".')"> <i class="fas fa-times"></i></a>';
+			$row[] = '<a href="javascript:void(0)" style="" onclick="delete_cart('."'".$items["rowid"]."'".')"> 
+                  <i class="fas fa-times text-danger"></i>
+                </a>';
 			$data[] = $row;
 			$no++;
     }
@@ -100,7 +131,6 @@ class Option extends CI_Controller {
     $this->db->update('barang', $data );
     return true;
 	}
-	
 
 	public function save_orders(){
 		$this->load->model('model_merchant');
@@ -207,7 +237,6 @@ class Option extends CI_Controller {
     echo json_encode($response);
 	}
 	
-  // fix
 	public function delete_shoping_cart($rowid){
 		$res = $this->cart->update(
       [
@@ -220,6 +249,7 @@ class Option extends CI_Controller {
         array(
           "status" => 200,
           "message" => 'Internal server error',
+          "total" => $this->cart->total(),
         )
       );
       return;
@@ -228,6 +258,7 @@ class Option extends CI_Controller {
       array(
         "status" => 200,
         "message" => "success",
+        "total" => $this->cart->total(),
       )
     );
 	}
@@ -241,7 +272,6 @@ class Option extends CI_Controller {
 		$this->load->view('kasir/penjualan_view');
 	}
 	
-  // fix
 	public function get_penjualan(){
 		$this->load->model('model_transaction');
 		$list = $this->model_transaction->get_datatables();

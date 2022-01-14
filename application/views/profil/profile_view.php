@@ -72,6 +72,10 @@
   <script src="<?= base_url() ?>assets/bootstrap-4.1.3/js/bootstrap.min.js"></script>
   <script src="<?= base_url() ?>assets/js/sb-admin-2.js"></script>
   <script>
+    $(document).ready(function(){
+      $("body").toggleClass("sidebar-toggled");
+      $(".sidebar").toggleClass("toggled");
+    });
     function edit_profil(){
       $.ajax({
         url : "<?= site_url('profile/edit_profil') ?>",
@@ -145,6 +149,7 @@
 			</div>
 		</div>
 	</div>
+
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 <?php
 
+require_once 'vendor/autoload.php';
 
 use Phinx\Seed\AbstractSeed;
 
@@ -15,23 +16,26 @@ class Product extends AbstractSeed
    */
   public function run()
   {
-    $data = array(
-      array(
-        'barcode' => '123',
-        'kind_id' => '1',
-        'product_name' => 'telur ayam',
-        'purchase_price' => 5000,
-        'selling_price' => 5700,
-        'unit' => 'kg',
-        'product_qty' => 100,
+    $faker = Faker\Factory::create();
+
+    $values = [];
+    for ($i = 0; $i < 100; $i++) {
+      $values []= array(
+        'barcode' => $faker->ean13,
+        'kind_id' => $faker->randomElement($array = array (1, 2, 3, 4, 5, 6, 7)),
+        'product_name' => $faker->country,
+        'purchase_price' => $faker->randomElement($array = array (1000, 1500, 2000)),
+        'selling_price' => $faker->randomElement($array = array (2000, 2500, 3000)),
+        'unit' => $faker->randomElement($array = array ('kg', 'pcs', 'karton', 'liter')),
+        'product_qty' => $faker->numberBetween($min = 10, $max = 100),
         'is_promo' => false,
-        'product_image' => 'telurayam.png',
+        'product_image' => 'default.jpg',
         'is_active' => true,
         'is_delete' => false,
-      ),
-    );
+      );
+    }
 
     $product = $this->table('products');
-    $product->insert($data)->save();
+    $product->insert($values)->save();
   }
 }

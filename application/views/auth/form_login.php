@@ -87,7 +87,7 @@
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
-          console.log("error", errorThrown);
+          alert("error", errorThrown);
         }
       });
     });

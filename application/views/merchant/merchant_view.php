@@ -94,7 +94,6 @@
         data: $('#form').serialize(),
         dataType: "JSON",
         success: function(data) {
-          console.log(data);
           $("#store_name").html(data.merchant_name);
           $("#store_address").html(data.merchant_address);
           $("#store_telephone").html(data.merchant_telephone);

@@ -32,7 +32,7 @@
 
           <?php
             if($this->session->userdata('create')) {
-              echo('<button class="btn btn-success" onclick="add_member()"><i class="glyphicon glyphicon-plus"></i>Tambah</button><br><br>');
+              echo('<button class="btn btn-success" onclick="add_kind()"><i class="glyphicon glyphicon-plus"></i>Tambah</button><br><br>');
             }
           ?>
 
@@ -40,10 +40,7 @@
             <thead>
               <tr>
                 <th class="text-center">Ko</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Telephone</th>
-                <th>Discount</th>
+                <th>Jenis</th>
                 <th>Option</th>
               </tr>
             </thead>
@@ -76,10 +73,10 @@
     $(document).ready(function(){
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
-      find_member();
+      find_kind();
     });
 
-    function find_member() {
+    function find_kind() {
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
           {
@@ -90,7 +87,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/member/find_members",
+          "url": "http://localhost:8080/product_kind/find_kinds",
           "type": "POST"
         },
         "lengthChange": false,
@@ -102,27 +99,24 @@
       table.ajax.reload(null, false);
     }
 
-    function add_member(){
+    function add_kind(){
       save_method = 'add';
-      $('#form_member')[0].reset();
-      $('.modal-title').text('Tambah Member');
-      $('#modal_member').modal('show');
+      $('#form_kind')[0].reset();
+      $('.modal-title').text('Tambah Jenis');
+      $('#modal_kind').modal('show');
     }
     
-    function edit_member(id){
+    function edit_kind(id){
       $.ajax({
-        url : "<?php echo site_url('member/find_member')?>/" + id,
+        url : "<?php echo site_url('product_kind/find_kind')?>/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
           save_method = 'update';
-          $("#member_id").val(data.member_id);
-          $("#member_name").val(data.member_name);
-          $("#member_email").val(data.member_email);
-          $("#member_telephone").val(data.member_telephone);
-          $("#discount").val(data.discount);
-          $("#memberModalLabel").html("Edit Member");
-          $('#modal_member').modal('show');
+          $("#kind_id").val(data.kind_id);
+          $("#kind_name").val(data.kind_name);
+          $("#kindModalLabel").html("Edit Jenis");
+          $('#modal_kind').modal('show');
         },
         error: function (err) {
           alert('Error get data from ajax');
@@ -131,20 +125,20 @@
     }
 
     function close_modal() {
-      $('#modal_member').modal('hide');
+      $('#modal_kind').modal('hide');
     }
 
-    function store_member() {
+    function store_kind() {
       var url;
       if (save_method === 'add') {
-        url = "<?php echo site_url('member/save_member')?>";
+        url = "<?php echo site_url('product_kind/save_kind')?>";
       } else {
-        url = "<?php echo site_url('member/update_member')?>";
+        url = "<?php echo site_url('product_kind/update_kind')?>";
       }
       $.ajax({
         url : url,
         type: "POST",
-        data: $('#form_member').serialize(),
+        data: $('#form_kind').serialize(),
         dataType: "JSON",
         success: function(data) {
           close_modal();
@@ -157,44 +151,29 @@
     }
   </script>
 
-  <div class="modal fade" id="modal_member" tabindex="-1" role="dialog" aria-labelledby="memberModalLabel" aria-hidden="true">
+  <div class="modal fade" id="modal_kind" tabindex="-1" role="dialog" aria-labelledby="kindModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-md">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="memberModalLabel"></h5>
+          <h5 class="modal-title" id="kindModalLabel"></h5>
           <button type="button" class="close" onClick="close_modal()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body form" style="position: static">
           <div class="container">
-            <form id="form_member">
-              <input type="hidden" class="" id="member_id" name="member_id">
+            <form id="form_kind">
+              <input type="hidden" class="" id="kind_id" name="kind_id">
               <div class="form-group">
-                <label for="member_name" class="col-form-label">Nama</label>
-                <input type="text" class="form-control" id="member_name" name="member_name" >
-                <div class="invalid-feedback"></div>
-              </div>
-              <div class="form-group">
-                <label for="member_email" class="col-form-label">Email</label>
-                <input type="text" class="form-control" id="member_email" name="member_email" >
-                <div class="invalid-feedback"></div>
-              </div>
-              <div class="form-group">
-                <label for="member_telephone" class="col-form-label">Telephone</label>
-                <input type="text" class="form-control" id="member_telephone" name="member_telephone" >
-                <div class="invalid-feedback"></div>
-              </div>
-              <div class="form-group">
-                <label for="discount" class="col-form-label">Discount</label>
-                <input type="number" class="form-control" id="discount" name="discount" >
+                <label for="kind_name" class="col-form-label">Jenis</label>
+                <input type="text" class="form-control" id="kind_name" name="kind_name" >
                 <div class="invalid-feedback"></div>
               </div>
             </form>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" onClick="store_member()" class="btn btn-primary">Simpan</button>
+          <button type="button" onClick="store_kind()" class="btn btn-primary">Simpan</button>
         </div>
       </div>
     </div>
