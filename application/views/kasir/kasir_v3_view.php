@@ -49,6 +49,10 @@ die;
         <?php $this->load->view('component/header') ?>
 
         <div class="container-fluid">
+
+          <div id="qr-reader" class="mb-5"></div>
+          <div id="qr-reader-results"></div>
+
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-12 col-md-4">
@@ -150,6 +154,7 @@ die;
   <script src="<?= base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script>
@@ -183,6 +188,7 @@ die;
           lastResult = decodedText;
           // Handle on success condition with the decoded message.
           console.log(`Scan result ${decodedText}`, decodedResult);
+          findProductByBarcode(decodedText);
         }
       }
 
@@ -205,6 +211,28 @@ die;
         "columnDefs": [{
           "orderable": false,
         }, ],
+      });
+    }
+
+    function findProductByBarcode(barcode) {
+      $.ajax({
+        url: "http://localhost:8080/product/find_by_barcode/" + barcode,
+        type: "GET",
+        success: function(data) {
+          let item = JSON.parse(data);
+          $("#search").val('');
+          $("#product_name").text(item.product_name);
+          $("#product_stock").text(item.product_qty);
+          $("#selling_price").text(convertToRupiah(item.selling_price));
+          $("#product_id").val(item.product_id);
+          $("#val_selling_price").val(item.selling_price);
+          $("#val_product_name").val(item.product_name);
+          $("#val_product_qty").val(item.product_qty);
+          save_to_cartv2(item.product_id, item.product_name, item.selling_price)
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Error adding data');
+        }
       });
     }
 
@@ -394,37 +422,48 @@ die;
       });
     }
 
-    function finish_transaction() {
-      let bayar = $('#bayar').val();
-      let kembali = $('#kembali').val();
-      $.ajax({
-        url: "http://localhost:8080/option/cetak_nota/",
-        data: {
-          bayar: bayar,
-          kembali: kembali
-        },
-        method: "POST",
-        success: function(data) {
-          $('#modal_struck').modal('show');
-          $('#content_struck').html(data);
-        }
-      });
+    // function finish_transaction() {
+    //   let bayar = $('#bayar').val();
+    //   let kembali = $('#kembali').val();
+    //   $.ajax({
+    //     url:"http://localhost:8080/option/cetak_nota/",
+    //     data:{
+    //       bayar: bayar,
+    //       kembali: kembali
+    //     },
+    //     method:"POST",
+    //     success:function(data){
+    //       $('#modal_struck').modal('show');
+    //       $('#content_struck').html(data);
+    //     }
+    //   });
+    // }
+    function print_transaction() {
+      document.title = new Date();
+      window.print();
+      save_transaction();
     }
 
-    function save_cart_to_order() {
+    function save_transaction() {
+      const d = new Date();
+      let year = d.getFullYear();
+      let day = d.getDate();
+      let month = d.getMonth();
       $.ajax({
-        url: "http://localhost:8080/option/shoping/",
+        url: "http://localhost:8080/transaction/create_transaction/",
         type: "POST",
         data: {
-          time_transaction: $("#time_transaction")[0].dataset.transaction,
+          code_transaction: `TR${year}${day}${month}${"<?= $this->session->userdata('user_id') ?>"}`,
         },
         dataType: "json",
         success: function(result) {
-          cetak_struk();
           $('#modal_struck').modal('hide');
           reload_table();
-          $('.res').val('');
-          $('#product_name').focus();
+          $('#bayar').val(0);
+          $("#total_bayar").text(0);
+          $("#total_kembali").text(0);
+          $("#total_belanja").text(0);
+          $('#search').focus();
         },
         error: function(err) {
           alert('error transaksi')
@@ -503,22 +542,16 @@ die;
   <div class="modal fade" id="modal_struck" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
       <div class="modal-content">
-
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         </div>
-
-        <div class="modal-body" id="content_struck">
-
-        </div>
-
+        <div class="modal-body" id="content_struck"></div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-success" OnClick="save_cart_to_order()"><span class="fa fa-print"></span> Cetak</button>
-          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> Tutup</button>
+          <button type="button" class="btn btn-primary" OnClick="save_transaction()"><span class="fa fa-print"></span>Simpan</button>
+          <button type="button" class="btn btn-success" OnClick="print_transaction()"><span class="fa fa-print"></span>Cetak dan Simpan</button>
         </div>
       </div>
     </div>
-  </div>
 
 </body>
 

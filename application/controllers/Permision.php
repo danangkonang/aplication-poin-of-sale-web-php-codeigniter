@@ -56,11 +56,11 @@ class Permision extends CI_Controller {
 	
 	public function update_permision(){
 		$data = [
-			'create' => $this->input->post('create'),
-			'update' => $this->input->post('update'),
-			'delete' => $this->input->post('delete'),
+			'create' => (int)$this->input->post('create'),
+			'update' => (int)$this->input->post('update'),
+			'delete' => (int)$this->input->post('delete'),
 		];
-		$res = $this->model_permision->update_permision($this->input->post('user_id'), $data);
+		$res = $this->model_permision->update_permision((int)$this->input->post('user_id'), $data);
 		$response = array(
 			"status" => $res,
 			"data" => $this->input->post('create'),
@@ -68,12 +68,4 @@ class Permision extends CI_Controller {
 		echo json_encode($response);
 	}
 
-	public function is_read(){
-		$this->model_permision->is_read(2);
-	}
-
-  public function set_read(){
-		$this->model_permision->set_read(2, true);
-	}
-	
 }

@@ -19,7 +19,7 @@ final class Unit extends AbstractMigration
   public function change(): void
   {
     $units = $this->table('units', array('id' => 'unit_id'));
-    $units->addColumn('unit', 'string', ['limit' => 225])
+    $units->addColumn('unit', 'string', ['limit' => 225, 'null' => true])
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addIndex(array('unit'), array('unique' => true))

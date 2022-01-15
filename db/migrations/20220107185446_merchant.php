@@ -26,6 +26,8 @@ final class Merchant extends AbstractMigration
           ->addColumn('created_by', 'integer')
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+          ->addIndex(array('created_by'))
+          ->addForeignKey('created_by', 'users', 'user_id', array('delete'=> 'NO_ACTION', 'update'=> 'NO_ACTION'))
           ->create();
   }
 }

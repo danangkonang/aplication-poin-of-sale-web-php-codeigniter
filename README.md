@@ -51,6 +51,8 @@ docker-compose down
 vendor/bin/phinx migrate -e development
 
 vendor/bin/phinx seed:run
+
+vendor/bin/phinx rollback -e development -t 20210107020548
 ```
 
 ## Testing

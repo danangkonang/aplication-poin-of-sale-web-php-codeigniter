@@ -30,9 +30,9 @@
     </a>
     <div id="collapseProduct" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" id="product" href="<?= site_url() ?>product/data_barang"><i class="fas fa-table"></i>Produk</a>
-        <a class="collapse-item" id="product_kind" href="<?= site_url() ?>product_kind"><i class="far fa-chart-bar"></i>Jenis</a>
-        <a class="collapse-item" id="product_unit" href="<?= site_url() ?>product_unit"><i class="far fa-chart-bar"></i>Satuan</a>
+        <a class="collapse-item" id="product" href="<?= site_url() ?>product/data_barang"><i class="fas fa-table"></i> Produk</a>
+        <a class="collapse-item" id="product_kind" href="<?= site_url() ?>product_kind"><i class="far fa-chart-bar"></i> Jenis</a>
+        <a class="collapse-item" id="product_unit" href="<?= site_url() ?>product_unit"><i class="far fa-chart-bar"></i> Satuan</a>
       </div>
     </div>
   </li>
@@ -61,24 +61,17 @@
 
   <?php if($this->session->userdata('role')== 'admin'){ ?>
 
-    <!-- <li class="nav-item" id="product_kind">
-      <a class="nav-link" href="<?= site_url() ?>product_kind">
-      <i class="far fa-user"></i>
-      <span>Kind</span></a>
-    </li>
-    <hr class="sidebar-divider">
-
-    <li class="nav-item" id="product_unit">
-      <a class="nav-link" href="<?= site_url() ?>product_unit">
-      <i class="far fa-user"></i>
-      <span>Unit</span></a>
-    </li>
-    <hr class="sidebar-divider"> -->
-
-    <li class="nav-item" id="user">
-      <a class="nav-link" href="<?= site_url() ?>user/data_user">
-      <i class="far fa-user"></i>
-      <span>User</span></a>
+    <li class="nav-item" id="listUser">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true" aria-controls="collapseUser">
+        <i class="fas fa-money-bill-wave"></i>
+        <span>User</span>
+      </a>
+      <div id="collapseUser" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <a class="collapse-item" id="user" href="<?= site_url() ?>user/data_user"><i class="fas fa-table"></i> User</a>
+          <a class="collapse-item" id="permision" href="<?= site_url() ?>permision"><i class="far fa-chart-bar"></i> Permision</a>
+        </div>
+      </div>
     </li>
     <hr class="sidebar-divider">
 
@@ -86,13 +79,6 @@
       <a class="nav-link" href="<?= site_url() ?>merchant/my_merchant">
       <i class="fas fa-store"></i>
       <span>Toko</span></a>
-    </li>
-    <hr class="sidebar-divider">
-
-    <li class="nav-item" id="permision">
-      <a class="nav-link" href="<?= site_url() ?>permision">
-      <i class="fas fa-store"></i>
-      <span>Permision</span></a>
     </li>
     <hr class="sidebar-divider">
 
@@ -111,6 +97,11 @@
   (function($){
     if(activeSession === 'laporan-table' || activeSession === 'laporan-chart'){
       $("#collapseTwo").collapse('show');
+    }
+    if(activeSession === 'user' || activeSession === 'permision'){
+      let element = document.getElementById("listUser");
+      element.classList.add("active");
+      $("#collapseUser").collapse('show');
     }
   });
 </script>

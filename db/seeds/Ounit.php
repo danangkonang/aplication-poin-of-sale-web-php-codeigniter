@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class Unit extends AbstractSeed
+class Ounit extends AbstractSeed
 {
   /**
    * Run Method.

@@ -1,10 +1,8 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Option extends CI_Controller
-{
+class Option extends CI_Controller {
 
-  public function __construct()
-  {
+  public function __construct(){
     parent::__construct();
     $this->load->model('model_transaction');
     $this->load->model('model_product');
@@ -13,8 +11,7 @@ class Option extends CI_Controller
     }
   }
 
-  private function _validate()
-  {
+  private function _validate(){
     $data = [];
     $data['error_string'] = [];
     $data['inputerror'] = [];
@@ -61,8 +58,7 @@ class Option extends CI_Controller
     echo json_encode($data);
   }
 
-  public function add_keranjang()
-  {
+  public function add_keranjang(){
     $data = [
       'id' => $this->input->post('product_id'),
       'name' => $this->input->post('product_name'),
@@ -129,8 +125,7 @@ class Option extends CI_Controller
     echo json_encode($output);
   }
 
-  public function auto_update()
-  {
+  public function auto_update(){
     $tgl = date('Y-m-d');
     $data = ['sstatus_promo' => 0];
     $this->db->where('ahir_promo <', $tgl);
@@ -142,15 +137,15 @@ class Option extends CI_Controller
 		$this->load->model('model_merchant');
 		$bayar = $this->input->post('bayar');
 		$kembali = $this->input->post('kembali');
-		$toko = $this->model_merchant->find_store();
+		$toko = $this->model_merchant->find_merchant();
 		$no = 1;
 		$output = '';
 
     $output .='<div>'; // content
 
 		$output .= '
-              <div style="text-align: center; font-size: 20px; font-weight: bold;">'.$toko->store_name.'</div>
-              <div style="text-align: center">'.$toko->store_address.' '.$toko->store_phone.'</div>
+              <div style="text-align: center; font-size: 20px; font-weight: bold;">'.$toko->merchant_name.'</div>
+              <div style="text-align: center">'.$toko->merchant_address.' '.$toko->merchant_telephone.'</div>
               <div style="text-align: center" id="time_transaction" data-transaction="'.date('Y-m-d  h:i:s').'">'.date('Y-m-d  h:i:s').'</div>
               ';
     $output .= '<div style="border-top:1px dashed; border-bottom:1px dashed; margin: 20px 0;">'; // body
@@ -206,28 +201,27 @@ class Option extends CI_Controller
     echo $output;
   }
 
-  public function shoping()
-  {
+  public function shoping(){
     $time_transaction = $this->input->post("time_transaction");
     $response = [];
     if ($this->cart->contents() != []) {
       $order_id = md5(date('Y-m-d  h:i:s'));
-      foreach ($this->cart->contents() as $insert) {
+      foreach ($this->cart->contents() as $cart) {
         $order = [
           'transaction_code' => $order_id,
-          'user_id' => $this->session->userdata('user_id'),
-          'product_id' => $insert['id'],
-          'product_name' => $insert['name'],
-          'price' => $insert['price'],
-          'qty' => $insert['qty'],
+          'created_by' => $this->session->userdata('user_id'),
+          'product_id' => $cart['id'],
+          'product_name' => $cart['name'],
+          'price' => $cart['price'],
+          'qty' => $cart['qty'],
           'created_at' => $time_transaction,
         ];
 
-        $res = $this->model_product->get_product_qty($insert['id']);
-        $last_qty = $res->product_qty - $insert['qty'];
+        $res = $this->model_product->get_product_qty($cart['id']);
+        $last_qty = $res->product_qty - $cart['qty'];
 
         $this->model_transaction->create_order($order);
-        $this->model_product->update_product_qty($insert['id'], $last_qty);
+        $this->model_product->update_product_qty($cart['id'], $last_qty);
       }
 
       $this->cart->destroy();
@@ -270,8 +264,7 @@ class Option extends CI_Controller
     );
   }
 
-  public function data_penjualan()
-  {
+  public function data_penjualan(){
     $data_session = [
 			'title' => 'Penjualan',
 			'active_class' => 'penjualan',
@@ -290,10 +283,10 @@ class Option extends CI_Controller
 			$n++;
 			$row = [];
 			$row[] = $n;
-			$row[] = $barang->order_code;
+			$row[] = $barang->transaction_code;
       $row[] = $barang->product_name;
       $row[] = $barang->qty;
-      $row[] = $barang->user_id;
+      $row[] = $barang->user_name;
       $row[] = $barang->price;
       $row[] = $barang->price * $barang->qty;
       $row[] = $barang->created_at;
@@ -309,34 +302,11 @@ class Option extends CI_Controller
     echo json_encode($output);
   }
 
-  public function laba()
-  {
+  public function laba(){
     $this->load->view('kasir/laba_view');
   }
 
-  public function cari_diagram()
-  {
-    $bulan = $this->input->post('bulan') + 1;
-    $tahun = $this->input->post('tahun');
-    $tw = 01;
-    $th = 31;
-    $min = $tahun . '-' . $bulan . '-' . $tw;
-    $max = $tahun . '-' . $bulan . '-' . $th;
-    $this->db->select('tgl_transaksi');
-    $this->db->where('tgl_transaksi >=', $min);
-    $this->db->where('tgl_transaksi <=', $max);
-    $this->db->select_sum('total_harga');
-    $this->db->group_by('tgl_transaksi');
-    $query =    $this->db->get('penjualan');
-    $data = [];
-    foreach ($query->result() as $row) {
-      $data[] = $row;
-    }
-    print json_encode($data);
-  }
-
-  public function pengunjung()
-  {
+  public function pengunjung(){
     $this->load->view('admin/pengunjung_view');
   }
 }
