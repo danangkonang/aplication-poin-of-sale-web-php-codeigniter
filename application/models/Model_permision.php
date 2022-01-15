@@ -114,4 +114,14 @@ class Model_permision extends CI_Model {
     $this->db->where('user_id', $user_id);
 		return $this->db->update($this->table, $data);
   }
+
+  public function set_my_permision($id){
+    $data_session = [
+      'read' => $this->is_read($id),
+      'create' => $this->is_create($id),
+      'update' => $this->is_update($id),
+      'delete' => $this->is_delete($id),
+    ];
+    $this->session->set_userdata($data_session);
+  }
 }

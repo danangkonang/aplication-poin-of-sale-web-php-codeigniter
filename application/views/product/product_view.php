@@ -44,6 +44,9 @@
               echo('<button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>');
             }
           ?>
+          <!-- <div id="qr-reader"></div>
+          <div id="qr-reader-results"></div> -->
+
           <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
             <thead>
               <tr>
@@ -82,6 +85,7 @@
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script type="text/javascript" src="<?= base_url() ?>assets/js/scan.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <script>
     let table;
@@ -96,6 +100,34 @@
       $(".sidebar").toggleClass("toggled");
       $('#start_promo').datepicker();
       $('#end_promo').datepicker();
+    });
+
+    function docReady(fn) {
+      // see if DOM is already available
+      if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+      } else {
+        document.addEventListener("DOMContentLoaded", fn);
+      }
+    }
+
+    docReady(function () {
+      var resultContainer = document.getElementById('qr-reader-results');
+      var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+      var lastResult, countResults = 0;
+      function onScanSuccess(decodedText, decodedResult) {
+        if (decodedText !== lastResult) {
+          ++countResults;
+          lastResult = decodedText;
+          // Handle on success condition with the decoded message.
+          console.log(`${decodedText}`);
+          $("#barcode").val(decodedText);
+          // html5QrcodeScanner.stop();
+        }
+      }
+
+      html5QrcodeScanner.render(onScanSuccess);
     });
 
     function find_all_product() {
@@ -307,14 +339,19 @@
         <div class="modal-body form" style="position: static">
           <form id="form_product">
             <input type="hidden" id="product_id" name="product_id" >
+
+              <div id="qr-reader"></div>
+              <div id="qr-reader-results"></div>
+
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
 
-                <video class="bg-success" id="preview"></video>
+                <!-- <video class="bg-success" id="preview"></video> -->
+                
 
                 <div class="form-group">
                   <label for="barcode" class="col-form-label">Barcode</label>
-                  <input type="number" class="form-control" id="barcode" name="barcode" >
+                  <input type="text" class="form-control" id="barcode" name="barcode" >
                   <div class="invalid-feedback"></div>
                 </div>
 

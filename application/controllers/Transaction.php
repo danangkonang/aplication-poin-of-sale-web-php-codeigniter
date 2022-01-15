@@ -15,7 +15,6 @@ class Transaction extends CI_Controller {
     $code_transaction = $this->input->post("code_transaction");
     $response = [];
     if ($this->cart->contents() != []) {
-      // $order_id = md5(date('Y-m-d  h:i:s'));
       foreach ($this->cart->contents() as $cart) {
         $order = [
           'transaction_code' => $code_transaction,
@@ -24,7 +23,6 @@ class Transaction extends CI_Controller {
           'product_name' => $cart['name'],
           'price' => $cart['price'],
           'qty' => $cart['qty'],
-          // 'created_at' => $time_transaction,
         ];
 
         $res = $this->model_product->get_product_qty($cart['id']);
@@ -35,13 +33,14 @@ class Transaction extends CI_Controller {
       }
 
       $this->cart->destroy();
+      
       $response = array(
         "status" => 200,
         "message" => "success",
       );
     } else {
       $response = array(
-        "status" => 400,
+        "status" => 500,
         "message" => "internal server error",
       );
     }

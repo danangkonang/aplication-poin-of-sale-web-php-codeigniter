@@ -51,40 +51,34 @@ class Model_product extends CI_Model
 		return $query->num_rows();
 	}
 
-	public function count_all()
-	{
+	public function count_all(){
 		$this->db->from($this->table);
 		return $this->db->count_all_results();
 	}
 
-	public function save_product($data)
-	{
+	public function save_product($data){
 		$this->db->insert($this->table, $data);
 		return $this->db->insert_id();
 	}
 
-	public function delete_by_id($id)
-	{
+	public function delete_by_id($id){
 		$this->db->where('product_id', $id);
 		return $this->db->delete($this->table);
 	}
 
-	public function get_by_id($id)
-	{
+	public function get_by_id($id){
 		$this->db->from($this->table);
 		$this->db->where('product_id', $id);
 		$query = $this->db->get();
 		return $query->row();
 	}
 
-	public function update($where, $data)
-	{
+	public function update($where, $data){
 		$this->db->update($this->table, $data, $where);
 		return $this->db->affected_rows();
 	}
 
-	public function search_product($key)
-	{
+	public function search_product($key){
 		$this->db->select('*');
 		$this->db->like('product_name', $key);
 		$this->db->or_like('barcode', $key);
@@ -96,6 +90,14 @@ class Model_product extends CI_Model
 			}
 			return $hasil;
 		}
+	}
+
+	public function find_by_barcode($key){
+		$this->db->select('*');
+		$this->db->where('barcode', $key);
+		$this->db->limit(1);
+		$query = $this->db->get($this->table);
+		return $query->row();
 	}
 
 

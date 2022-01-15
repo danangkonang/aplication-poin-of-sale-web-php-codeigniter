@@ -124,7 +124,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/report/get_data_laba",
+          "url": "http://localhost:8080/report/find_report_table",
           "type": "POST"
         },
         "lengthChange": false,

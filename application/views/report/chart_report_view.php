@@ -109,7 +109,7 @@
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
       $.ajax({
-        url:"http://localhost:8080/report/find_all_report_transaction",
+        url:"http://localhost:8080/report/find_report_chart",
         method: "GET",
         success:function(data){
           let obj = JSON.parse(data);

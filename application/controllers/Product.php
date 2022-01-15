@@ -11,6 +11,7 @@ class Product extends CI_Controller {
 		$this->load->model('model_product');
 		$this->load->model('model_product_unit');
 		$this->load->model('model_product_kind');
+		$this->load->model('model_permision');
 		if(!$this->session->userdata('user_id')){
 			header('location:'.$_ENV['APP_HOST'].':'.$_ENV['APP_PORT']);
 		}
@@ -22,6 +23,9 @@ class Product extends CI_Controller {
 			'active_class' => 'product',
 		];
 		$this->session->set_userdata($data_session);
+		$this->model_permision->set_my_permision(
+			$this->session->userdata('user_id'),
+		);
 		$data['units'] = $this->model_product_unit->find_units();
 		$data['kinds'] = $this->model_product_kind->find_kinds();
 		$this->load->view('product/product_view', $data);
@@ -125,6 +129,11 @@ class Product extends CI_Controller {
 	public function edit_barang($id){
 		$data = $this->model_product->get_by_id($id);
 		echo json_encode($data);
+	}
+
+	public function find_by_barcode($barcode){
+		$data = $this->model_product->find_by_barcode($barcode);
+    echo json_encode($data);
 	}
 	
 }

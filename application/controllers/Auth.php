@@ -16,10 +16,6 @@ class Auth extends CI_Controller {
 			$data_session = [
         'title' => 'Kasir',
 				'active_class' => 'kasir',
-				'read' => $this->model_permision->is_read($id),
-				'create' => $this->model_permision->is_create($id),
-				'update' => $this->model_permision->is_update($id),
-				'delete' => $this->model_permision->is_delete($id),
       ];
 			$this->session->set_userdata($data_session);
       $this->load->view('kasir/kasir_v3_view');

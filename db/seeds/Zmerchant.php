@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class Merchant extends AbstractSeed
+class Zmerchant extends AbstractSeed
 {
   /**
    * Run Method.

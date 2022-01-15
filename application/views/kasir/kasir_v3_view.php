@@ -46,13 +46,15 @@ die;
         <?php $this->load->view('component/header')?>
         
         <div class="container-fluid">
+
+          <div id="qr-reader" class="mb-5"></div>
+          <div id="qr-reader-results"></div>
+
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-12 col-md-4">
                 <form class="form-horizontal" id="form_order" role="form">
 
-                  <div id="qr-reader" class="mb-5"></div>
-                  <div id="qr-reader-results"></div>
                   <div class="form-group row">
                     <div class="col">
                       <input class="form-control reset border-primary" id="search"  name="search" type="text" placeholder="Cari Barcode atau Nama" >
@@ -160,31 +162,32 @@ die;
       $(".sidebar").toggleClass("toggled");
     });
 
-    // function docReady(fn) {
-    //   // see if DOM is already available
-    //   if (document.readyState === "complete" || document.readyState === "interactive") {
-    //     // call on next available tick
-    //     setTimeout(fn, 1);
-    //   } else {
-    //     document.addEventListener("DOMContentLoaded", fn);
-    //   }
-    // }
+    function docReady(fn) {
+      // see if DOM is already available
+      if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+      } else {
+        document.addEventListener("DOMContentLoaded", fn);
+      }
+    }
 
-    // docReady(function () {
-    //   var resultContainer = document.getElementById('qr-reader-results');
-    //   var lastResult, countResults = 0;
-    //   function onScanSuccess(decodedText, decodedResult) {
-    //     if (decodedText !== lastResult) {
-    //       ++countResults;
-    //       lastResult = decodedText;
-    //       // Handle on success condition with the decoded message.
-    //       console.log(`Scan result ${decodedText}`, decodedResult);
-    //     }
-    //   }
+    docReady(function () {
+      var resultContainer = document.getElementById('qr-reader-results');
+      var lastResult, countResults = 0;
+      function onScanSuccess(decodedText, decodedResult) {
+        if (decodedText !== lastResult) {
+          ++countResults;
+          lastResult = decodedText;
+          // Handle on success condition with the decoded message.
+          console.log(`Scan result ${decodedText}`, decodedResult);
+          findProductByBarcode(decodedText);
+        }
+      }
 
-    //   var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-    //   html5QrcodeScanner.render(onScanSuccess);
-    // });
+      var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+      html5QrcodeScanner.render(onScanSuccess);
+    });
 
     function list_transaction() {
       table = $('#shoping_cart_table').DataTable({
@@ -200,6 +203,28 @@ die;
             "orderable": false,
           },
         ],
+      });
+    }
+
+    function findProductByBarcode(barcode) {
+      $.ajax({
+        url : "http://localhost:8080/product/find_by_barcode/" + barcode,
+        type: "GET",
+        success: function(data){
+          let item = JSON.parse(data);
+          $("#search").val('');
+          $("#product_name").text(item.product_name);
+          $("#product_stock").text(item.product_qty);
+          $("#selling_price").text(convertToRupiah(item.selling_price));
+          $("#product_id").val(item.product_id);
+          $("#val_selling_price").val(item.selling_price);
+          $("#val_product_name").val(item.product_name);
+          $("#val_product_qty").val(item.product_qty);
+          save_to_cartv2(item.product_id, item.product_name, item.selling_price)
+        },
+        error: function (jqXHR, textStatus, errorThrown){
+          alert('Error adding data');
+        }
       });
     }
 
@@ -219,7 +244,7 @@ die;
             }
           })
         },
-        select:  function(e, ui){
+        select: function(e, ui){
           $("#search").val('');
           $("#product_name").text(ui.item.product_name);
           $("#product_stock").text(ui.item.product_qty);

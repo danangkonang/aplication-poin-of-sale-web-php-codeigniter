@@ -40,7 +40,7 @@ final class Product extends AbstractMigration
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           // ->addIndex(array('kind_id', 'unit'), array('unique' => true))
           ->addForeignKey('kind_id', 'kind_products', 'kind_id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
-          // ->addForeignKey('unit', 'units', 'unit', array('delete'=> 'NO_ACTION', 'update'=> 'CASCADE', 'constraint' => 'product_id'))
+          ->addForeignKey('unit', 'units', 'unit')
           ->create();
   }
 }

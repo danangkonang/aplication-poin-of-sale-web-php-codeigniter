@@ -27,7 +27,7 @@ class Report extends CI_Controller {
 		$this->load->view('report/table_report_view');
 	}
 
-  public function find_all_report_transaction(){
+  public function find_report_chart(){
 		$min = date('Y-m-').'01';
 		$max = date('Y-m-').'31';
 		$this->db->select('DATE(created_at) AS daily');
@@ -65,7 +65,7 @@ class Report extends CI_Controller {
     print json_encode($data);
   }
 
-  public function get_data_laba(){
+  public function find_report_table(){
 		$this->load->model('model_transaction');
 		$list = $this->model_transaction->get_datatables();
 		$data = [];

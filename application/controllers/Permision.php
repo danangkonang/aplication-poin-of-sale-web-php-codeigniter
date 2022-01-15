@@ -68,12 +68,4 @@ class Permision extends CI_Controller {
 		echo json_encode($response);
 	}
 
-	public function is_read(){
-		$this->model_permision->is_read(2);
-	}
-
-  public function set_read(){
-		$this->model_permision->set_read(2, true);
-	}
-	
 }

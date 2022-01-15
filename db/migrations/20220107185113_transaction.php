@@ -30,7 +30,7 @@ final class Transaction extends AbstractMigration
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addIndex(array('member_id'), array('unique' => true))
           ->addForeignKey('member_id', 'members', 'member_id', array('delete'=> 'SET_NULL', 'update'=> 'NO_ACTION'))
-          // ->addForeignKey('created_by', 'users', 'user_id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
+          ->addForeignKey('product_id', 'products', 'product_id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
           ->create();
   }
 }
