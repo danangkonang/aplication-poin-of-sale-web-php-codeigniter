@@ -23,6 +23,7 @@ class Member extends AbstractSeed
         'member_name' => $faker->name,
         'member_telephone' => $faker->e164PhoneNumber,
         'member_email' => $faker->freeEmail,
+        'created_by' => 1,
       );
     }
 

@@ -25,12 +25,12 @@ final class Transaction extends AbstractMigration
           ->addColumn('product_name','string', ['limit' => 255])
           ->addColumn('price', 'float')
           ->addColumn('qty', 'integer')
-          ->addColumn('created_by', 'integer')
+          ->addColumn('created_by', 'integer', ['null' => true])
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addIndex(array('member_id'), array('unique' => true))
           ->addForeignKey('member_id', 'members', 'member_id', array('delete'=> 'SET_NULL', 'update'=> 'NO_ACTION'))
-          ->addForeignKey('created_by', 'users', 'user_id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
+          // ->addForeignKey('created_by', 'users', 'user_id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
           ->create();
   }
 }

@@ -32,6 +32,7 @@ class Product extends AbstractSeed
         'product_image' => 'default.jpg',
         'is_active' => true,
         'is_delete' => false,
+        'created_by' => 1,
       );
     }
 

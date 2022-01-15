@@ -107,6 +107,7 @@
           $("#create").prop('checked', data.data.create === "1" ? true : false);
           $("#update").prop('checked', data.data.update === "1" ? true : false);
           $("#delete").prop('checked', data.data.delete === "1" ? true : false);
+          $("#user_id").val(id);
           $('#modal_permision').modal('show');
         },
         error: function (err) {

@@ -102,7 +102,7 @@
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
           {
-            "targets": [ 0,2,3,4,5],
+            "targets": [1, 4, 5, 6, 7, 8],
             "orderable": false,
           },
         ],

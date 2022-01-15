@@ -30,11 +30,11 @@ class Report extends CI_Controller {
   public function find_all_report_transaction(){
 		$min = date('Y-m-').'01';
 		$max = date('Y-m-').'31';
-		$this->db->select('created_at');
+		$this->db->select('DATE(created_at) AS daily');
 		$this->db->where('created_at >=', $min);
 		$this->db->where('created_at <=', $max);
 		$this->db->select_sum('price');
-		$this->db->group_by('created_at');
+		$this->db->group_by('daily');
 		$query = $this->db->get('transactions');
 		$data=[];
 		foreach($query->result() as $row){
@@ -43,9 +43,31 @@ class Report extends CI_Controller {
 		echo json_encode($data);
 	}
 
+	public function cari_diagram(){
+    $bulan = $this->input->post('bulan') + 1;
+    $tahun = $this->input->post('tahun');
+    $tw = 01;
+    $th = 31;
+    $min = $tahun . '-' . $bulan . '-' . $tw;
+    $max = $tahun . '-' . $bulan . '-' . $th;
+
+    $this->db->select('DATE(created_at) AS daily');
+		$this->db->where('created_at >=', $min);
+		$this->db->where('created_at <=', $max);
+		$this->db->select_sum('price');
+		$this->db->group_by('daily');
+		$query = $this->db->get('transactions');
+
+    $data = [];
+    foreach ($query->result() as $row) {
+      $data[] = $row;
+    }
+    print json_encode($data);
+  }
+
   public function get_data_laba(){
-		$this->load->model('model_report');
-		$list = $this->model_report->get_data_laba();
+		$this->load->model('model_transaction');
+		$list = $this->model_transaction->get_datatables();
 		$data = [];
 		$no = $_POST['start'];
 		$n=0;
@@ -54,17 +76,17 @@ class Report extends CI_Controller {
 			$row = [];
 			$row[] = $n;
 			$row[] = $barang->product_name;
-			$row[] = $barang->product_qty;
-			$row[] = number_format($barang->selling_price);
+			$row[] = $barang->qty;
 			$row[] = number_format($barang->purchase_price);
-			$row[] = number_format($barang->selling_price - ($barang->product_qty * $barang->purchase_price));
+			$row[] = number_format($barang->price);
+			$row[] = number_format(($barang->qty * $barang->price) - $barang->purchase_price);
 			$data[] = $row;
 		}
 
 		$output = [
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->model_report->count_all(),
-			"recordsFiltered" => $this->model_report->count_filtered(),
+			"recordsTotal" => $this->model_transaction->count_all(),
+			"recordsFiltered" => $this->model_transaction->count_filtered(),
 			"data" => $data,
 		];
 		echo json_encode($output);

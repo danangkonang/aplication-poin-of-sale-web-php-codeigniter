@@ -5,12 +5,11 @@ class Model_product extends CI_Model
 {
 
 	var $table = 'products';
-	var $column_order = array(null, null, 'purchase_price');
+	var $column_order = array('product_id', null, 'kind_products.kind_name', 'product_name');
 	var $column_search = array('product_name', 'barcode');
 	var $order = array('product_id' => 'desc');
 
-	function find_all_product()
-	{
+	function find_all_product(){
 		$this->_get_product_query();
 		if ($_POST['length'] != -1) {
 			$this->db->limit($_POST['length'], $_POST['start']);
@@ -19,8 +18,7 @@ class Model_product extends CI_Model
 		}
 	}
 
-	private function _get_product_query()
-	{
+	private function _get_product_query(){
 		$this->db->from($this->table);
 		$this->db->join('kind_products', 'kind_products.kind_id = products.kind_id');
 		$i = 0;
@@ -47,8 +45,7 @@ class Model_product extends CI_Model
 		}
 	}
 
-	function count_filtered()
-	{
+	function count_filtered(){
 		$this->_get_product_query();
 		$query = $this->db->get();
 		return $query->num_rows();
@@ -103,17 +100,15 @@ class Model_product extends CI_Model
 
 
 
-	function update_product_qty($id, $qty)
-	{
+	function update_product_qty($id, $qty){
 		$this->db->set('product_qty', $qty);
 		$this->db->where('product_id', $id);
 		return $this->db->update($this->table);
 	}
 
-	function get_product_qty($id)
-	{
+	function get_product_qty($product_id){
 		$this->db->select('product_qty');
-		$this->db->where('product_id', $id);
+		$this->db->where('product_id', $product_id);
 		return $this->db->get($this->table)->row();
 	}
 }

@@ -39,7 +39,7 @@
           <table id="tabelBarang" class="table table-striped table-bordered nowrap text-center" style="width:100%">
             <thead>
               <tr>
-                <th class="text-center">Ko</th>
+                <th class="text-center">No</th>
                 <th>Jenis</th>
                 <th>Option</th>
               </tr>
@@ -80,7 +80,7 @@
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
           {
-            "targets": [1],
+            "targets": [1, 2],
             "orderable": false,
           },
         ],

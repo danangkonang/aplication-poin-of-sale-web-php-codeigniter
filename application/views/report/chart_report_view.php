@@ -89,7 +89,7 @@
       let bulan = $("#bulan").val();
       let tahun = $("#tahun").val();
       $.ajax({
-        url:'http://localhost:8080/option/cari_diagram',
+        url:'http://localhost:8080/report/cari_diagram',
         data:{
           bulan:bulan,
           tahun:tahun
@@ -122,11 +122,11 @@
     });
     
     function diagram(obj){
-      let player = [];
-      let score = [];
+      let bawah = [];
+      let samping = [];
       for(let i=0; i<obj.length; i++){
-        player.push(obj[i].created_at);
-        score.push(obj[i].price);
+        bawah.push(obj[i].daily);
+        samping.push(obj[i].price);
       }
       let option = {
         responsive: true,
@@ -150,7 +150,7 @@
         label: 'pendapatan',
         options: option,
         data:{
-          labels: player,
+          labels: bawah,
           datasets:[
             {
               label: 'pendapatan',
@@ -159,7 +159,7 @@
               borderWidth: 2,
               hoverBackgroundColor: "rgba(255,99,132,0.4)",
               hoverBorderColor: "rgba(255,99,132,1)",
-              data:score
+              data:samping
             }
           ]
         }

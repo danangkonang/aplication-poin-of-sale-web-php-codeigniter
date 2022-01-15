@@ -51,6 +51,8 @@ die;
               <div class="col-sm-12 col-md-4">
                 <form class="form-horizontal" id="form_order" role="form">
 
+                  <div id="qr-reader" class="mb-5"></div>
+                  <div id="qr-reader-results"></div>
                   <div class="form-group row">
                     <div class="col">
                       <input class="form-control reset border-primary" id="search"  name="search" type="text" placeholder="Cari Barcode atau Nama" >
@@ -145,6 +147,7 @@ die;
   <script src="<?= base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <script>
     let table;
@@ -156,6 +159,32 @@ die;
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
     });
+
+    // function docReady(fn) {
+    //   // see if DOM is already available
+    //   if (document.readyState === "complete" || document.readyState === "interactive") {
+    //     // call on next available tick
+    //     setTimeout(fn, 1);
+    //   } else {
+    //     document.addEventListener("DOMContentLoaded", fn);
+    //   }
+    // }
+
+    // docReady(function () {
+    //   var resultContainer = document.getElementById('qr-reader-results');
+    //   var lastResult, countResults = 0;
+    //   function onScanSuccess(decodedText, decodedResult) {
+    //     if (decodedText !== lastResult) {
+    //       ++countResults;
+    //       lastResult = decodedText;
+    //       // Handle on success condition with the decoded message.
+    //       console.log(`Scan result ${decodedText}`, decodedResult);
+    //     }
+    //   }
+
+    //   var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+    //   html5QrcodeScanner.render(onScanSuccess);
+    // });
 
     function list_transaction() {
       table = $('#shoping_cart_table').DataTable({
@@ -360,37 +389,48 @@ die;
       });
     }
 
-    function finish_transaction() {
-      let bayar = $('#bayar').val();
-      let kembali = $('#kembali').val();
-      $.ajax({
-        url:"http://localhost:8080/option/cetak_nota/",
-        data:{
-          bayar: bayar,
-          kembali: kembali
-        },
-        method:"POST",
-        success:function(data){
-          $('#modal_struck').modal('show');
-          $('#content_struck').html(data);
-        }
-      });
+    // function finish_transaction() {
+    //   let bayar = $('#bayar').val();
+    //   let kembali = $('#kembali').val();
+    //   $.ajax({
+    //     url:"http://localhost:8080/option/cetak_nota/",
+    //     data:{
+    //       bayar: bayar,
+    //       kembali: kembali
+    //     },
+    //     method:"POST",
+    //     success:function(data){
+    //       $('#modal_struck').modal('show');
+    //       $('#content_struck').html(data);
+    //     }
+    //   });
+    // }
+		function print_transaction() {
+      document.title = new Date();
+      window.print();
+      save_transaction();
     }
-		
-		function save_cart_to_order() {
+
+		function save_transaction() {
+      const d = new Date();
+      let year = d.getFullYear();
+      let day = d.getDate();
+      let month = d.getMonth();
 			$.ajax({
-				url : "http://localhost:8080/option/shoping/",
+				url : "http://localhost:8080/transaction/create_transaction/",
 				type: "POST",
         data:{
-          time_transaction: $("#time_transaction")[0].dataset.transaction,
+          code_transaction: `TR${year}${day}${month}${"<?=$this->session->userdata('user_id')?>"}`,
         },
 				dataType:"json",
 				success:function(result){
-          cetak_struk();
           $('#modal_struck').modal('hide');
           reload_table();
-          $('.res').val('');
-          $('#product_name').focus();
+          $('#bayar').val(0);
+          $("#total_bayar").text(0);
+          $("#total_kembali").text(0);
+          $("#total_belanja").text(0);
+          $('#search').focus();
 				},
 				error: function(err){
 					alert('error transaksi')
@@ -469,18 +509,13 @@ die;
   <div class="modal fade" id="modal_struck" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
     <div class="modal-content">
-      
       <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
       </div>
-    
-      <div class="modal-body" id="content_struck">
-      
-      </div>
-    
+      <div class="modal-body" id="content_struck"></div>
       <div class="modal-footer">
-      <button type="button" class="btn btn-success" OnClick="save_cart_to_order()"><span class="fa fa-print"></span>  Cetak</button>
-      <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span>  Tutup</button>
+        <button type="button" class="btn btn-primary" OnClick="save_transaction()"><span class="fa fa-print"></span>Simpan</button>
+        <button type="button" class="btn btn-success" OnClick="print_transaction()"><span class="fa fa-print"></span>Cetak dan Simpan</button>
       </div>
     </div>
     </div>

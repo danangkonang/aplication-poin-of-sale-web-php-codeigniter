@@ -5,12 +5,11 @@ class Model_transaction extends CI_Model
 {
 
 	var $table = 'transactions';
-	var $column_transaction = array(null, null, 'product_name');
+	var $column_order = array('transaction_id', null, null, 'product_name');
 	var $column_search = array('product_name');
-	var $transaction = array('transaction_id' => 'desc');
+	var $order = array('transactions.transaction_id' => 'DESC');
 
-	function get_datatables()
-	{
+	function get_datatables(){
 		$this->_get_datatables_query();
 		if ($_POST['length'] != -1) {
 			$this->db->limit($_POST['length'], $_POST['start']);
@@ -19,14 +18,14 @@ class Model_transaction extends CI_Model
 		}
 	}
 
-	function create_order($data)
-	{
+	function create_order($data){
 		return $this->db->insert($this->table, $data);
 	}
 
-	private function _get_datatables_query()
-	{
+	private function _get_datatables_query(){
 		$this->db->from($this->table);
+		$this->db->join('products', 'products.product_id = transactions.product_id');
+		$this->db->join('users', 'users.user_id = transactions.created_by');
 		$i = 0;
 		foreach ($this->column_search as $item) {
 			if ($_POST['search']['value']) {

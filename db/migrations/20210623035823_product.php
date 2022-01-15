@@ -35,12 +35,12 @@ final class Product extends AbstractMigration
           ->addColumn('end_price', 'integer', ['null' => true])
           ->addColumn('is_active', 'boolean', ['default' => false])
           ->addColumn('is_delete', 'boolean', ['default' => false])
-          ->addColumn('created_by', 'integer')
+          ->addColumn('created_by', 'integer', ['null' => true])
           ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
           ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-          ->addIndex(array('kind_id', 'unit'), array('unique' => true))
+          // ->addIndex(array('kind_id', 'unit'), array('unique' => true))
           ->addForeignKey('kind_id', 'kind_products', 'kind_id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
-          ->addForeignKey('unit', 'units', 'unit', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'))
+          // ->addForeignKey('unit', 'units', 'unit', array('delete'=> 'NO_ACTION', 'update'=> 'CASCADE', 'constraint' => 'product_id'))
           ->create();
   }
 }

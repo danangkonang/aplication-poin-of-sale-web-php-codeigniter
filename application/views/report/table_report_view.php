@@ -33,7 +33,7 @@
         <?php $this->load->view('component/header')?>
 
         <div class="container-fluid">
-          <div class="form-row">
+          <!-- <div class="form-row">
             <div class="form-group col-md-3">
               <label for="satuan">barang</label>
               <select class="form-control " id="bulan" onChange="cek_bulan()" name="bulan">
@@ -58,15 +58,15 @@
             <div class="col-md-3 m-auto">
               <button class="btn btn-success">Filter</button>
             </div>
-          </div>
+          </div> -->
             <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
               <thead>
                 <tr>
                   <th>no</th>
                   <th>Nama</th>
                   <th>Qty</th>
-                  <th>Bayar</th>
-                  <th>H beli</th>
+                  <th>Modal</th>
+                  <th>Jual</th>
                   <th>Untung</th>
                 </tr>
               </thead>
@@ -82,7 +82,7 @@
                   </tr>
               </tfoot>
             </table>
-          </div>
+          <!-- </div> -->
         </div>
         <?php $this->load->view('component/footer')?>
       </div>
