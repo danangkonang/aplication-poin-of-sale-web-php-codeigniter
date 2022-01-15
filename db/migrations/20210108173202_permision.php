@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Phinx\Migration\AbstractMigration;
@@ -20,13 +21,13 @@ final class Permision extends AbstractMigration
   {
     $permisions = $this->table('permisions', array('id' => 'permision_id'));
     $permisions->addColumn('user_id', 'integer')
-          ->addColumn('read', 'boolean', ['default' => true])
-          ->addColumn('create', 'boolean', ['default' => false])
-          ->addColumn('update', 'boolean', ['default' => false])
-          ->addColumn('delete', 'boolean', ['default' => false])
-          ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-          ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-          ->addIndex(array('user_id'), array('unique' => true))
-          ->create();
+      ->addColumn('read', 'boolean', ['default' => true])
+      ->addColumn('create', 'boolean', ['default' => false])
+      ->addColumn('update', 'boolean', ['default' => false])
+      ->addColumn('delete', 'boolean', ['default' => false])
+      ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+      ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+      //->addIndex(array('user_id'), array('unique' => true))
+      ->create();
   }
 }

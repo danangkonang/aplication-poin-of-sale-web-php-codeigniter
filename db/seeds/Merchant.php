@@ -21,6 +21,7 @@ class Merchant extends AbstractSeed
         'merchant_telephone' => '08123123',
         'merchant_address' => 'jakarta',
         'merchant_description' => 'Velit ullamco occaecat exercitation nisi exercitation do reprehenderit eiusmod dolore ipsum duis exercitation.',
+        'created_by' => 1,
       ),
     );
 

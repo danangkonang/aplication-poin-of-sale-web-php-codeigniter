@@ -18,17 +18,20 @@ die;
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
-  
+
   <title>kasir</title>
   <style>
-    @media print{
+    @media print {
       #wrapper {
-        display:none;
+        display: none;
       }
-      .modal-footer, .modal-header {
-        display:none;
+
+      .modal-footer,
+      .modal-header {
+        display: none;
       }
-      title{
+
+      title {
         display: none;
       }
     }
@@ -38,26 +41,28 @@ die;
 <body id="page-top">
   <div id="wrapper">
 
-    <?php $this->load->view('component/sidebar')?>
+    <?php $this->load->view('component/sidebar') ?>
 
     <div id="content-wrapper" class="d-flex flex-column">
       <div id="content">
 
-        <?php $this->load->view('component/header')?>
-        
+        <?php $this->load->view('component/header') ?>
+
         <div class="container-fluid">
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-12 col-md-4">
                 <form class="form-horizontal" id="form_order" role="form">
+                  <div id="qr-reader" style="width:300px"></div>
+                  <div id="qr-reader-results"></div>
 
                   <div class="form-group row">
                     <div class="col">
-                      <input class="form-control reset border-primary" id="search"  name="search" type="text" placeholder="Cari Barcode atau Nama" >
+                      <input class="form-control reset border-primary" id="search" name="search" type="text" placeholder="Cari Barcode atau Nama">
                     </div>
                   </div>
-                  
-                  <input type="hidden" class="reset"  id="product_id" name="product_id">
+
+                  <input type="hidden" class="reset" id="product_id" name="product_id">
                   <input type="hidden" class="reset" id="val_selling_price" name="selling_price">
                   <input type="hidden" class="reset" id="val_product_name" name="product_name">
                   <input type="hidden" class="reset" id="val_product_qty" name="stock_product_qty">
@@ -66,15 +71,15 @@ die;
                   <input type="hidden" class="reset" id="potongan" name="potongan">
                   <input type="hidden" class="reset" id="harga_potongan" name="harga_potongan">
                   <input type="hidden" class="reset" name="total" id="val_total" value="<?= $this->cart->total() ?>">
-                  <input type="hidden" class="reset" id="kembali" readonly="" name="kembali"  >
-                  
+                  <input type="hidden" class="reset" id="kembali" readonly="" name="kembali">
+
                 </form>
 
-                
+
                 <div class="form-group row">
                   <div class="col">
                     <label class="col-form-label">Bayar</label>
-                    <input class="form-control form-control-lg border-danger" type="number" id="bayar" name="bayar" oninput="showKembali(this.value)"  placeholder="0">
+                    <input class="form-control form-control-lg border-danger" type="number" id="bayar" name="bayar" oninput="showKembali(this.value)" placeholder="0">
                   </div>
                 </div>
               </div>
@@ -123,14 +128,14 @@ die;
                   <tbody>
                   </tbody>
                 </table>
-                <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()" >Selesai Transaksi</button>
+                <button type="button" class="btn btn-md btn-primary" id="selesai" disabled="disabled" onclick="preview_struck()">Selesai Transaksi</button>
               </div>
             </div>
           </div>
-    
+
         </div>
       </div>
-      <?php $this->load->view('component/footer')?>
+      <?php $this->load->view('component/footer') ?>
     </div>
   </div>
 
@@ -146,15 +151,46 @@ die;
   <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <script>
     let table;
 
-    $(document).ready(function(){
+    $(document).ready(function() {
       list_transaction();
       $('#product_name').focus();
       listening_serch_product();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
+    });
+
+    function docReady(fn) {
+      // see if DOM is already available
+      if (document.readyState === "complete" || document.readyState === "interactive") {
+        // call on next available tick
+        setTimeout(fn, 1);
+      } else {
+        document.addEventListener("DOMContentLoaded", fn);
+      }
+    }
+
+    docReady(function() {
+      var resultContainer = document.getElementById('qr-reader-results');
+      var lastResult, countResults = 0;
+
+      function onScanSuccess(decodedText, decodedResult) {
+        if (decodedText !== lastResult) {
+          ++countResults;
+          lastResult = decodedText;
+          // Handle on success condition with the decoded message.
+          console.log(`Scan result ${decodedText}`, decodedResult);
+        }
+      }
+
+      var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
+        fps: 10,
+        qrbox: 250
+      });
+      html5QrcodeScanner.render(onScanSuccess);
     });
 
     function list_transaction() {
@@ -166,55 +202,53 @@ die;
           "url": "http://localhost:8080/option/list_shoping_cart",
           "type": "POST"
         },
-        "columnDefs": [
-          {
-            "orderable": false,
-          },
-        ],
+        "columnDefs": [{
+          "orderable": false,
+        }, ],
       });
     }
 
     function listening_serch_product(params) {
       $("#search").autocomplete({
-        minLength: 1,
-        delay : 100,
-        source: function(request, response) { 
-          jQuery.ajax({
-            url: "http://localhost:8080/option/search_product",
-            data: {
-              keyword : request.term
-            },
-            dataType: "json",
-            success: function(data){
-              response(data);
-            }
-          })
-        },
-        select:  function(e, ui){
-          $("#search").val('');
-          $("#product_name").text(ui.item.product_name);
-          $("#product_stock").text(ui.item.product_qty);
-          $("#selling_price").text(convertToRupiah(ui.item.selling_price));
-          $("#product_id").val(ui.item.product_id);
-          $("#val_selling_price").val(ui.item.selling_price);
-          $("#val_product_name").val(ui.item.product_name);
-          $("#val_product_qty").val(ui.item.product_qty);
-          save_to_cartv2(ui.item.product_id, ui.item.product_name, ui.item.selling_price)
-          return false;
-        }
-      })
-      .data("ui-autocomplete")._renderItem = function(ul, item) {
-        return $("<li>")
-          .append("<a style='display: flex;'><div style='width: 150px;'>" + item.barcode + "</div> " + item.product_name + "</a>")
-          .appendTo(ul);
-      };
+          minLength: 1,
+          delay: 100,
+          source: function(request, response) {
+            jQuery.ajax({
+              url: "http://localhost:8080/option/search_product",
+              data: {
+                keyword: request.term
+              },
+              dataType: "json",
+              success: function(data) {
+                response(data);
+              }
+            })
+          },
+          select: function(e, ui) {
+            $("#search").val('');
+            $("#product_name").text(ui.item.product_name);
+            $("#product_stock").text(ui.item.product_qty);
+            $("#selling_price").text(convertToRupiah(ui.item.selling_price));
+            $("#product_id").val(ui.item.product_id);
+            $("#val_selling_price").val(ui.item.selling_price);
+            $("#val_product_name").val(ui.item.product_name);
+            $("#val_product_qty").val(ui.item.product_qty);
+            save_to_cartv2(ui.item.product_id, ui.item.product_name, ui.item.selling_price)
+            return false;
+          }
+        })
+        .data("ui-autocomplete")._renderItem = function(ul, item) {
+          return $("<li>")
+            .append("<a style='display: flex;'><div style='width: 150px;'>" + item.barcode + "</div> " + item.product_name + "</a>")
+            .appendTo(ul);
+        };
     }
-      
-    function reload_table(){
+
+    function reload_table() {
       table.ajax.reload(null, false);
     }
 
-    function subTotal(qty){
+    function subTotal(qty) {
       if (qty > $("#val_product_qty").val()) {
         swal({
           title: "Ups?",
@@ -226,10 +260,10 @@ die;
       let promo = $('#jenis_promo').val();
       let potongan = $('#potongan').val();
       let hrg_potong = $('#harga_potongan').val();
-      if(promo == 'minimal'){
+      if (promo == 'minimal') {
         let induk = Math.floor(qty / potongan);
         let sisa = qty % potongan;
-        let sub = (induk*hrg_potong)+(harga*sisa);
+        let sub = (induk * hrg_potong) + (harga * sisa);
         $('#sub_total').val(convertToRupiah(sub));
         $('#tambah').removeAttr("disabled");
       } else {
@@ -238,14 +272,14 @@ die;
         $('#tambah').removeAttr("disabled");
       }
     }
-      
-    function save_to_cart(){
+
+    function save_to_cart() {
       $.ajax({
-        url : "http://localhost:8080/option/add_keranjang",
+        url: "http://localhost:8080/option/add_keranjang",
         type: "POST",
         dataType: "JSON",
         data: $('#form_order').serialize(),
-        success: function(data){
+        success: function(data) {
           $("#total_belanja").text(convertToRupiah(data.total));
           reload_table();
           $('#val_total').val(data.total);
@@ -253,9 +287,9 @@ die;
           $("#product_stock").text('');
           $("#selling_price").text('');
           $('#sub_total').text('');
-          $('#tambah').attr("disabled","disabled");
+          $('#tambah').attr("disabled", "disabled");
         },
-        error: function (jqXHR, textStatus, errorThrown){
+        error: function(jqXHR, textStatus, errorThrown) {
           alert('Error adding data');
         }
       });
@@ -264,7 +298,7 @@ die;
 
     function save_to_cartv2(id, name, price) {
       $.ajax({
-        url : "http://localhost:8080/option/add_keranjang",
+        url: "http://localhost:8080/option/add_keranjang",
         type: "POST",
         dataType: "JSON",
         data: {
@@ -273,7 +307,7 @@ die;
           selling_price: price,
           product_qty: 1,
         },
-        success: function(data){
+        success: function(data) {
           $("#total_belanja").text(convertToRupiah(data.total));
           reload_table();
           $('#val_total').val(data.total);
@@ -281,39 +315,39 @@ die;
           $("#product_stock").text('');
           $("#selling_price").text('');
           $('#sub_total').text('');
-          $('#tambah').attr("disabled","disabled");
+          $('#tambah').attr("disabled", "disabled");
         },
-        error: function (jqXHR, textStatus, errorThrown){
+        error: function(jqXHR, textStatus, errorThrown) {
           alert('Error adding data');
         }
       });
       $('.reset').val('');
     }
-    
-    document.onkeydown = function(e){
+
+    document.onkeydown = function(e) {
       let qty = $('#product_qty').val();
       let bill = $('#bayar').val();
-      if(qty !== ''){
-        switch(e.keyCode){
+      if (qty !== '') {
+        switch (e.keyCode) {
           case 13:
             save_to_cart();
-          break;
+            break;
         }
       }
-      if(bill !== ''){
-        switch(e.keyCode){
+      if (bill !== '') {
+        switch (e.keyCode) {
           case 13:
             finish_transaction();
-          break;
+            break;
         }
       }
-      switch(e.keyCode){
+      switch (e.keyCode) {
         case 113:
           $('#product_name').focus();
-        break;
+          break;
       }
     };
-    
+
     function showKembali(bayar) {
       if (bayar === '') {
         $("#total_bayar").text(0);
@@ -331,29 +365,29 @@ die;
         }
       }
     }
-    
+
     function convertToRupiah(angka) {
       let rupiah = '';
       let angkarev = angka.toString().split('').reverse().join('');
-      for(let i = 0; i < angkarev.length; i++) {
-        if (i%3 == 0) {
-          rupiah += angkarev.substr(i,3)+'.';
+      for (let i = 0; i < angkarev.length; i++) {
+        if (i % 3 == 0) {
+          rupiah += angkarev.substr(i, 3) + '.';
         }
       }
-      return rupiah.split('',rupiah.length-1).reverse().join('');
+      return rupiah.split('', rupiah.length - 1).reverse().join('');
     }
-    
+
     function preview_struck() {
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
         url: "http://localhost:8080/option/save_orders/",
         data: {
-          bayar:bayar,
-          kembali:kembali
+          bayar: bayar,
+          kembali: kembali
         },
         method: "POST",
-        success: function(data){
+        success: function(data) {
           $('#modal_struck').modal('show');
           $('#content_struck').html(data);
         }
@@ -364,60 +398,60 @@ die;
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
-        url:"http://localhost:8080/option/cetak_nota/",
-        data:{
+        url: "http://localhost:8080/option/cetak_nota/",
+        data: {
           bayar: bayar,
           kembali: kembali
         },
-        method:"POST",
-        success:function(data){
+        method: "POST",
+        success: function(data) {
           $('#modal_struck').modal('show');
           $('#content_struck').html(data);
         }
       });
     }
-		
-		function save_cart_to_order() {
-			$.ajax({
-				url : "http://localhost:8080/option/shoping/",
-				type: "POST",
-        data:{
+
+    function save_cart_to_order() {
+      $.ajax({
+        url: "http://localhost:8080/option/shoping/",
+        type: "POST",
+        data: {
           time_transaction: $("#time_transaction")[0].dataset.transaction,
         },
-				dataType:"json",
-				success:function(result){
+        dataType: "json",
+        success: function(result) {
           cetak_struk();
           $('#modal_struck').modal('hide');
           reload_table();
           $('.res').val('');
           $('#product_name').focus();
-				},
-				error: function(err){
-					alert('error transaksi')
-				}
-			});
-		}
-		
-		function delete_cart(rowid) {
-			$.ajax({
-				url : "<?= site_url('option/delete_shoping_cart')?>/" + rowid,
-				type: "POST",
-				dataType: "JSON",
-				success: function(data){
+        },
+        error: function(err) {
+          alert('error transaksi')
+        }
+      });
+    }
+
+    function delete_cart(rowid) {
+      $.ajax({
+        url: "<?= site_url('option/delete_shoping_cart') ?>/" + rowid,
+        type: "POST",
+        dataType: "JSON",
+        success: function(data) {
           $("#total_belanja").text(convertToRupiah(data.total));
-					reload_table();
+          reload_table();
           $('#val_total').val(data.total);
           showKembali($('#bayar').val());
-				},
-				error: function (jqXHR, textStatus, errorThrown){
-					alert('Gagal hapus barang');
-				}
-			});
-		}
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Gagal hapus barang');
+        }
+      });
+    }
 
     function plus_cart(id, name, price) {
-			$.ajax({
-        url : "http://localhost:8080/option/add_keranjang",
+      $.ajax({
+        url: "http://localhost:8080/option/add_keranjang",
         type: "POST",
         data: {
           product_id: id,
@@ -426,24 +460,24 @@ die;
           product_qty: 1,
         },
         dataType: "JSON",
-        success: function(data){
+        success: function(data) {
           $("#total_belanja").text(convertToRupiah(data.total));
           reload_table();
           $('#val_total').val(data.total);
           $('#sub_total').text('');
         },
-        error: function (jqXHR, textStatus, errorThrown){
+        error: function(jqXHR, textStatus, errorThrown) {
           alert('Error adding data');
         }
       });
-		}
+    }
 
     function minus_cart(id, name, price, qty, rowid) {
-      if(qty < 2) {
+      if (qty < 2) {
         delete_cart(rowid);
       } else {
         $.ajax({
-          url : "http://localhost:8080/option/add_keranjang",
+          url: "http://localhost:8080/option/add_keranjang",
           type: "POST",
           data: {
             product_id: id,
@@ -452,40 +486,40 @@ die;
             product_qty: -1,
           },
           dataType: "JSON",
-          success: function(data){
+          success: function(data) {
             $("#total_belanja").text(convertToRupiah(data.total));
             reload_table();
             $('#val_total').val(data.total);
             $('#sub_total').text('');
           },
-          error: function (jqXHR, textStatus, errorThrown){
+          error: function(jqXHR, textStatus, errorThrown) {
             alert('Error adding data');
           }
         });
       }
-		}
+    }
   </script>
-  
+
   <div class="modal fade" id="modal_struck" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md">
-    <div class="modal-content">
-      
-      <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <div class="modal-content">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        </div>
+
+        <div class="modal-body" id="content_struck">
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" OnClick="save_cart_to_order()"><span class="fa fa-print"></span> Cetak</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span> Tutup</button>
+        </div>
       </div>
-    
-      <div class="modal-body" id="content_struck">
-      
-      </div>
-    
-      <div class="modal-footer">
-      <button type="button" class="btn btn-success" OnClick="save_cart_to_order()"><span class="fa fa-print"></span>  Cetak</button>
-      <button type="button" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-close"></span>  Tutup</button>
-      </div>
-    </div>
     </div>
   </div>
-      
+
 </body>
 
 </html>
