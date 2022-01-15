@@ -23,7 +23,7 @@ cp .env.example .env
 
 ## Composer
 
-kalau sudah memiliki coposer silahkan install vendor seperti biasanya dan skip langkah ini 
+kalau sudah memiliki coposer silahkan install vendor seperti biasanya dan skip langkah ini
 
 ```php
 // wget "https://raw.githubusercontent.com/composer/getcomposer.org/main/web/installer"

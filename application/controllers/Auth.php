@@ -22,7 +22,7 @@ class Auth extends CI_Controller {
 				'delete' => $this->model_permision->is_delete($id),
       ];
 			$this->session->set_userdata($data_session);
-      $this->load->view('kasir/kasir_v3_view');
+      $this->load->view('kasir/kasir_view');
     }
 	}
 	
