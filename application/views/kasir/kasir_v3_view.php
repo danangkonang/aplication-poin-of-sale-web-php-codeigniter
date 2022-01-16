@@ -381,11 +381,13 @@ die;
         $("#total_bayar").text(0);
         $("#total_kembali").text(0);
         $('#selesai').attr("disabled", "disabled");
+        $('#kembali').val(0);
       } else {
         let total = $('#val_total').val();
         let kembalian = bayar - total
         $("#total_bayar").text(convertToRupiah(bayar));
         $("#total_kembali").text(convertToRupiah(kembalian));
+        $('#kembali').val(kembalian);
         if (kembalian >= 0) {
           $('#selesai').removeAttr("disabled");
         } else {
@@ -464,6 +466,7 @@ die;
           $("#total_kembali").text(0);
           $("#total_belanja").text(0);
           $('#search').focus();
+          $('#kembali').val(0);
         },
         error: function(err) {
           alert('error transaksi')

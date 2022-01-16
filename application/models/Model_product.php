@@ -113,4 +113,9 @@ class Model_product extends CI_Model
 		$this->db->where('product_id', $product_id);
 		return $this->db->get($this->table)->row();
 	}
+
+	function is_duplicate_barcode($barcode){
+		$this->db->where('barcode',$barcode);
+		return $this->db->get($this->table)->row();
+	}
 }

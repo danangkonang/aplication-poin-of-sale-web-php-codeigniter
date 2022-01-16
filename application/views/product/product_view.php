@@ -205,16 +205,26 @@
         type: "POST",
         data: $('#form_product').serialize(),
         dataType: "JSON",
-        success: function(data) {
-          if(data.status) {
+        success: function(data) {  
+          // console.log('respon',data)     
+          if(data.status === 200) {
             close_modal();
             reload_table();
           }
           else {
-            for (var i = 0; i < data.inputerror.length; i++) {
-              $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
-              $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
-            }
+            swal({
+              title: "Warning !",
+              text:data.message,
+              icon: "warning",
+              //buttons: true,
+              dangerMode: true,
+            })
+            // console.log('eror',data)
+            // for (var i = 0; i < data.inputerror.length; i++) {
+            //   $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
+            //   $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
+            // }
+            //alert(data.message);
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
