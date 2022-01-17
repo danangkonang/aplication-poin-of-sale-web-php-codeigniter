@@ -9,8 +9,15 @@
   </a>
   <hr class="sidebar-divider my-0">
 
-  <li class="nav-item" id="kasir">
+  <li class="nav-item" id="dashboard">
     <a class="nav-link" href="<?= site_url() ?>">
+    <i class="fas fa-fw fa-cash-register"></i>
+    <span>Dashboard</span></a>
+  </li>
+  <hr class="sidebar-divider">
+
+  <li class="nav-item" id="kasir">
+    <a class="nav-link" href="<?= site_url() ?>transaction">
     <i class="fas fa-fw fa-cash-register"></i>
     <span>Kasir</span></a>
   </li>

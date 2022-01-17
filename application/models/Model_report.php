@@ -57,4 +57,13 @@ class Model_report extends CI_Model {
 		return $this->db->count_all_results();
 	}
 	
+	public function trend()
+	{
+		$data = [];
+		for($i = 1; $i <= 12; $i++){
+			$query = $this->db->query('select sum(price) as total from transactions where month(created_at)='.$i.'');
+			$data[]=$query->row()->total == null? 0 : $query->row()->total;
+		}
+		return $data;
+	}
 }

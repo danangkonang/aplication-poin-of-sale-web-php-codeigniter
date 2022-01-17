@@ -91,4 +91,13 @@ class Report extends CI_Controller {
 		];
 		echo json_encode($output);
 	}
+
+		public function trend()
+		{
+			$this->load->model('model_report');
+			$data = $this->model_report->trend();
+			echo json_encode($data);
+		}	
+
+		
 }

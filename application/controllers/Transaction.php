@@ -11,6 +11,15 @@ class Transaction extends CI_Controller {
     }
   }
 
+  public function index(){
+    $data_session = [
+      'title' => 'Kasir',
+      'active_class' => 'kasir',
+    ];
+    $this->session->set_userdata($data_session);
+    $this->load->view('kasir/kasir_v3_view');
+	}
+
   public function create_transaction(){
     $code_transaction = $this->input->post("code_transaction");
     $response = [];
@@ -23,6 +32,8 @@ class Transaction extends CI_Controller {
           'product_name' => $cart['name'],
           'price' => $cart['price'],
           'qty' => $cart['qty'],
+          'created_at' => date('Y-m-d h:i:s'),
+          'updated_at' => date('Y-m-d h:i:s'),
         ];
 
         $res = $this->model_product->get_product_qty($cart['id']);

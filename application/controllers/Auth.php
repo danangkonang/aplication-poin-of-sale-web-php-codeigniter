@@ -8,6 +8,9 @@ class Auth extends CI_Controller
 		parent::__construct();
 		$this->load->model('model_user');
 		$this->load->model('model_permision');
+		$this->load->model('model_product');
+		$this->load->model('model_transaction');
+		
 	}
 
 	public function index()
@@ -17,12 +20,22 @@ class Auth extends CI_Controller
 			$this->empty_sesion();
 		} else {
 			$data_session = [
-				'title' => 'Kasir',
-				'active_class' => 'kasir',
-			];
+      		    'title' => 'Dashboard',
+				'active_class' => 'dashboard',
+     		 ];
 			$this->session->set_userdata($data_session);
-			$this->load->view('kasir/kasir_v3_view');
-		}
+		
+			$data = [
+				'pendapatan_harian' => $this->model_transaction->sum_daily(),
+				'pendapatan_bulanan' => $this->model_transaction->sum_monthly(),
+				'produk' =>$this->model_product->count_all(),
+				'pegawai' => $this->model_user->count_employee(),
+			];
+			// var_dump($data);
+			// die;
+			$this->load->view('dashboard/dashboard',$data);
+		
+    }
 	}
 
 	public function empty_sesion()
