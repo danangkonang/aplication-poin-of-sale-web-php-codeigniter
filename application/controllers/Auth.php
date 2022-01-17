@@ -14,11 +14,11 @@ class Auth extends CI_Controller {
 			$this->empty_sesion();
     }else{
 			$data_session = [
-        'title' => 'Kasir',
-				'active_class' => 'kasir',
+        'title' => 'Dashboard',
+				'active_class' => 'dashboard',
       ];
 			$this->session->set_userdata($data_session);
-      $this->load->view('kasir/kasir_v3_view');
+			$this->load->view('dashboard/dashboard');
     }
 	}
 	

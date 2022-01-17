@@ -309,4 +309,21 @@ class Option extends CI_Controller {
   public function pengunjung(){
     $this->load->view('admin/pengunjung_view');
   }
+
+  public function find_report_yearly_chart(){
+		$data = [];
+		for ($x = 0; $x < 12; $x++) {
+			$this->db->select('SUM(price) AS price');
+			$this->db->where('MONTH(created_at) =', $x + 1);
+			$query = $this->db->get('transactions');
+			$data[] = $query->row()->price == NULL ? 0 : $query->row()->price;
+		}
+		$month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+		$output = [
+			"month" => $month,
+			"price" => $data,
+		];
+		echo json_encode($output);
+	}
 }
