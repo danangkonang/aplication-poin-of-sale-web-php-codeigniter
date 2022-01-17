@@ -115,5 +115,11 @@ class Model_user extends CI_Model {
     $this->db->where('user_id',$this->session->userdata('user_id'));
     return $this->db->get($this->table)->row_array();
   }
+
+  function count_employee()
+  {
+    $query = $this->db->query('select count(*) as total from users where role != "admin" ');
+    return $query->row()->total;
+  }
     
 }

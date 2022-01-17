@@ -34,10 +34,10 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                         Pendapatan (Harian)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"> Rp. <?= number_format($pendapatan_harian) ?></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -51,10 +51,10 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         Pendapatan (Bulanan)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Rp. <?= number_format($pendapatan_bulanan) ?></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                      <i class="fas fa-wallet fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -68,10 +68,10 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         Produk</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $produk ?></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                      <i class="fas fa-shopping-bag fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -85,10 +85,10 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                         Pegawai</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $pegawai ?> Orang </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                      <i class="fas fa-user-friends fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -165,10 +165,22 @@
     });
 
     function yearlyReport() {
-      setChart();
+      $.ajax({
+        url: "http://localhost:8080/report/trend/",
+        type: "GET",
+        success: function(data) {
+         let item = JSON.parse(data);
+         console.log(data)
+         setChart(item)
+        
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Error adding data');
+        }
+      });
     }
 
-    function setChart() {
+    function setChart(accept) {
       var ctx = document.getElementById("myAreaChart");
       var myLineChart = new Chart(ctx, {
         type: 'line',
@@ -187,7 +199,7 @@
             pointHoverBorderColor: "rgba(78, 115, 223, 1)",
             pointHitRadius: 10,
             pointBorderWidth: 2,
-            data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+            data: accept,
           }],
         },
         options: {

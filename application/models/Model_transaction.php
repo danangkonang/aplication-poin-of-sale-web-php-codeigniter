@@ -100,4 +100,16 @@ class Model_transaction extends CI_Model
 			$this->db->order_by(key($order), $order[key($order)]);
 		}
 	}
+
+		function sum_daily()
+		{
+			$query = $this->db->query('select sum(price) as total from transactions where day(created_at)='.date("d").'');
+			return $query->row()->total;
+		}
+
+		function sum_monthly()
+		{
+			$query = $this->db->query('select sum(price) as total from transactions where month(created_at)='.date("m").'');
+			return $query->row()->total;
+		}
 }
