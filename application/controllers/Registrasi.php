@@ -59,7 +59,7 @@ class Registrasi extends CI_Controller
     );
 
     if ($this->form_validation->run() == FALSE) {
-      $this->load->view('user/form_registrasi');
+      $this->load->view('auth/form_registrasi');
     } else {
       $username = $this->input->post('username', true);
       $email = $this->input->post('email', true);
