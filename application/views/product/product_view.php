@@ -418,10 +418,10 @@
                   <input type="number" class="form-control " name="product_qty" >
                   <div class="invalid-feedback"></div>
                 </div>
-                <p>
+                <!-- <p>
                   <button class="btn btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">promo</button>
-                </p>
-                <div class="collapse" id="collapseExample">
+                </p> -->
+                <!-- <div class="collapse" id="collapseExample">
                   <div class="card card-body">
                     <div class="form-row mb-4">
                       <div class="col">
@@ -462,7 +462,7 @@
                       </select>
                     </div>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </form>
