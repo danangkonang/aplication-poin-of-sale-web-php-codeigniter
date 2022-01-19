@@ -8,6 +8,7 @@ class Registrasi extends CI_Controller
   {
     parent::__construct();
     $this->load->model('model_registrasi');
+    $this->load->model('model_permision');
     if ($this->session->userdata('id')) {
       header("location: http://localhost:8080");
     }
@@ -69,8 +70,8 @@ class Registrasi extends CI_Controller
         'user_name' => $username,
         'email' => $email,
         'password' => password_hash($password, PASSWORD_BCRYPT),
-        'role' => 0,
-        'is_active' => 1
+        'is_active' => true,
+        'role' => 'seller',
       );
       $token = urlencode(base64_encode(random_bytes(32)));
       $data_token = array(
@@ -78,7 +79,15 @@ class Registrasi extends CI_Controller
         'token' => $token,
         'waktu' => time()
       );
-      $this->daftar_baru($data);
+      $userId = $this->daftar_baru($data);
+      $permision = array(
+        'user_id' => $userId,
+        'read' => true,
+        'create' => false,
+        'update' => false,
+        'delete' => false,
+      );
+      $this->model_permision->new_permision($permision);
       //jika gagal hapus user
       // $this->simpan_token($data_token);
       // $this-> send_email($email, $token);

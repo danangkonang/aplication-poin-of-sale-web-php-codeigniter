@@ -124,4 +124,8 @@ class Model_permision extends CI_Model {
     ];
     $this->session->set_userdata($data_session);
   }
+
+  public function new_permision($data){
+    return $this->db->insert($this->table, $data);
+  }
 }

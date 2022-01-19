@@ -4,7 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Model_registrasi extends CI_Model {
 	
   public function daftar_baru($data) {
-    return $this->db->insert('users',$data);
+    $this->db->insert('users', $data);
+    return $this->db->insert_id();
   }
 
   public function simpan_token($data_token) {
