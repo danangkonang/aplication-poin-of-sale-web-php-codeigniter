@@ -27,7 +27,8 @@ final class Permision extends AbstractMigration
       ->addColumn('delete', 'boolean', ['default' => false])
       ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
       ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
-      ->addIndex(array('user_id'), array('unique' => true))
+      // ->addIndex(array('user_id'), array('unique' => true))
+      ->addForeignKey('user_id', 'users', 'user_id', array('delete' => 'NO_ACTION', 'update' => 'NO_ACTION'))
       ->create();
   }
 }

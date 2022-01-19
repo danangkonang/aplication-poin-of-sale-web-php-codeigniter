@@ -34,7 +34,7 @@ final class User extends AbstractMigration
       ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
       ->addIndex(array('user_name', 'email'), array('unique' => true))
       ->addForeignKey('role', 'roles', 'role', array('delete' => 'SET_NULL', 'update' => 'NO_ACTION'))
-      ->addForeignKey('user_id', 'permisions', 'user_id', array('delete' => 'NO_ACTION', 'update' => 'NO_ACTION'))
+      // ->addForeignKey('user_id', 'permisions', 'user_id', array('delete' => 'NO_ACTION', 'update' => 'NO_ACTION'))
       ->create();
   }
 }

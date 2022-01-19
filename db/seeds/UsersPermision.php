@@ -3,7 +3,7 @@
 
 use Phinx\Seed\AbstractSeed;
 
-class Permision extends AbstractSeed
+class UsersPermision extends AbstractSeed
 {
   /**
    * Run Method.
