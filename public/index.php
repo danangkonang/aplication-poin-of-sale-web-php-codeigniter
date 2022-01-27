@@ -36,6 +36,10 @@
  * @filesource
  */
 
+ require '../vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
 /*
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -223,6 +227,9 @@ switch (ENVIRONMENT)
  *  Now that we know the path, set the main path constants
  * -------------------------------------------------------------------
  */
+	// ROOT
+	define('ROOTPATH', dirname(__DIR__).DIRECTORY_SEPARATOR);
+
 	// The name of THIS file
 	define('SELF', pathinfo(__FILE__, PATHINFO_BASENAME));
 
@@ -312,4 +319,8 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
+$dotenv = Dotenv::createUnsafeImmutable(ROOTPATH); // ::createUnsafeImmutable('../');
+// $dotenv = new Dotenv('../');
+$dotenv->load();
 require_once BASEPATH.'core/CodeIgniter.php';
+

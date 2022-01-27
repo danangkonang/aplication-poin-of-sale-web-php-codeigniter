@@ -1,10 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-include_once FCPATH . '/vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
-$dotenv->load();
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -29,7 +25,11 @@ $dotenv->load();
 */
 #$config['base_url'] = $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT'];
 
-$config['base_url'] = 'http://localhost:8080';
+// $config['base_url'] = 'http://localhost:8080';
+
+$root = "http://".$_SERVER['HTTP_HOST'];
+$root .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$config['base_url']    = "$root";
 
 date_default_timezone_set('Asia/jakarta');
 /*
