@@ -1,10 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-include_once FCPATH . '/vendor/autoload.php';
-
-$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
-$dotenv->load();
 /*
 | -------------------------------------------------------------------
 | DATABASE CONNECTIVITY SETTINGS
@@ -79,12 +75,12 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => $_ENV['BD_HOST'],
-	'username' => $_ENV['DB_USER'],
-	'password' => $_ENV['DB_PASSWORD'],
-	'database' => $_ENV['DB_NAME'],
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
+	'hostname' => $_ENV['DB_HOSTNAME'] ?? 'localhost',
+	'username' => $_ENV['DB_USERNAME'] ?? 'root',
+	'password' => $_ENV['DB_PASSWORD'] ?? '',
+	'database' => $_ENV['DB_DATABASE'] ?? 'mydb',
+	'dbdriver' => $_ENV['DB_DRIVER'] ?? 'mysqli',
+	'dbprefix' => $_ENV['DB_PREFIX'] ?? '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,

@@ -58,6 +58,7 @@ vendor/bin/phinx rollback -e development -t 20210107020548
 ## Testing
 
 ```php
+cd public
 php -S localhost:8080
 ```
 
