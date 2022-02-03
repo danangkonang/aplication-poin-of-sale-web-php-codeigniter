@@ -2,6 +2,9 @@
 
 defined('BASEPATH') || exit('No direct script access allowed');
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '../../.env');
+$dotenv->load();
+
 class Member extends CI_Controller
 {
 	public function __construct()
@@ -9,7 +12,7 @@ class Member extends CI_Controller
 		parent::__construct();
 		$this->load->model('model_member');
 		if (! $this->session->userdata('user_id')) {
-			header('location:http://localhost:8080');
+			header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
 		}
 	}
 

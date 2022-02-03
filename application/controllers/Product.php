@@ -1,9 +1,8 @@
 <?php
 
 defined('BASEPATH') || exit('No direct script access allowed');
-include_once FCPATH . '/vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(FCPATH);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '../../.env');
 $dotenv->load();
 
 class Product extends CI_Controller

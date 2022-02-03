@@ -2,13 +2,16 @@
 
 defined('BASEPATH') || exit('No direct script access allowed');
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '../../.env');
+$dotenv->load();
+
 class Report extends CI_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
 		if (! $this->session->userdata('user_id')) {
-			header('location:http://localhost:8080');
+			header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
 		}
 	}
 

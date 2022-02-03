@@ -59,7 +59,7 @@ vendor/bin/phinx rollback -e development -t 20210107020548
 
 ```php
 cd public
-php -S localhost:8080
+php -S localhost:8080 -t publick/
 ```
 
 Akses http://localhost:8080 di browser
