@@ -18,7 +18,7 @@ Aplikasi penjualan berbasis web Dibuat dengan Codeigniter, MySQL, dan Bootstrap.
 git clone https://github.com/danangkonang/aplication-poin-of-sale-web-php-codeigniter.git aplikasi-kasir
 
 cd aplikasi-kasir
-cp .env.example .env
+cp .env.txt .env
 ```
 
 ## Composer
