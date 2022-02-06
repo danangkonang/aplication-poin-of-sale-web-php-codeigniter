@@ -15,7 +15,7 @@ Aplikasi penjualan berbasis web Dibuat dengan Codeigniter, MySQL, dan Bootstrap.
 ## Clonning repository
 
 ```bash
-git clone https://github.com/danangkonang/aplication-poin-of-sale-web-php-codeigniter.git aplikasi-kasir
+git clone git clone --single-branch --branch v0.0.2 https://github.com/danangkonang/aplication-poin-of-sale-web-php-codeigniter.git aplikasi-kasir
 
 cd aplikasi-kasir
 cp .env.example .env
