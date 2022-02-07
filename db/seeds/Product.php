@@ -19,7 +19,7 @@ class Product extends AbstractSeed
     $faker = Faker\Factory::create();
 
     $values = [];
-    for ($i = 0; $i < 10; $i++) {
+    for ($i = 0; $i < 1; $i++) {
       $values[] = array(
         'barcode' => $faker->ean13,
         'kind_id' => $faker->randomElement($array = array(1, 2, 3, 4, 5, 6, 7)),

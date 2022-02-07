@@ -107,6 +107,10 @@
       $('#form_member')[0].reset();
       $('.modal-title').text('Tambah Member');
       $('#modal_member').modal('show');
+      // $('#member_name').focus();
+      // $('#modal_member').on('shown.bs.modal', function() {
+      //   $('#member_name').focus();
+      // })
     }
     
     function edit_member(id){

@@ -83,52 +83,52 @@
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/responsive.bootstrap4.min.js"></script>
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-  <script type="text/javascript" src="<?= base_url() ?>assets/js/scan.min.js"></script>
+  <!-- <script type="text/javascript" src="<?= base_url() ?>assets/js/scan.min.js"></script> -->
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <!-- <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script> -->
 
   <script>
     let table;
-    let scanner;
-    let video;
+    // let scanner;
+    // let video;
     $(document).ready(function(){
-      video = document.getElementById('preview');
-      scanner = new Instascan.Scanner({ video: video });
+      // video = document.getElementById('preview');
+      // scanner = new Instascan.Scanner({ video: video });
       find_all_product();
       setup();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
-      $('#start_promo').datepicker();
-      $('#end_promo').datepicker();
+      // $('#start_promo').datepicker();
+      // $('#end_promo').datepicker();
     });
 
-    function docReady(fn) {
-      // see if DOM is already available
-      if (document.readyState === "complete" || document.readyState === "interactive") {
-        // call on next available tick
-        setTimeout(fn, 1);
-      } else {
-        document.addEventListener("DOMContentLoaded", fn);
-      }
-    }
+    // function docReady(fn) {
+    //   // see if DOM is already available
+    //   if (document.readyState === "complete" || document.readyState === "interactive") {
+    //     // call on next available tick
+    //     setTimeout(fn, 1);
+    //   } else {
+    //     document.addEventListener("DOMContentLoaded", fn);
+    //   }
+    // }
 
-    docReady(function () {
-      var resultContainer = document.getElementById('qr-reader-results');
-      var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-      var lastResult, countResults = 0;
-      function onScanSuccess(decodedText, decodedResult) {
-        if (decodedText !== lastResult) {
-          ++countResults;
-          lastResult = decodedText;
-          // Handle on success condition with the decoded message.
-          console.log(`${decodedText}`);
-          $("#barcode").val(decodedText);
-          // html5QrcodeScanner.stop();
-        }
-      }
+    // docReady(function () {
+    //   var resultContainer = document.getElementById('qr-reader-results');
+    //   var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+    //   var lastResult, countResults = 0;
+    //   function onScanSuccess(decodedText, decodedResult) {
+    //     if (decodedText !== lastResult) {
+    //       ++countResults;
+    //       lastResult = decodedText;
+    //       // Handle on success condition with the decoded message.
+    //       console.log(`${decodedText}`);
+    //       $("#barcode").val(decodedText);
+    //       // html5QrcodeScanner.stop();
+    //     }
+    //   }
 
-      html5QrcodeScanner.render(onScanSuccess);
-    });
+    //   html5QrcodeScanner.render(onScanSuccess);
+    // });
 
     function find_all_product() {
       table = $('#tabelBarang').DataTable({
@@ -158,6 +158,10 @@
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
       $('#modal_form').modal('show');
+      // $('[name="barcode"]').focus();
+      $('#modal_form').on('shown.bs.modal', function() {
+        $('#barcode').focus();
+      })
       // showScanner();
     }
 
@@ -312,7 +316,7 @@
           if(data.promo_type == 'minimal') {
             $("#harga_ahir").removeClass('d-none');
           }
-          showScanner();
+          // showScanner();
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert('Error get data from ajax');
@@ -320,20 +324,20 @@
       });
     }
 
-    function showScanner() {
-      scanner.addListener('scan', function (content) {
-        alert(content);
-      });
-      Instascan.Camera.getCameras().then(function (cameras) {
-        if (cameras.length > 0) {
-          scanner.start(cameras[0]);
-        } else {
-          console.error('No cameras found.');
-        }
-      }).catch(function (e) {
-        console.error(e);
-      });
-    }
+    // function showScanner() {
+    //   scanner.addListener('scan', function (content) {
+    //     alert(content);
+    //   });
+    //   Instascan.Camera.getCameras().then(function (cameras) {
+    //     if (cameras.length > 0) {
+    //       scanner.start(cameras[0]);
+    //     } else {
+    //       console.error('No cameras found.');
+    //     }
+    //   }).catch(function (e) {
+    //     console.error(e);
+    //   });
+    // }
 
   </script>
 
@@ -350,8 +354,8 @@
           <form id="form_product">
             <input type="hidden" id="product_id" name="product_id" >
 
-              <div id="qr-reader"></div>
-              <div id="qr-reader-results"></div>
+              <!-- <div id="qr-reader"></div>
+              <div id="qr-reader-results"></div> -->
 
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
