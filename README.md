@@ -1,14 +1,14 @@
 # Aplikasi (POS) Poin Of Sale web php codeigniter
 Aplikasi penjualan berbasis web Dibuat dengan Codeigniter, MySQL, dan Bootstrap.
 
-## fitur
-- login/registrasi
-- seting hak akses user
-- multi level
-- member
-- penjualan harian/bulanan
-- stok barang
-- barcode
+## Fitur
+- Login dan Registrasi
+- Permision user
+- Multi level
+- Member
+- Laporan tansaksi
+- Stok barang
+- Barcode scanner [barcodetopc](https://barcodetopc.com/)
 
 # Installasi
 
@@ -18,6 +18,7 @@ Aplikasi penjualan berbasis web Dibuat dengan Codeigniter, MySQL, dan Bootstrap.
 git clone https://github.com/danangkonang/aplication-poin-of-sale-web-php-codeigniter.git aplikasi-kasir
 
 cd aplikasi-kasir
+
 cp .env.txt .env
 ```
 
@@ -37,7 +38,7 @@ php composer.phar install
 
 Bisa juga menggunakan xampp, lamp, dll. sesuaikan config .env
 
-```
+```bash
 #start database
 docker-compose up -d
 
@@ -48,17 +49,19 @@ docker-compose down
 ## Migrasi database
 
 ```bash
+# up migration
 vendor/bin/phinx migrate -e development
 
+# up seed
 vendor/bin/phinx seed:run
 
+# rollback migration
 vendor/bin/phinx rollback -e development -t 20210107020548
 ```
 
 ## Testing
 
 ```php
-cd public
 php -S localhost:8080 -t publick/
 ```
 
