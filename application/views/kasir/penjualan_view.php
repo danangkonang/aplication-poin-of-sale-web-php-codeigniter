@@ -30,7 +30,7 @@
         <?php $this->load->view('component/header')?>
 
         <div class="container-fluid">
-          <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
+          <table id="tabelPenjualan" class="table table-striped table-bordered nowrap" style="width:100%">
             <thead>
               <tr>
                 <th>no</th>
@@ -76,12 +76,11 @@
     });
 
     function find_transaction() {
-      table = $('#tabelBarang').DataTable({
+      table = $('#tabelPenjualan').DataTable({
         "columnDefs": [
           {
-            "targets": [1, 2, 3, 4, 5, 6, 7],
+            "targets": [0, 1, 2, 3, 4, 5, 6, 7],
             "orderable": false,
-            // "order": [[ 1, "desc" ]]
           },
         ],
         "order": [],
