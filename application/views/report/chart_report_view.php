@@ -89,7 +89,7 @@
       let bulan = $("#bulan").val();
       let tahun = $("#tahun").val();
       $.ajax({
-        url:'http://localhost:8080/report/cari_diagram',
+        url:'<?= site_url('report/cari_diagram') ?>',
         data:{
           bulan:bulan,
           tahun:tahun
@@ -109,7 +109,7 @@
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
       $.ajax({
-        url:"http://localhost:8080/report/find_report_chart",
+        url:"<?= site_url('report/find_report_chart') ?>",
         method: "GET",
         success:function(data){
           let obj = JSON.parse(data);

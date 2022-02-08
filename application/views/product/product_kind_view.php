@@ -1,12 +1,7 @@
-<?php
-// var_dump($this->session->userdata());
-// die;
-?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +13,7 @@
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
-  <title>kasir</title>
+  <title>Product Kind</title>
 </head>
 
 <body id="page-top">
@@ -87,7 +82,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/product_kind/find_kinds",
+          "url": "<?= site_url('product_kind/find_kinds')?>",
           "type": "POST"
         },
         "lengthChange": false,
@@ -108,7 +103,7 @@
     
     function edit_kind(id){
       $.ajax({
-        url : "<?php echo site_url('product_kind/find_kind')?>/" + id,
+        url : "<?= site_url('product_kind/find_kind')?>/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
@@ -131,9 +126,9 @@
     function store_kind() {
       var url;
       if (save_method === 'add') {
-        url = "<?php echo site_url('product_kind/save_kind')?>";
+        url = "<?= site_url('product_kind/save_kind')?>";
       } else {
-        url = "<?php echo site_url('product_kind/update_kind')?>";
+        url = "<?= site_url('product_kind/update_kind')?>";
       }
       $.ajax({
         url : url,

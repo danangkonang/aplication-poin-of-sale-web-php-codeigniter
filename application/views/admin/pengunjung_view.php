@@ -191,7 +191,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/option/get_data_laba",
+          "url": "<?= site_url('option/get_data_laba') ?>",
           "type": "POST"
           },
         "lengthChange": false,

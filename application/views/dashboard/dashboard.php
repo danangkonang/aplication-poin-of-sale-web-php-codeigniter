@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/sb-admin-2.css" rel="stylesheet">
 
-  <title>kasir</title>
+  <title>Dashbord</title>
 </head>
 
 <body id="page-top">
@@ -166,13 +166,11 @@
 
     function yearlyReport() {
       $.ajax({
-        url: "http://localhost:8080/report/trend/",
+        url: "<?= site_url('report/trend/') ?>",
         type: "GET",
         success: function(data) {
          let item = JSON.parse(data);
-         console.log(data)
-         setChart(item)
-        
+         setChart(item);
         },
         error: function(jqXHR, textStatus, errorThrown) {
           alert('Error adding data');

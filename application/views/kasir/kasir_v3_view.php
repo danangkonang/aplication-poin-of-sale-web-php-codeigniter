@@ -1,12 +1,6 @@
-<!--?php
-var_dump($this->session->userdata());
-die;
-?-->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +12,6 @@ die;
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
-
   <title>kasir</title>
   <style>
     @media print {
@@ -261,7 +254,7 @@ die;
         "info": false,
         "searching": false,
         "ajax": {
-          "url": "http://localhost:8080/option/list_shoping_cart",
+          "url": "<?= site_url('option/list_shoping_cart') ?>",
           "type": "POST"
         },
         "columnDefs": [
@@ -274,7 +267,7 @@ die;
 
     function findProductByBarcode(barcode) {
       $.ajax({
-        url: "http://localhost:8080/product/find_by_barcode/" + barcode,
+        url: "<?= site_url('product/find_by_barcode//') ?>" + barcode,
         type: "GET",
         success: function(data) {
           let item = JSON.parse(data);
@@ -301,7 +294,7 @@ die;
         delay: 100,
         source: function(request, response) {
           jQuery.ajax({
-            url: "http://localhost:8080/option/search_product",
+            url: "<?= site_url('option/search_product') ?>",
             data: {
               keyword: request.term
             },
@@ -362,7 +355,7 @@ die;
 
     function save_to_cartv2(id, name, price) {
       $.ajax({
-        url: "http://localhost:8080/option/add_keranjang",
+        url: "<?= site_url('option/add_keranjang') ?>",
         type: "POST",
         dataType: "JSON",
         data: {
@@ -447,7 +440,7 @@ die;
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
-        url: "http://localhost:8080/option/save_orders/",
+        url: "<?= site_url('option/save_orders/') ?>",
         data: {
           bayar: bayar,
           kembali: kembali
@@ -459,23 +452,6 @@ die;
         }
       });
     }
-
-    // function finish_transaction() {
-    //   let bayar = $('#bayar').val();
-    //   let kembali = $('#kembali').val();
-    //   $.ajax({
-    //     url:"http://localhost:8080/option/cetak_nota/",
-    //     data:{
-    //       bayar: bayar,
-    //       kembali: kembali
-    //     },
-    //     method:"POST",
-    //     success:function(data){
-    //       $('#modal_struck').modal('show');
-    //       $('#content_struck').html(data);
-    //     }
-    //   });
-    // }
 
     function print_transaction() {
       document.title = new Date();
@@ -489,7 +465,7 @@ die;
       let day = d.getDate();
       let month = d.getMonth();
       $.ajax({
-        url: "http://localhost:8080/transaction/create_transaction/",
+        url: "<?= site_url('transaction/create_transaction/') ?>",
         type: "POST",
         data: {
           code_transaction: `TR${year}${day}${month}${"<?= $this->session->userdata('user_id') ?>"}`,
@@ -530,7 +506,7 @@ die;
 
     function plus_cart(id, name, price) {
       $.ajax({
-        url: "http://localhost:8080/option/add_keranjang",
+        url: "<?= site_url('option/add_keranjang') ?>",
         type: "POST",
         data: {
           product_id: id,
@@ -556,7 +532,7 @@ die;
         delete_cart(rowid);
       } else {
         $.ajax({
-          url: "http://localhost:8080/option/add_keranjang",
+          url: "<?= site_url('option/add_keranjang') ?>",
           type: "POST",
           data: {
             product_id: id,

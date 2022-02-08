@@ -12,7 +12,7 @@ class User extends CI_Controller
 		parent::__construct();
 		$this->load->model('model_user');
 		if (! $this->session->userdata('user_id')) {
-			header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 

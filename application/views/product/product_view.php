@@ -19,7 +19,7 @@
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?php echo base_url() ?>assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
-  <title>kasir</title>
+  <title>Product</title>
   <style>
     #preview{
       height: auto;
@@ -44,9 +44,7 @@
               echo('<button class="btn btn-success" onclick="add_product()"><i class="glyphicon glyphicon-plus"></i> tambah</button><br><br>');
             }
           ?>
-          <!-- <div id="qr-reader"></div>
-          <div id="qr-reader-results"></div> -->
-
+          
           <table id="tabelBarang" class="table table-striped table-bordered nowrap" style="width:100%">
             <thead>
               <tr>
@@ -89,11 +87,8 @@
 
   <script>
     let table;
-    // let scanner;
-    // let video;
+    
     $(document).ready(function(){
-      // video = document.getElementById('preview');
-      // scanner = new Instascan.Scanner({ video: video });
       find_all_product();
       setup();
       $("body").toggleClass("sidebar-toggled");
@@ -101,34 +96,6 @@
       // $('#start_promo').datepicker();
       // $('#end_promo').datepicker();
     });
-
-    // function docReady(fn) {
-    //   // see if DOM is already available
-    //   if (document.readyState === "complete" || document.readyState === "interactive") {
-    //     // call on next available tick
-    //     setTimeout(fn, 1);
-    //   } else {
-    //     document.addEventListener("DOMContentLoaded", fn);
-    //   }
-    // }
-
-    // docReady(function () {
-    //   var resultContainer = document.getElementById('qr-reader-results');
-    //   var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-    //   var lastResult, countResults = 0;
-    //   function onScanSuccess(decodedText, decodedResult) {
-    //     if (decodedText !== lastResult) {
-    //       ++countResults;
-    //       lastResult = decodedText;
-    //       // Handle on success condition with the decoded message.
-    //       console.log(`${decodedText}`);
-    //       $("#barcode").val(decodedText);
-    //       // html5QrcodeScanner.stop();
-    //     }
-    //   }
-
-    //   html5QrcodeScanner.render(onScanSuccess);
-    // });
 
     function find_all_product() {
       table = $('#tabelBarang').DataTable({
@@ -141,7 +108,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/product/find_all_product",
+          "url": "<?= site_url('product/find_all_product')?>",
           "type": "POST"
         },
         "lengthChange": false,
@@ -158,22 +125,12 @@
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
       $('#modal_form').modal('show');
-      // $('[name="barcode"]').focus();
       $('#modal_form').on('shown.bs.modal', function() {
         $('#barcode').focus();
       })
-      // showScanner();
     }
 
     function close_modal(){
-      // scanner.stop();
-      // let stream = video.srcObject;
-      // let tracks = stream.getTracks();
-      // for (let i = 0; i < tracks.length; i++) {
-      //   let track = tracks[i];
-      //   track.stop();
-      // }
-      // video.srcObject = null;
       save_method = 'add';
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
@@ -199,10 +156,10 @@
     function save_product() {
       var url;
       if(save_method == 'add') {
-        url = "<?php echo site_url('product/save_product')?>";
+        url = "<?= site_url('product/save_product')?>";
       }
       else {
-        url = "<?php echo site_url('product/update_barang')?>";
+        url = "<?= site_url('product/update_barang')?>";
       }
       $.ajax({
         url : url,
@@ -210,25 +167,16 @@
         data: $('#form_product').serialize(),
         dataType: "JSON",
         success: function(data) {  
-          // console.log('respon',data)     
           if(data.status === 200) {
             close_modal();
             reload_table();
-          }
-          else {
+          } else {
             swal({
               title: "Warning !",
               text:data.message,
               icon: "warning",
-              //buttons: true,
               dangerMode: true,
             })
-            // console.log('eror',data)
-            // for (var i = 0; i < data.inputerror.length; i++) {
-            //   $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
-            //   $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
-            // }
-            //alert(data.message);
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -267,7 +215,7 @@
       .then((willDelete) => {
         if (willDelete) {
           $.ajax({
-            url : "<?php echo site_url('product/hapus_barang')?>/"+id,
+            url : "<?= site_url('product/hapus_barang')?>/"+id,
             type: "POST",
             dataType: "JSON",
             success: function(data) {
@@ -292,7 +240,7 @@
       save_method = 'update';
       $('#form_product')[0].reset();
       $.ajax({
-        url : "<?php echo site_url('product/edit_barang')?>/" + id,
+        url : "<?= site_url('product/edit_barang')?>/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
@@ -316,28 +264,12 @@
           if(data.promo_type == 'minimal') {
             $("#harga_ahir").removeClass('d-none');
           }
-          // showScanner();
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert('Error get data from ajax');
         }
       });
     }
-
-    // function showScanner() {
-    //   scanner.addListener('scan', function (content) {
-    //     alert(content);
-    //   });
-    //   Instascan.Camera.getCameras().then(function (cameras) {
-    //     if (cameras.length > 0) {
-    //       scanner.start(cameras[0]);
-    //     } else {
-    //       console.error('No cameras found.');
-    //     }
-    //   }).catch(function (e) {
-    //     console.error(e);
-    //   });
-    // }
 
   </script>
 
@@ -354,14 +286,8 @@
           <form id="form_product">
             <input type="hidden" id="product_id" name="product_id" >
 
-              <!-- <div id="qr-reader"></div>
-              <div id="qr-reader-results"></div> -->
-
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
-
-                <!-- <video class="bg-success" id="preview"></video> -->
-                
 
                 <div class="form-group">
                   <label for="barcode" class="col-form-label">Barcode</label>

@@ -87,7 +87,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/option/get_penjualan",
+          "url": "<?= site_url('option/get_penjualan') ?>",
           "type": "POST"
           },
         "lengthChange": false,

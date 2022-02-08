@@ -11,7 +11,7 @@ class Report extends CI_Controller
 	{
 		parent::__construct();
 		if (! $this->session->userdata('user_id')) {
-			header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 

@@ -110,6 +110,6 @@ class Auth extends CI_Controller
 		$this->load->helper('cookie');
 		delete_cookie('cookie_id');
 		$this->session->sess_destroy();
-		header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
+		header('location:' . $_ENV['APP_HOST']);
 	}
 }

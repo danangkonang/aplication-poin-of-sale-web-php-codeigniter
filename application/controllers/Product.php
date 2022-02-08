@@ -15,7 +15,7 @@ class Product extends CI_Controller
 		$this->load->model('model_product_kind');
 		$this->load->model('model_permision');
 		if (! $this->session->userdata('user_id')) {
-			header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 
