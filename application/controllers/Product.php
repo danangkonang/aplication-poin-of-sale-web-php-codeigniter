@@ -15,7 +15,7 @@ class Product extends CI_Controller
 		$this->load->model('model_product_kind');
 		$this->load->model('model_permision');
 		if (! $this->session->userdata('user_id')) {
-			header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 
@@ -78,7 +78,7 @@ class Product extends CI_Controller
 			'selling_price'  => $this->input->post('selling_price'),
 			'product_qty'    => $this->input->post('product_qty'),
 			'product_image'  => $this->input->post('product_image'),
-			'is_promo'       => $this->input->post('is_promo'),
+			'is_promo'       => $this->input->post('is_promo') ? $this->input->post('is_promo') : false,
 			'start_promo'    => $this->input->post('start_promo'),
 			'end_promo'      => $this->input->post('end_promo'),
 			'promo_type'     => $this->input->post('promo_type'),

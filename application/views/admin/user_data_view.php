@@ -14,7 +14,7 @@
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
-  <title>kasir</title>
+  <title>Users</title>
 </head>
 
 <body id="page-top">
@@ -78,7 +78,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/user/get_data_user",
+          "url": "<?= site_url('user/get_data_user') ?>",
           "type": "POST"
         },
         "lengthChange": false,

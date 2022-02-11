@@ -13,7 +13,7 @@
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>/assets/css/style.css" rel="stylesheet">
-  <title>kasir</title>
+  <title>Merchant</title>
 </head>
 
 <body id="page-top">

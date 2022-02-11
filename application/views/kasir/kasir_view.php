@@ -172,7 +172,7 @@ die;
         "info": false,
         "searching": false,
         "ajax": {
-          "url": "http://localhost:8080/option/list_shoping_cart",
+          "url": "<?= site_url('option/list_shoping_cart') ?>",
           "type": "POST"
         },
         "columnDefs": [{
@@ -187,7 +187,7 @@ die;
           delay: 400,
           source: function(request, response) {
             jQuery.ajax({
-              url: "http://localhost:8080/option/search_product",
+              url: "<?= site_url('option/search_product') ?>",
               data: {
                 keyword: request.term
               },
@@ -238,7 +238,7 @@ die;
 
     function save_to_cart() {
       $.ajax({
-        url: "http://localhost:8080/option/add_keranjang",
+        url: "<?= site_url('option/add_keranjang') ?>",
         type: "POST",
         data: $('#form_order').serialize(),
         dataType: "JSON",
@@ -314,7 +314,7 @@ die;
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
-        url: "http://localhost:8080/option/save_orders/",
+        url: "<?= site_url('option/save_orders/') ?>",
         data: {
           bayar: bayar,
           kembali: kembali
@@ -331,7 +331,7 @@ die;
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
-        url: "http://localhost:8080/option/cetak_nota/",
+        url: "<?= site_url('option/cetak_nota/') ?>",
         data: {
           bayar: bayar,
           kembali: kembali
@@ -346,7 +346,7 @@ die;
 
     function save_cart_to_order() {
       $.ajax({
-        url: "http://localhost:8080/option/shoping/",
+        url: "<?= site_url('option/shoping/') ?>",
         type: "POST",
         data: {
           time_transaction: $("#time_transaction")[0].dataset.transaction,

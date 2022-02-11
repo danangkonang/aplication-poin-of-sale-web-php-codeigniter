@@ -1,12 +1,6 @@
-<!--?php
-var_dump($this->session->userdata());
-die;
-?-->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,22 +12,81 @@ die;
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/style.css" rel="stylesheet">
-
   <title>kasir</title>
   <style>
     @media print {
       #wrapper {
         display: none;
       }
-
       .modal-footer,
       .modal-header {
         display: none;
       }
-
       title {
         display: none;
       }
+    }
+    /* The switch - the box around the slider */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
     }
   </style>
 </head>
@@ -50,33 +103,36 @@ die;
 
         <div class="container-fluid">
 
+          
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-12 col-md-4">
-                <form class="form-horizontal" id="form_order" role="form">
-                  <div id="qr-reader" style="width:300px"></div>
+                <div class="d-flex align-items-center">
+                  <label class="switch mr-3">
+                    <input type="checkbox" checked>
+                    <span class="slider round"></span>
+                  </label>
+                  <span style="font-size: 3em; color: Mediumslateblue;">
+                    <i id="icon_barcode" class="fas fa-barcode"></i>
+                  </span>
+                </div>
 
-                  <div id="qr-reader-results"></div>
-
-                  <div class="form-group row">
-                    <div class="col">
-                      <input class="form-control reset border-primary" id="search" name="search" type="text" placeholder="Cari Barcode atau Nama">
-                    </div>
+                <div class="form-group row">
+                  <div class="col">
+                    <input class="form-control" id="barcode_search" name="barcode_search" type="text" placeholder="Cari Barcode atau Nama">
                   </div>
+                </div>
 
-                  <input type="hidden" class="reset" id="product_id" name="product_id">
-                  <input type="hidden" class="reset" id="val_selling_price" name="selling_price">
-                  <input type="hidden" class="reset" id="val_product_name" name="product_name">
-                  <input type="hidden" class="reset" id="val_product_qty" name="stock_product_qty">
+                <input type="hidden" class="reset" id="product_id" name="product_id">
+                <input type="hidden" class="reset" id="val_selling_price" name="selling_price">
+                <input type="hidden" class="reset" id="val_product_name" name="product_name">
+                <input type="hidden" class="reset" id="val_product_qty" name="stock_product_qty">
 
-                  <input type="hidden" class="reset" id="jenis_promo" name="jenis_promo">
-                  <input type="hidden" class="reset" id="potongan" name="potongan">
-                  <input type="hidden" class="reset" id="harga_potongan" name="harga_potongan">
-                  <input type="hidden" class="reset" name="total" id="val_total" value="<?= $this->cart->total() ?>">
-                  <input type="hidden" class="reset" id="kembali" readonly="" name="kembali">
-
-                </form>
-
+                <input type="hidden" class="reset" id="jenis_promo" name="jenis_promo">
+                <input type="hidden" class="reset" id="potongan" name="potongan">
+                <input type="hidden" class="reset" id="harga_potongan" name="harga_potongan">
+                <input type="hidden" class="reset" name="total" id="val_total" value="<?= $this->cart->total() ?>">
+                <input type="hidden" class="reset" id="kembali" readonly="" name="kembali">
 
                 <div class="form-group row">
                   <div class="col">
@@ -152,18 +208,44 @@ die;
   <script src="<?= base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
   <script src="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <!-- <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script> -->
+  <!-- <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script> -->
   <script>
     let table;
 
     $(document).ready(function() {
+      $("input[type='checkbox']").prop('checked', true);
       list_transaction();
-      $('#product_name').focus();
-      listening_serch_product();
+      $('#barcode_search').focus();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
+      $('input[type=checkbox]').change(
+        function(){
+          if (this.checked) {
+            $('#icon_barcode').addClass('fa-barcode').removeClass('fa-keyboard');
+            $("#barcode_search").on("input", function() {
+              if ($('#barcode_search').val().length === 13) {
+                findProductByBarcode($('#barcode_search').val())
+              }
+            });
+          } else {
+            $('#icon_barcode').addClass('fa-keyboard').removeClass('fa-barcode');
+            listening_serch_product();
+          }
+          $('#barcode_search').focus();
+        }
+      );
+      if($("input[type='checkbox']").prop("checked")) {
+        $('#icon_barcode').addClass('fa-barcode').removeClass('fa-keyboard');
+        $("#barcode_search").on("input", function() {
+          if ($('#barcode_search').val().length === 13) {
+            findProductByBarcode($('#barcode_search').val())
+          }
+        });
+      } else {
+        $('#icon_barcode').addClass('fa-keyboard').removeClass('fa-barcode');
+        listening_serch_product();
+      }
     });
 
     function list_transaction() {
@@ -172,22 +254,23 @@ die;
         "info": false,
         "searching": false,
         "ajax": {
-          "url": "http://localhost:8080/option/list_shoping_cart",
+          "url": "<?= site_url('option/list_shoping_cart') ?>",
           "type": "POST"
         },
-        "columnDefs": [{
-          "orderable": false,
-        }, ],
+        "columnDefs": [
+          {
+            "orderable": false,
+          },
+        ],
       });
     }
 
     function findProductByBarcode(barcode) {
       $.ajax({
-        url: "http://localhost:8080/product/find_by_barcode/" + barcode,
+        url: "<?= site_url('product/find_by_barcode//') ?>" + barcode,
         type: "GET",
         success: function(data) {
           let item = JSON.parse(data);
-          $("#search").val('');
           $("#product_name").text(item.product_name);
           $("#product_stock").text(item.product_qty);
           $("#selling_price").text(convertToRupiah(item.selling_price));
@@ -195,7 +278,9 @@ die;
           $("#val_selling_price").val(item.selling_price);
           $("#val_product_name").val(item.product_name);
           $("#val_product_qty").val(item.product_qty);
-          save_to_cartv2(item.product_id, item.product_name, item.selling_price)
+          $('#barcode_search').val('');
+          save_to_cartv2(item.product_id, item.product_name, item.selling_price);
+          $("#search").val('');
         },
         error: function(jqXHR, textStatus, errorThrown) {
           alert('Error adding data');
@@ -204,39 +289,39 @@ die;
     }
 
     function listening_serch_product(params) {
-      $("#search").autocomplete({
-          minLength: 1,
-          delay: 100,
-          source: function(request, response) {
-            jQuery.ajax({
-              url: "http://localhost:8080/option/search_product",
-              data: {
-                keyword: request.term
-              },
-              dataType: "json",
-              success: function(data) {
-                response(data);
-              }
-            })
-          },
-          select: function(e, ui) {
-            $("#search").val('');
-            $("#product_name").text(ui.item.product_name);
-            $("#product_stock").text(ui.item.product_qty);
-            $("#selling_price").text(convertToRupiah(ui.item.selling_price));
-            $("#product_id").val(ui.item.product_id);
-            $("#val_selling_price").val(ui.item.selling_price);
-            $("#val_product_name").val(ui.item.product_name);
-            $("#val_product_qty").val(ui.item.product_qty);
-            save_to_cartv2(ui.item.product_id, ui.item.product_name, ui.item.selling_price)
-            return false;
-          }
-        })
-        .data("ui-autocomplete")._renderItem = function(ul, item) {
-          return $("<li>")
-            .append("<a style='display: flex;'><div style='width: 150px;'>" + item.barcode + "</div> " + item.product_name + "</a>")
-            .appendTo(ul);
-        };
+      $("#barcode_search").autocomplete({
+        minLength: 1,
+        delay: 100,
+        source: function(request, response) {
+          jQuery.ajax({
+            url: "<?= site_url('option/search_product') ?>",
+            data: {
+              keyword: request.term
+            },
+            dataType: "json",
+            success: function(data) {
+              response(data);
+            }
+          })
+        },
+        select: function(e, ui) {
+          $("#barcode_search").val('');
+          $("#product_name").text(ui.item.product_name);
+          $("#product_stock").text(ui.item.product_qty);
+          $("#selling_price").text(convertToRupiah(ui.item.selling_price));
+          $("#product_id").val(ui.item.product_id);
+          $("#val_selling_price").val(ui.item.selling_price);
+          $("#val_product_name").val(ui.item.product_name);
+          $("#val_product_qty").val(ui.item.product_qty);
+          save_to_cartv2(ui.item.product_id, ui.item.product_name, ui.item.selling_price)
+          return false;
+        }
+      })
+      .data("ui-autocomplete")._renderItem = function(ul, item) {
+        return $("<li>")
+          .append("<a style='display: flex;'><div style='width: 150px;'>" + item.barcode + "</div> " + item.product_name + "</a>")
+          .appendTo(ul);
+      };
     }
 
     function reload_table() {
@@ -268,32 +353,9 @@ die;
       }
     }
 
-    function save_to_cart() {
-      $.ajax({
-        url: "http://localhost:8080/option/add_keranjang",
-        type: "POST",
-        dataType: "JSON",
-        data: $('#form_order').serialize(),
-        success: function(data) {
-          $("#total_belanja").text(convertToRupiah(data.total));
-          reload_table();
-          $('#val_total').val(data.total);
-          $("#product_name").text('');
-          $("#product_stock").text('');
-          $("#selling_price").text('');
-          $('#sub_total').text('');
-          $('#tambah').attr("disabled", "disabled");
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          alert('Error adding data');
-        }
-      });
-      $('.reset').val('');
-    }
-
     function save_to_cartv2(id, name, price) {
       $.ajax({
-        url: "http://localhost:8080/option/add_keranjang",
+        url: "<?= site_url('option/add_keranjang') ?>",
         type: "POST",
         dataType: "JSON",
         data: {
@@ -320,27 +382,27 @@ die;
     }
 
     document.onkeydown = function(e) {
-      let qty = $('#product_qty').val();
-      let bill = $('#bayar').val();
-      if (qty !== '') {
-        switch (e.keyCode) {
-          case 13:
-            save_to_cart();
-            break;
-        }
-      }
-      if (bill !== '') {
-        switch (e.keyCode) {
-          case 13:
-            finish_transaction();
-            break;
-        }
-      }
-      switch (e.keyCode) {
-        case 113:
-          $('#product_name').focus();
-          break;
-      }
+      // let qty = $('#product_qty').val();
+      // let bill = $('#bayar').val();
+      // if (qty !== '') {
+      //   switch (e.keyCode) {
+      //     case 13:
+      //       save_to_cart();
+      //       break;
+      //   }
+      // }
+      // if (bill !== '') {
+      //   switch (e.keyCode) {
+      //     case 13:
+      //       finish_transaction();
+      //       break;
+      //   }
+      // }
+      // switch (e.keyCode) {
+      //   case 113:
+      //     $('#product_name').focus();
+      //     break;
+      // }
     };
 
     function showKembali(bayar) {
@@ -378,7 +440,7 @@ die;
       let bayar = $('#bayar').val();
       let kembali = $('#kembali').val();
       $.ajax({
-        url: "http://localhost:8080/option/save_orders/",
+        url: "<?= site_url('option/save_orders/') ?>",
         data: {
           bayar: bayar,
           kembali: kembali
@@ -391,22 +453,6 @@ die;
       });
     }
 
-    // function finish_transaction() {
-    //   let bayar = $('#bayar').val();
-    //   let kembali = $('#kembali').val();
-    //   $.ajax({
-    //     url:"http://localhost:8080/option/cetak_nota/",
-    //     data:{
-    //       bayar: bayar,
-    //       kembali: kembali
-    //     },
-    //     method:"POST",
-    //     success:function(data){
-    //       $('#modal_struck').modal('show');
-    //       $('#content_struck').html(data);
-    //     }
-    //   });
-    // }
     function print_transaction() {
       document.title = new Date();
       window.print();
@@ -419,7 +465,7 @@ die;
       let day = d.getDate();
       let month = d.getMonth();
       $.ajax({
-        url: "http://localhost:8080/transaction/create_transaction/",
+        url: "<?= site_url('transaction/create_transaction/') ?>",
         type: "POST",
         data: {
           code_transaction: `TR${year}${day}${month}${"<?= $this->session->userdata('user_id') ?>"}`,
@@ -460,7 +506,7 @@ die;
 
     function plus_cart(id, name, price) {
       $.ajax({
-        url: "http://localhost:8080/option/add_keranjang",
+        url: "<?= site_url('option/add_keranjang') ?>",
         type: "POST",
         data: {
           product_id: id,
@@ -486,7 +532,7 @@ die;
         delete_cart(rowid);
       } else {
         $.ajax({
-          url: "http://localhost:8080/option/add_keranjang",
+          url: "<?= site_url('option/add_keranjang') ?>",
           type: "POST",
           data: {
             product_id: id,

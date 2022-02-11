@@ -79,7 +79,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/permision/find_permision",
+          "url": "<?= site_url('permision/find_permision') ?>",
           "type": "POST"
         },
         "lengthChange": false,

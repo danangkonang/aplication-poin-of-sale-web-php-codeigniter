@@ -1,12 +1,6 @@
-<?php
-// var_dump($this->session->userdata());
-// die;
-?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,7 +12,7 @@
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
-  <title>kasir</title>
+  <title>Member</title>
 </head>
 
 <body id="page-top">
@@ -90,7 +84,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/member/find_members",
+          "url": "<?= site_url('member/find_members')?>",
           "type": "POST"
         },
         "lengthChange": false,
@@ -137,9 +131,9 @@
     function store_member() {
       var url;
       if (save_method === 'add') {
-        url = "<?php echo site_url('member/save_member')?>";
+        url = "<?= site_url('member/save_member')?>";
       } else {
-        url = "<?php echo site_url('member/update_member')?>";
+        url = "<?= site_url('member/update_member')?>";
       }
       $.ajax({
         url : url,

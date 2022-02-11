@@ -13,7 +13,7 @@ class Transaction extends CI_Controller
 		$this->load->model('model_transaction');
 		$this->load->model('model_product');
 		if (! $this->session->userdata('user_id')) {
-			header('location:' . $_ENV['APP_HOST'] . ':' . $_ENV['APP_PORT']);
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 

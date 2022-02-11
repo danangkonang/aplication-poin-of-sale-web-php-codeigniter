@@ -12,7 +12,7 @@
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
-  <title>kasir</title>
+  <title>Product Unit</title>
 </head>
 
 <body id="page-top">
@@ -79,7 +79,7 @@
         "order": [],
         "serverSide": true, 
         "ajax": {
-          "url": "http://localhost:8080/product_unit/find_units",
+          "url": "<?= site_url('product_unit/find_units')?>",
           "type": "POST"
         },
         "lengthChange": false,
@@ -100,7 +100,7 @@
     
     function edit_unit(id){
       $.ajax({
-        url : "<?php echo site_url('product_unit/find_unit')?>/" + id,
+        url : "<?= site_url('product_unit/find_unit')?>/" + id,
         type: "GET",
         dataType: "JSON",
         success: function(data) {
@@ -123,9 +123,9 @@
     function store_unit() {
       var url;
       if (save_method === 'add') {
-        url = "<?php echo site_url('product_unit/save_unit')?>";
+        url = "<?= site_url('product_unit/save_unit')?>";
       } else {
-        url = "<?php echo site_url('product_unit/update_unit')?>";
+        url = "<?= site_url('product_unit/update_unit')?>";
       }
       $.ajax({
         url : url,

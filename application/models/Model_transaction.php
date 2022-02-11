@@ -5,8 +5,8 @@ defined('BASEPATH') || exit('No direct script access allowed');
 class Model_transaction extends CI_Model
 {
 	public $table         = 'transactions';
-	public $column_order  = ['transaction_id', null, null, 'product_name'];
-	public $column_search = ['product_name'];
+	public $column_order  = ['transactions.transaction_id'];
+	public $column_search = ['transactions.product_name'];
 	public $order         = ['transactions.transaction_id' => 'DESC'];
 
 	public function get_datatables()
