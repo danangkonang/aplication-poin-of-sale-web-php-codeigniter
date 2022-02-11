@@ -83,51 +83,17 @@
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
   <script src="<?= base_url() ?>assets/Responsive-2.2.2/js/responsive.bootstrap4.min.js"></script>
   <script src="<?php echo base_url() ?>assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-  <script type="text/javascript" src="<?= base_url() ?>assets/js/scan.min.js"></script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <script>
     let table;
-    let scanner;
-    let video;
     $(document).ready(function(){
-      video = document.getElementById('preview');
-      scanner = new Instascan.Scanner({ video: video });
       find_all_product();
       setup();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
       $('#start_promo').datepicker();
       $('#end_promo').datepicker();
-    });
-
-    function docReady(fn) {
-      // see if DOM is already available
-      if (document.readyState === "complete" || document.readyState === "interactive") {
-        // call on next available tick
-        setTimeout(fn, 1);
-      } else {
-        document.addEventListener("DOMContentLoaded", fn);
-      }
-    }
-
-    docReady(function () {
-      var resultContainer = document.getElementById('qr-reader-results');
-      var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-      var lastResult, countResults = 0;
-      function onScanSuccess(decodedText, decodedResult) {
-        if (decodedText !== lastResult) {
-          ++countResults;
-          lastResult = decodedText;
-          // Handle on success condition with the decoded message.
-          console.log(`${decodedText}`);
-          $("#barcode").val(decodedText);
-          // html5QrcodeScanner.stop();
-        }
-      }
-
-      html5QrcodeScanner.render(onScanSuccess);
     });
 
     function find_all_product() {
@@ -157,19 +123,12 @@
       save_method = 'add';
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
+      $('#barcode').focus();
       $('#modal_form').modal('show');
       // showScanner();
     }
 
     function close_modal(){
-      // scanner.stop();
-      // let stream = video.srcObject;
-      // let tracks = stream.getTracks();
-      // for (let i = 0; i < tracks.length; i++) {
-      //   let track = tracks[i];
-      //   track.stop();
-      // }
-      // video.srcObject = null;
       save_method = 'add';
       $('#form_product')[0].reset();
       $('.modal-title').text('tambah produk');
@@ -206,7 +165,6 @@
         data: $('#form_product').serialize(),
         dataType: "JSON",
         success: function(data) {  
-          // console.log('respon',data)     
           if(data.status === 200) {
             close_modal();
             reload_table();
@@ -216,15 +174,8 @@
               title: "Warning !",
               text:data.message,
               icon: "warning",
-              //buttons: true,
               dangerMode: true,
             })
-            // console.log('eror',data)
-            // for (var i = 0; i < data.inputerror.length; i++) {
-            //   $('[name="'+data.inputerror[i]+'"]').addClass('is-invalid');
-            //   $('[name="'+data.inputerror[i]+'"]').next().text(data.error_string[i]);
-            // }
-            //alert(data.message);
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -350,14 +301,8 @@
           <form id="form_product">
             <input type="hidden" id="product_id" name="product_id" >
 
-              <div id="qr-reader"></div>
-              <div id="qr-reader-results"></div>
-
             <div class="row">
               <div class="col-sm-12 col-lg-6 col-xl-6">
-
-                <!-- <video class="bg-success" id="preview"></video> -->
-                
 
                 <div class="form-group">
                   <label for="barcode" class="col-form-label">Barcode</label>

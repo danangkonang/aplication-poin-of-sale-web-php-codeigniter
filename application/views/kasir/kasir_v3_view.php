@@ -50,14 +50,12 @@ die;
 
         <div class="container-fluid">
 
-          <div id="qr-reader" class="mb-5"></div>
-          <div id="qr-reader-results"></div>
-
           <div class="col-sm-12">
             <div class="row">
               <div class="col-sm-12 col-md-4">
                 <form class="form-horizontal" id="form_order" role="form">
                   <div id="qr-reader" style="width:300px"></div>
+
                   <div id="qr-reader-results"></div>
 
                   <div class="form-group row">
@@ -166,38 +164,6 @@ die;
       listening_serch_product();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
-    });
-
-    function docReady(fn) {
-      // see if DOM is already available
-      if (document.readyState === "complete" || document.readyState === "interactive") {
-        // call on next available tick
-        setTimeout(fn, 1);
-      } else {
-        document.addEventListener("DOMContentLoaded", fn);
-      }
-    }
-
-//function barcode
-    docReady(function() {
-      var resultContainer = document.getElementById('qr-reader-results');
-      var lastResult, countResults = 0;
-
-      function onScanSuccess(decodedText, decodedResult) {
-        if (decodedText !== lastResult) {
-          ++countResults;
-          lastResult = decodedText;
-          // Handle on success condition with the decoded message.
-          console.log(`Scan result ${decodedText}`, decodedResult);
-          findProductByBarcode(decodedText);
-        }
-      }
-
-      var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-        fps: 10,
-        qrbox: 250
-      });
-      html5QrcodeScanner.render(onScanSuccess);
     });
 
     function list_transaction() {

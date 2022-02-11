@@ -34,7 +34,7 @@ class Users extends AbstractSeed
       ),
       array(
         'user_name' => 'user seller',
-        'email' => 'seller@email.com',
+        'email' => 'danangkonang21@gmail.com',
         'address' => 'surabaya',
         'is_active' => true,
         'role' => 'seller',

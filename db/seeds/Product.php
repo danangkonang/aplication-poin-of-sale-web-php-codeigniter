@@ -16,25 +16,43 @@ class Product extends AbstractSeed
    */
   public function run()
   {
-    $faker = Faker\Factory::create();
+    // $faker = Faker\Factory::create();
 
-    $values = [];
-    for ($i = 0; $i < 10; $i++) {
-      $values[] = array(
-        'barcode' => $faker->ean13,
-        'kind_id' => $faker->randomElement($array = array(1, 2, 3, 4, 5, 6, 7)),
-        'product_name' => $faker->country,
-        'purchase_price' => $faker->randomElement($array = array(1000, 1500, 2000)),
-        'selling_price' => $faker->randomElement($array = array(2000, 2500, 3000)),
-        'unit' => $faker->randomElement($array = array('kg', 'pcs', 'karton', 'liter')),
-        'product_qty' => $faker->numberBetween($min = 10, $max = 100),
+    // $values = [];
+    // for ($i = 0; $i < 10; $i++) {
+    //   $values[] = array(
+    //     'barcode' => $faker->ean13,
+    //     'kind_id' => $faker->randomElement($array = array(1, 2, 3, 4, 5, 6, 7)),
+    //     'product_name' => $faker->country,
+    //     'purchase_price' => $faker->randomElement($array = array(1000, 1500, 2000)),
+    //     'selling_price' => $faker->randomElement($array = array(2000, 2500, 3000)),
+    //     'unit' => $faker->randomElement($array = array('kg', 'pcs', 'karton', 'liter')),
+    //     'product_qty' => $faker->numberBetween($min = 10, $max = 100),
+    //     'is_promo' => false,
+    //     'product_image' => 'default.jpg',
+    //     'is_active' => true,
+    //     'is_delete' => false,
+    //     'created_by' => 1,
+    //   );
+    // }
+
+    $values = array(
+      array(
+        'barcode' => '8999909096004',
+        'kind_id' => 1,
+        'product_name' => 'Sampuerna mild 16',
+        'purchase_price' => 25000,
+        'selling_price' => 27000,
+        'unit' => 'pcs',
+        'product_qty' => 100,
         'is_promo' => false,
         'product_image' => 'default.jpg',
         'is_active' => true,
         'is_delete' => false,
         'created_by' => 1,
-      );
-    }
+      ),
+    );
+
 
     $product = $this->table('products');
     $product->insert($values)->save();

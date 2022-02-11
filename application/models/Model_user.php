@@ -14,7 +14,6 @@ class Model_user extends CI_Model
 		if ($_POST['length'] !== -1) {
 			$this->db->limit($_POST['length'], $_POST['start']);
 			$query = $this->db->get();
-
 			return $query->result();
 		}
 	}
@@ -51,28 +50,24 @@ class Model_user extends CI_Model
 	{
 		$this->_get_datatables_query();
 		$query = $this->db->get();
-
 		return $query->num_rows();
 	}
 
 	public function count_all()
 	{
 		$this->db->from($this->table);
-
 		return $this->db->count_all_results();
 	}
 
 	public function get_member($id)
 	{
 		$this->db->where('id', $id);
-
 		return $this->db->get($this->table)->row_array();
 	}
 
 	public function validasi_cookie($user_cookie)
 	{
 		$this->db->where('token_login', $user_cookie);
-
 		return $this->db->get($this->table)->row_array();
 	}
 
@@ -103,50 +98,44 @@ class Model_user extends CI_Model
 	public function cek_data_email($email)
 	{
 		$this->db->where('email', $email);
-		$this->db->where('aktif', 1);
-
-		return $this->db->get('user')->row_array();
+		$this->db->where('is_active', 1);
+		return $this->db->get('users')->row_array();
 	}
 
 	public function cek_data_token($email, $token)
 	{
 		$this->db->where('email', $email);
 		$this->db->where('token', urlencode($token));
-
-		return $this->db->get('token')->row_array();
+		return $this->db->get('tokens')->row_array();
 	}
 
 	public function update_token($email, $data_token, $token)
 	{
 		$this->db->where('email', $email);
 		$this->db->where('token', urlencode($token));
-
-		return $this->db->update('token', $data_token);
+		return $this->db->update('tokens', $data_token);
 	}
 
 	public function simpan_token($data_token)
 	{
-		return $this->db->insert('token', $data_token);
+		return $this->db->insert('tokens', $data_token);
 	}
 
 	public function save_new_password($email, $data)
 	{
 		$this->db->where('email', $email);
-
-		return $this->db->update('user', $data);
+		return $this->db->update('users', $data);
 	}
 
 	public function get_profil()
 	{
 		$this->db->where('user_id', $this->session->userdata('user_id'));
-
 		return $this->db->get($this->table)->row_array();
 	}
 
 	public function count_employee()
 	{
 		$query = $this->db->query('select count(*) as total from users where role != "admin" ');
-
 		return $query->row()->total;
 	}
 }

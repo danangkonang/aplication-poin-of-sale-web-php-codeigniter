@@ -23,7 +23,7 @@ class Reset extends CI_Controller
 			['required' => 'email harus di isi']
 		);
 		if ($this->form_validation->run() === false) {
-			$this->load->view('user/form_reset_password');
+			$this->load->view('auth/form_reset_password');
 		} else {
 			$email = $this->input->post('email');
 			$this->forgot_password($email);
@@ -43,11 +43,11 @@ class Reset extends CI_Controller
 
 	public function make_token($email)
 	{
-		$token      = urlencode(base64_encode(random_bytes(32)));
+		$token = urlencode(base64_encode(random_bytes(32)));
 		$data_token = [
 			'email' => $email,
 			'token' => $token,
-			'waktu' => time(),
+			'expired' => time(),
 		];
 		$this->simpan_token($email, $data_token, $token);
 		$this->send_email($email, $token);
@@ -69,16 +69,14 @@ class Reset extends CI_Controller
 		];
 		$this->load->library('email');
 		$this->email->initialize($config);
-		$this->email->from('konangkonang88@gmail.com', 'dakon');
+		$this->email->from('security@kasir.com', 'admin');
 		$this->email->to($email);
 		$this->email->subject('reset akun');
 		$this->email->message('kami diminta untu mereset password anda<br>jika benar silahkan klik link ini <a href=" ' . site_url() . 'reset/reset_password?email=' . $email . '&token=' . $token . ' "> ' . site_url() . 'reset/reset_password?email=' . $email . '&token=' . $token . ' </a> <p> jika anda tidak merasa meminta reset password silahkan abaikan email ini</p>');
 		if ($this->email->send()) {
 			return true;
 		}
-
 		echo $this->email->print_debugger();
-
 		exit;
 	}
 
@@ -88,7 +86,6 @@ class Reset extends CI_Controller
 		if ($cek_token) {
 			return $this->model_user->update_token($email, $data_token);
 		}
-
 		return $this->model_user->simpan_token($data_token);
 	}
 
@@ -98,7 +95,7 @@ class Reset extends CI_Controller
 		$token = $this->input->get('token');
 		$data  = $this->model_user->cek_data_token($email, $token);
 		if ($data) {
-			if (time() - $data['waktu'] < (60 * 60 * 24)) {
+			if (time() - $data['expired'] < (60 * 60 * 24)) {
 				$this->session->set_userdata('reset', $data['email']);
 				redirect('reset/validasi_reset');
 			} else {
@@ -116,7 +113,6 @@ class Reset extends CI_Controller
 		if (! $this->session->userdata('reset')) {
 			redirect('login');
 		}
-
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules(
 			'password1',
@@ -146,7 +142,6 @@ class Reset extends CI_Controller
 		$data  = [
 			'password' => password_hash($password, PASSWORD_BCRYPT),
 		];
-
 		return $this->model_user->save_new_password($email, $data);
 	}
 }
