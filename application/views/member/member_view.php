@@ -39,11 +39,11 @@
           <table id="tabelBarang" class="table table-striped table-bordered nowrap text-center" style="width:100%">
             <thead>
               <tr>
-                <th class="text-center">Ko</th>
+                <th class="text-center">No</th>
                 <th>Nama</th>
                 <th>Email</th>
                 <th>Telephone</th>
-                <th>Discount</th>
+                <!-- <th>Discount</th> -->
                 <th>Option</th>
               </tr>
             </thead>
@@ -83,7 +83,7 @@
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
           {
-            "targets": [1, 2, 3, 4, 5],
+            "targets": [1, 2, 3, 4],
             "orderable": false,
           },
         ],
@@ -181,9 +181,13 @@
                 <div class="invalid-feedback"></div>
               </div>
               <div class="form-group">
-                <label for="member_telephone" class="col-form-label">Telephone</label>
-                <input type="text" class="form-control" id="member_telephone" name="member_telephone" >
-                <div class="invalid-feedback"></div>
+                <label class="" for="member_telephone">Telephone</label>
+                <div class="input-group ">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">62</div>
+                  </div>
+                  <input type="number" class="form-control" id="member_telephone" name="member_telephone">
+                </div>
               </div>
               <div class="form-group">
                 <label for="discount" class="col-form-label">Discount</label>

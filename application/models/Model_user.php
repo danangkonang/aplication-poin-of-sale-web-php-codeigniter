@@ -86,29 +86,29 @@ class Model_user extends CI_Model {
 
   public function cek_data_email($email) {
     $this->db->where('email',$email);
-    $this->db->where('aktif',1);
-    return $this->db->get('user')->row_array();
+    $this->db->where('is_active',1);
+    return $this->db->get('users')->row_array();
   }
 
   public function cek_data_token($email, $token) {
     $this->db->where('email', $email);
     $this->db->where('token', urlencode($token));
-    return $this->db->get('token')->row_array();
+    return $this->db->get('tokens')->row_array();
   }
 
   public function update_token($email, $data_token,$token) {
     $this->db->where('email', $email);
     $this->db->where('token', urlencode($token));
-    return $this->db->update('token', $data_token);
+    return $this->db->update('tokens', $data_token);
   }
 
   public function simpan_token($data_token) {
-    return $this->db->insert('token', $data_token);
+    return $this->db->insert('tokens', $data_token);
   }
 
   public function save_new_password($email, $data) {
     $this->db->where('email',$email);
-    return $this->db->update('user', $data);
+    return $this->db->update('users', $data);
   }
 
   public function get_profil() {

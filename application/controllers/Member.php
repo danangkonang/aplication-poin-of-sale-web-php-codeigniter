@@ -31,7 +31,7 @@ class Member extends CI_Controller {
 			$row[] = $user->member_name;
 			$row[] = $user->member_email;
 			$row[] = $user->member_telephone;
-			$row[] = $user->discount.' %';
+			// $row[] = $user->discount.' %';
 			$row[] = '<button class="btn btn-danger btn-sm" roler="button" onClick="edit_member('."'".$user->member_id."'".')">Edit</button>';
 			$data[] = $row;
 		}
@@ -68,7 +68,7 @@ class Member extends CI_Controller {
 		$data = [
 			'member_name' => $this->input->post('member_name'),
 			'member_email' => $this->input->post('member_email'),
-			'member_telephone' => $this->input->post('member_telephone'),
+			'member_telephone' =>'62'. $this->input->post('member_telephone'),
 			'discount' => $this->input->post('discount'),
 			'updated_at' => date("Y-m-d h:i:s"),
 		];

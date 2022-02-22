@@ -31,10 +31,10 @@
                 <th>no</th>
                 <th>Nama</th>
                 <th>Email</th>
-                <th>jenis kelamin</th>
+                <!-- <th>jenis kelamin</th>
                 <th>no hp</th>
                 <th>aktif</th>
-                <th>opsi</th>
+                <th>opsi</th> -->
               </tr>
             </thead>
             <tbody>
@@ -71,7 +71,7 @@
       table = $('#tabelBarang').DataTable({
         "columnDefs": [
           {
-            "targets": [1, 3, 4, 5],
+            "targets": [1, 2],
             "orderable": false,
           },
         ],

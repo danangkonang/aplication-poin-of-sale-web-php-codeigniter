@@ -46,7 +46,7 @@
             </div>
             <div class="col-7" id="store_telephone">-</div>
             <div class="col-5 mb-3">
-              Deskribsi
+              Deskripsi
             </div>
             <div class="col-7" id="store_description">-</div>
           </div>

@@ -15,7 +15,7 @@ class Reset extends CI_Controller {
 		  array('required' => 'email harus di isi')
 		);
     if ($this->form_validation->run() == FALSE) {
-      $this->load->view('user/form_reset_password');
+      $this->load->view('auth/form_reset_password');
     }
     else {
       $email = $this->input->post('email');
@@ -39,7 +39,7 @@ class Reset extends CI_Controller {
       $data_token = [
         'email' => $email,
         'token' => $token,
-        'waktu' => time()
+        'expired' => time()
       ];
       $this->simpan_token($email, $data_token, $token);
       $this-> send_email($email, $token);
@@ -51,8 +51,8 @@ class Reset extends CI_Controller {
 		$config = [
       'protocol' 	=> 'smtp',
       'smtp_host' => 'ssl://smtp.googlemail.com',
-      'smtp_user' => 'konangkonang88@gmail.com',
-      'smtp_pass' => 'bocahtlogo',
+      'smtp_user' => 'riantiresa23@gmail.com',
+      'smtp_pass' => '1Q2w3e4r@#',
       'smtp_port'  => 465,
       'mailtype' 	=> 'html',
       'charset' 	  => 'utf-8',
@@ -88,7 +88,7 @@ class Reset extends CI_Controller {
 		$token = $this->input->get('token');
 		$data = $this->model_user->cek_data_token($email, $token);
     if($data) {
-      if(time() - $data['waktu'] < (60*60*24)) {
+      if(time() - $data['expired'] < (60*60*24)) {
         $this->session->set_userdata('reset',$data['email']);
         redirect('reset/validasi_reset');
       }
@@ -118,7 +118,7 @@ class Reset extends CI_Controller {
       array('required' => 'tidak boleh kosong')
     );
     if ($this->form_validation->run() == FALSE) {
-      $this->load->view('user/form_new_password');
+      $this->load->view('auth/form_new_password');
     } 
     else {
       $password = $this->input->post('password1');

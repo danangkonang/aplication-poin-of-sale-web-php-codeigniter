@@ -70,14 +70,14 @@ class Registrasi extends CI_Controller
         'user_name' => $username,
         'email' => $email,
         'password' => password_hash($password, PASSWORD_BCRYPT),
-        'is_active' => true,
+        'is_active' => false,
         'role' => 'seller',
       );
-      $token = urlencode(base64_encode(random_bytes(32)));
+      $token = urlencode(base64_encode(random_bytes(64)));
       $data_token = array(
         'email' => $email,
         'token' => $token,
-        'waktu' => time()
+        'expired' => time()
       );
       $userId = $this->daftar_baru($data);
       $permision = array(
@@ -88,10 +88,10 @@ class Registrasi extends CI_Controller
         'delete' => false,
       );
       $this->model_permision->new_permision($permision);
-      //jika gagal hapus user
-      // $this->simpan_token($data_token);
-      // $this-> send_email($email, $token);
-      // $this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>silahkan konfirmasi email</strong></div>');
+      // jika gagal hapus user
+      $this->simpan_token($data_token);
+      $this-> send_email($email, $token);
+      $this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>silahkan konfirmasi email</strong></div>');
       redirect('login');
     }
   }
@@ -104,14 +104,14 @@ class Registrasi extends CI_Controller
 
   public function simpan_token($data_token)
   {
-    return $this->model_registrasi->simpan_token($data_token);
+    $this->model_registrasi->simpan_token($data_token);
   }
 
   public function send_email($email, $token)
-  //public function send_email()
+  // public function send_email()
   {
-    //$email='dngrifai21@gmail.com';
-    //$token='fgjkkllajahbb';
+    // $email='riantiresa23@gmail.com';
+    // $token='fgjkkllajahbb';
     $config = [
       'protocol'   => 'smtp',
       'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -124,12 +124,12 @@ class Registrasi extends CI_Controller
     ];
     $this->load->library('email');
     $this->email->initialize($config);
-    $this->email->from('konangkonang88@gmail.com', 'dakon');
+    $this->email->from('noreply@kasir.com', 'kasir');
     $this->email->to($email);
     $this->email->subject('aktivasi akun');
     $this->email->message('silahkan klik link untuk aktifasi akun<a href=" ' . site_url() . 'registrasi/aktifasi?email=' . $email . '&token=' . $token . ' "> ' . site_url() . 'registrasi/aktifasi?email=' . $email . '&token=' . $token . ' </a> <br>link akan kadaluarsa dalam waktu 24 jam');
     if ($this->email->send()) {
-      //echo 'sukses';
+      // echo 'sukses';
       //die;
       return true;
     } else {
@@ -143,12 +143,19 @@ class Registrasi extends CI_Controller
     $email = $this->input->get('email', true);
     $token = $this->input->get('token', true);
     $data = $this->model_registrasi->cek_data_token($email);
-
+    // echo($data['token']);
+    // echo('<br>');
+    // echo $token;
+    // die;
+    // var_dump($data);
+    // var_dump($email);
+    // die;
+  
     if ($data['email'] == $email) {
 
       if ($data['token'] == urlencode($token)) {
 
-        if (time() - $data['waktu'] < (60 * 60 * 24)) {
+        if (time() - $data['expired'] < (60 * 60 * 24)) {
           $this->model_registrasi->update_aktif($email);
           $this->model_registrasi->delete_token($email);
           $this->session->set_flashdata(
@@ -160,6 +167,7 @@ class Registrasi extends CI_Controller
           redirect('login');
         } else {
           $this->model_registrasi->delete_token($email);
+          $this->model_registrasi->delete_permission($data['user_id']);
           $this->model_registrasi->delete_user($email);
           $this->session->set_flashdata(
             'message',
@@ -179,3 +187,7 @@ class Registrasi extends CI_Controller
     }
   }
 }
+
+// zf5D1gACThFQZ8NooG9Xy1poOuiG%2FMWWMoUwQhWaGEE%3D
+
+// zf5D1gACThFQZ8NooG9Xy1poOuiG%2FMWWMoUwQhWaGEE%3D

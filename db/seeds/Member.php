@@ -18,11 +18,11 @@ class Member extends AbstractSeed
   {
     $faker = Faker\Factory::create('id_ID');
     $values = [];
-    for ($i = 0; $i < 100; $i++) {
+    for ($i = 0; $i < 1; $i++) {
       $values[] = array(
-        'member_name' => $faker->name,
-        'member_telephone' => $faker->e164PhoneNumber,
-        'member_email' => $faker->freeEmail,
+        'member_name' => 'resa', 
+        'member_telephone' => '6289652251589',
+        'member_email' =>'resarianti23@gmail.com',
         'created_by' => 1,
       );
     }

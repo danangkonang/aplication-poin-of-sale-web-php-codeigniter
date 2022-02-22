@@ -15,7 +15,7 @@ class Forgot extends CI_Controller {
 		);
 		
     if ($this->form_validation->run() == FALSE) {
-      $this->load->view('user/form_forgot_password');
+      $this->load->view('auth/form_reset_password');
     }
     else {
       $email = $this->input->post('email');

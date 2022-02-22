@@ -5,7 +5,7 @@ class Model_product_unit extends CI_Model {
 
   var $table = 'units';
   var $column_order = array('unit_id');
-  var $column_search = array(null);
+  var $column_search = array('unit');
   var $order = array('unit_id' => 'desc');
 
 	function get_unit_datatables() {

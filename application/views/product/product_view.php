@@ -89,45 +89,54 @@
 
   <script>
     let table;
-    let scanner;
-    let video;
+    // let scanner;
+    // let video;
+    // $(document).ready(function(){
+    //   video = document.getElementById('preview');
+    //   scanner = new Instascan.Scanner({ video: video });
+    //   find_all_product();
+    //   setup();
+    //   $("body").toggleClass("sidebar-toggled");
+    //   $(".sidebar").toggleClass("toggled");
+    //   $('#start_promo').datepicker();
+    //   $('#end_promo').datepicker();
+    // });
+
+    // function docReady(fn) {
+    //   // see if DOM is already available
+    //   if (document.readyState === "complete" || document.readyState === "interactive") {
+    //     // call on next available tick
+    //     setTimeout(fn, 1);
+    //   } else {
+    //     document.addEventListener("DOMContentLoaded", fn);
+    //   }
+    // }
+
+    // docReady(function () {
+    //   var resultContainer = document.getElementById('qr-reader-results');
+    //   var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+    //   var lastResult, countResults = 0;
+    //   function onScanSuccess(decodedText, decodedResult) {
+    //     if (decodedText !== lastResult) {
+    //       ++countResults;
+    //       lastResult = decodedText;
+    //       // Handle on success condition with the decoded message.
+    //       console.log(`${decodedText}`);
+    //       $("#barcode").val(decodedText);
+    //       // html5QrcodeScanner.stop();
+    //     }
+    //   }
+
+    //   html5QrcodeScanner.render(onScanSuccess);
+    // });
+
     $(document).ready(function(){
-      video = document.getElementById('preview');
-      scanner = new Instascan.Scanner({ video: video });
       find_all_product();
       setup();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
-      $('#start_promo').datepicker();
-      $('#end_promo').datepicker();
-    });
-
-    function docReady(fn) {
-      // see if DOM is already available
-      if (document.readyState === "complete" || document.readyState === "interactive") {
-        // call on next available tick
-        setTimeout(fn, 1);
-      } else {
-        document.addEventListener("DOMContentLoaded", fn);
-      }
-    }
-
-    docReady(function () {
-      var resultContainer = document.getElementById('qr-reader-results');
-      var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-      var lastResult, countResults = 0;
-      function onScanSuccess(decodedText, decodedResult) {
-        if (decodedText !== lastResult) {
-          ++countResults;
-          lastResult = decodedText;
-          // Handle on success condition with the decoded message.
-          console.log(`${decodedText}`);
-          $("#barcode").val(decodedText);
-          // html5QrcodeScanner.stop();
-        }
-      }
-
-      html5QrcodeScanner.render(onScanSuccess);
+      // $('#start_promo').datepicker();
+      // $('#end_promo').datepicker();
     });
 
     function find_all_product() {
@@ -206,14 +215,15 @@
         data: $('#form_product').serialize(),
         dataType: "JSON",
         success: function(data) {  
-          // console.log('respon',data)     
-          if(data.status === 200) {
+          console.log('respon',data)     
+          if(data.status) {
+            swal("Success", "data berhasil diubah", "success");
             close_modal();
             reload_table();
           }
           else {
             swal({
-              title: "Warning !",
+              title: "Warning",
               text:data.message,
               icon: "warning",
               //buttons: true,

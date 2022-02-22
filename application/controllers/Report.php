@@ -75,7 +75,7 @@ class Report extends CI_Controller {
 			$n++;
 			$row = [];
 			$row[] = $n;
-			$row[] = $barang->product_name;
+			$row[] = $barang->newname;
 			$row[] = $barang->qty;
 			$row[] = number_format($barang->purchase_price);
 			$row[] = number_format($barang->price);

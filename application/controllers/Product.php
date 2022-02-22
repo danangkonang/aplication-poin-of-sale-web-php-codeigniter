@@ -77,13 +77,15 @@ class Product extends CI_Controller
 			'selling_price' => $this->input->post('selling_price'),
 			'product_qty' => $this->input->post('product_qty'),
 			'product_image' => $this->input->post('product_image'),
-			'is_promo' => $this->input->post('is_promo'),
-			'start_promo' => $this->input->post('start_promo'),
-			'end_promo' => $this->input->post('end_promo'),
-			'promo_type' => $this->input->post('promo_type'),
+			// 'is_promo' => $this->input->post('is_promo'),
+			'is_promo' =>false,
+			// 'start_promo' => $this->input->post('start_promo'),
+			// 'end_promo' => $this->input->post('end_promo'),
+			// 'promo_type' => $this->input->post('promo_type'),
 			'piece' => $this->input->post('piece'),
-			'end_price' => $this->input->post('end_price'),
+			// 'end_price' => $this->input->post('end_price'),
 			'is_active' => $this->input->post('is_active'),
+
 		];
 
 		$respon = $this->model_product->is_duplicate_barcode($this->input->post('barcode'));

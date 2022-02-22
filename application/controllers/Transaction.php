@@ -21,7 +21,7 @@ class Transaction extends CI_Controller {
 	}
 
   public function create_transaction(){
-    $code_transaction = $this->input->post("code_transaction");
+    $code_transaction = $this->input->post('code_transaction');
     $response = [];
     if ($this->cart->contents() != []) {
       foreach ($this->cart->contents() as $cart) {

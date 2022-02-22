@@ -104,7 +104,7 @@ class Option extends CI_Controller {
                         '.$items["qty"].'
                       </li>
                       <li class="page-item">
-                        <a class="page-link bg-success" href="javascript:void(0)" onclick="plus_cart('.$items["id"].', '."'".$items["name"]."'".', '.$items["price"].' )">
+                        <a class="page-link bg-success" href="javascript:void(0)" onclick="plus_cart('.$items["id"].', '."'".$items["name"]."'".', '.$items["price"].', '.$items["qty"].')">
                           <i class="fas fa-plus fas-xs text-white"></i>
                         </a>
                       </li>
@@ -284,7 +284,7 @@ class Option extends CI_Controller {
 			$row = [];
 			$row[] = $n;
 			$row[] = $barang->transaction_code;
-      $row[] = $barang->product_name;
+      $row[] = $barang->newname;
       $row[] = $barang->qty;
       $row[] = $barang->user_name;
       $row[] = $barang->price;
@@ -326,4 +326,11 @@ class Option extends CI_Controller {
 		];
 		echo json_encode($output);
 	}
+  
+  public function find_qty_by_id($id){
+    $res = $this->model_product->get_product_qty($id);
+    echo json_encode($res);
+  }
 }
+
+

@@ -4,10 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Model_transaction extends CI_Model
 {
 
-	var $table = 'transactions';
+	var $table = 'transactions as tr';
 	var $column_order = array('transaction_id', null, null, 'product_name');
-	var $column_search = array('product_name');
-	var $order = array('transactions.transaction_id' => 'DESC');
+	var $column_search = array('products.product_name');
+	var $order = array('tr.transaction_id' => 'DESC');
 
 	function get_datatables(){
 		$this->_get_datatables_query();
@@ -19,13 +19,14 @@ class Model_transaction extends CI_Model
 	}
 
 	function create_order($data){
-		return $this->db->insert($this->table, $data);
+		return $this->db->insert('transactions', $data);
 	}
 
 	private function _get_datatables_query(){
+		$this->db->select('tr.transaction_code, tr.product_name AS newname, tr.qty, users.user_name, tr.price, tr.created_at, products.purchase_price');
 		$this->db->from($this->table);
-		$this->db->join('products', 'products.product_id = transactions.product_id');
-		$this->db->join('users', 'users.user_id = transactions.created_by');
+		$this->db->join('products', 'products.product_id = tr.product_id');
+		$this->db->join('users', 'users.user_id = tr.created_by');
 		$i = 0;
 		foreach ($this->column_search as $item) {
 			if ($_POST['search']['value']) {

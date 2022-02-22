@@ -452,26 +452,27 @@ die;
 		}
 
     function plus_cart(id, name, price) {
-			$.ajax({
-        url : "http://localhost:8080/option/add_keranjang",
-        type: "POST",
-        data: {
-          product_id: id,
-          product_name: name,
-          selling_price: price,
-          product_qty: 1,
-        },
-        dataType: "JSON",
-        success: function(data){
-          $("#total_belanja").text(convertToRupiah(data.total));
-          reload_table();
-          $('#val_total').val(data.total);
-          $('#sub_total').text('');
-        },
-        error: function (jqXHR, textStatus, errorThrown){
-          alert('Error adding data');
-        }
-      });
+      console.log(id)
+			// $.ajax({
+      //   url : "http://localhost:8080/option/add_keranjang",
+      //   type: "POST",
+      //   data: {
+      //     product_id: id,
+      //     product_name: name,
+      //     selling_price: price,
+      //     product_qty: 1,
+      //   },
+      //   dataType: "JSON",
+      //   success: function(data){
+      //     $("#total_belanja").text(convertToRupiah(data.total));
+      //     reload_table();
+      //     $('#val_total').val(data.total);
+      //     $('#sub_total').text('');
+      //   },
+      //   error: function (jqXHR, textStatus, errorThrown){
+      //     alert('Error adding data');
+      //   }
+      // });
 		}
 
     function minus_cart(id, name, price, qty, rowid) {
