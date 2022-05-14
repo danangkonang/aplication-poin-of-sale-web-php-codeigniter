@@ -62,7 +62,7 @@ vendor/bin/phinx rollback -e development -t 20210107020548
 ## Testing
 
 ```php
-php -S localhost:8080 -t publick/
+php -S localhost:8080 -t public/
 ```
 
 Akses http://localhost:8080 di browser
