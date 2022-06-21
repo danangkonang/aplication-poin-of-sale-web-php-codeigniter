@@ -34,7 +34,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                         Pendapatan (Harian)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"> Rp. <?= number_format($pendapatan_harian) ?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"> Rp. <?= number_format($pendapatan_harian == NULL ? 0 : $pendapatan_harian) ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -51,7 +51,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         Pendapatan (Bulanan)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">Rp. <?= number_format($pendapatan_bulanan) ?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">Rp. <?= number_format($pendapatan_bulanan == NULL ? 0 : $pendapatan_bulanan) ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-wallet fa-2x text-gray-300"></i>
@@ -68,7 +68,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                         Produk</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $produk ?></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $produk == NULL ? 0 : $produk ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-shopping-bag fa-2x text-gray-300"></i>
@@ -85,7 +85,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                         Pegawai</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $pegawai ?> Orang </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><?= $pegawai == NULL ? 0 : $pegawai ?> Orang </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-user-friends fa-2x text-gray-300"></i>
