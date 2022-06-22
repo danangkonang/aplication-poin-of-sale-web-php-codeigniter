@@ -13,7 +13,6 @@ class Registrasi extends CI_Controller
 		$this->load->model('model_registrasi');
 		$this->load->model('model_permision');
 		if ($this->session->userdata('id')) {
-			// header('location: http://localhost:8080');
 			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
@@ -72,14 +71,14 @@ class Registrasi extends CI_Controller
 				'user_name' => $username,
 				'email'     => $email,
 				'password'  => password_hash($password, PASSWORD_BCRYPT),
-				'is_active' => true,
+				'is_active' => $_ENV['EMAIL_VERIFICATION'] === "TRUE" ? false : true,
 				'role'      => 'seller',
 			];
 			$token      = urlencode(base64_encode(random_bytes(32)));
 			$data_token = [
 				'email' => $email,
 				'token' => $token,
-				'waktu' => time(),
+				'expired' => time(),
 			];
 			$userId    = $this->daftar_baru($data);
 			$permision = [
@@ -90,10 +89,13 @@ class Registrasi extends CI_Controller
 				'delete'  => false,
 			];
 			$this->model_permision->new_permision($permision);
-			//jika gagal hapus user
-			// $this->simpan_token($data_token);
-			// $this-> send_email($email, $token);
-			// $this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>silahkan konfirmasi email</strong></div>');
+			$this->simpan_token($data_token);
+			if ($_ENV['EMAIL_VERIFICATION'] === "TRUE") {
+				$this-> send_email($email, $token);
+				$this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>Silahkan konfirmasi email</strong></div>');
+			} else {
+				$this->session->set_flashdata('message','<div class="alert alert-success " role="alert"><strong>Berhasil Daftar</strong></div>');
+			}
 			redirect('login');
 		}
 	}
@@ -109,15 +111,10 @@ class Registrasi extends CI_Controller
 	}
 
 	public function send_email($email, $token)
-  //public function send_email()
 	{
-		//$email='dngrifai21@gmail.com';
-		//$token='fgjkkllajahbb';
 		$config = [
 			'protocol'  => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
-			// 'smtp_user' => 'riantiresa23@gmail.com',
-			// 'smtp_pass' => '1Q2w3e4r@#',
 			'smtp_user' => $_ENV['SMTP_USER'],
 			'smtp_pass' => $_ENV['SMTP_PASS'],
 			'smtp_port' => 465,
@@ -127,15 +124,14 @@ class Registrasi extends CI_Controller
 		];
 		$this->load->library('email');
 		$this->email->initialize($config);
-		$this->email->from('konangkonang88@gmail.com', 'dakon');
+		$this->email->from('admin@kasir.com', 'admin');
 		$this->email->to($email);
-		$this->email->subject('aktivasi akun');
+		$this->email->subject('Aktivasi Akun');
 		$this->email->message('silahkan klik link untuk aktifasi akun<a href=" ' . site_url() . 'registrasi/aktifasi?email=' . $email . '&token=' . $token . ' "> ' . site_url() . 'registrasi/aktifasi?email=' . $email . '&token=' . $token . ' </a> <br>link akan kadaluarsa dalam waktu 24 jam');
 		if ($this->email->send()) {
 			return true;
 		}
 		echo $this->email->print_debugger();
-
 		exit;
 	}
 
@@ -152,9 +148,7 @@ class Registrasi extends CI_Controller
 					$this->model_registrasi->delete_token($email);
 					$this->session->set_flashdata(
 						'message',
-						'<div class="alert alert-success" role="alert">
-                     sukses aktifasi akun
-                  </div>'
+						'<div class="alert alert-success" role="alert">Berhasil aktifasi akun</div>'
 					);
 					redirect('login');
 				} else {
@@ -162,18 +156,16 @@ class Registrasi extends CI_Controller
 					$this->model_registrasi->delete_user($email);
 					$this->session->set_flashdata(
 						'message',
-						'<div class="alert alert-danger" role="alert">
-                     token kadaluarsa
-                  </div>'
+						'<div class="alert alert-danger" role="alert">Ups.. Token kadaluarsa</div>'
 					);
 					redirect('login');
 				}
 			} else {
-				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">token invailed</div>');
+				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Ups.. Token invailed</div>');
 				redirect('login');
 			}
 		} else {
-			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">email invailed</div>');
+			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Ups.. Email invailed</div>');
 			redirect('login');
 		}
 	}

@@ -50,9 +50,14 @@ class Reset extends CI_Controller
 			'expired' => time(),
 		];
 		$this->simpan_token($email, $data_token, $token);
-		$this->send_email($email, $token);
-		$this->session->set_flashdata('forgot', '<p class="text-center text-success">silahkan cek email ' . $email . '</p>');
-		redirect('reset');
+		if ($_ENV['EMAIL_VERIFICATION'] === "TRUE") {
+			$this->send_email($email, $token);
+			$this->session->set_flashdata('forgot', '<p class="text-center text-success">silahkan cek email ' . $email . '</p>');
+			redirect('reset');
+		} else {
+			$URL = $_ENV['APP_HOST'].'reset/reset_password?email='. $email .'&token='. $token;
+			header('location:'. $URL);
+		}
 	}
 
 	public function send_email($email, $token)
@@ -60,8 +65,6 @@ class Reset extends CI_Controller
 		$config = [
 			'protocol'  => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
-			// 'smtp_user' => 'konangkonang88@gmail.com',
-			// 'smtp_pass' => 'bocahtlogo',
 			'smtp_user' => $_ENV['SMTP_USER'],
 			'smtp_pass' => $_ENV['SMTP_PASS'],
 			'smtp_port' => 465,
@@ -71,9 +74,9 @@ class Reset extends CI_Controller
 		];
 		$this->load->library('email');
 		$this->email->initialize($config);
-		$this->email->from('security@kasir.com', 'admin');
+		$this->email->from('security@kasir.com', 'Kasir Security');
 		$this->email->to($email);
-		$this->email->subject('reset akun');
+		$this->email->subject('Reset Password');
 		$this->email->message('kami diminta untu mereset password anda<br>jika benar silahkan klik link ini <a href=" ' . site_url() . 'reset/reset_password?email=' . $email . '&token=' . $token . ' "> ' . site_url() . 'reset/reset_password?email=' . $email . '&token=' . $token . ' </a> <p> jika anda tidak merasa meminta reset password silahkan abaikan email ini</p>');
 		if ($this->email->send()) {
 			return true;
@@ -129,7 +132,7 @@ class Reset extends CI_Controller
 			['required' => 'tidak boleh kosong']
 		);
 		if ($this->form_validation->run() === false) {
-			$this->load->view('user/form_new_password');
+			$this->load->view('auth/form_new_password');
 		} else {
 			$password = $this->input->post('password1');
 			$this->new_password($password);
