@@ -36,7 +36,7 @@ php composer.phar install
 
 ## Database
 
-Bisa juga menggunakan xampp, lamp, dll. sesuaikan config .env
+Bisa juga menggunakan xampp, lampp, dll. sesuaikan config .env
 
 ```bash
 #start database
@@ -47,16 +47,20 @@ docker-compose down
 ```
 
 ## Migrasi database
+User windows saran saya gunakan terminal git bash
 
 ```bash
 # up migration
-vendor/bin/phinx migrate -e development
+vendor/bin/phinx migrate -e development #(linux terminal/git bash windows)
+vendor\bin\phinx migrate -e development #(windows command prompt)
 
 # up seed
-vendor/bin/phinx seed:run
+vendor/bin/phinx seed:run #(linux terminal/git bash windows)
+vendor\bin\phinx seed:run #(windows command prompt)
 
 # rollback migration
-vendor/bin/phinx rollback -e development -t 20210107020548
+vendor/bin/phinx rollback -e development -t 20210107020548 #(linux terminal/git bash windows)
+vendor\bin\phinx rollback -e development -t 20210107020548 #(windows command prompt)
 ```
 
 ## Testing
