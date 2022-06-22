@@ -94,7 +94,6 @@
         type: "GET",
         dataType: "JSON",
         success: function(data){
-          console.log(data.user_name);
           $("#user_name").html(data.user_name);
           $("#email").html(data.email);
           $("#telephone").html(data.telephone);
@@ -125,7 +124,6 @@
     }
 
     function update_profile() {
-      console.log($('#user_name').val());
       $.ajax({
         url : "<?= site_url('profile/update_profil') ?>",
         type: "POST",
@@ -137,12 +135,11 @@
         },
         dataType: "JSON",
         success: function(res) {
-          console.log(res);
           $('#modalProfil').modal('hide');
           swal("Sukses", {
             icon: "success",
           });
-          // reload_table();
+          my_profile();
         },
         error: function (jqXHR, textStatus, errorThrown) {
           alert('error');

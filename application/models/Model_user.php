@@ -129,7 +129,7 @@ class Model_user extends CI_Model
 
 	public function get_profil($user_id)
 	{
-		$this->db->select('user_id, user_name, email, telephone, gender');
+		$this->db->select('user_id, user_name, email, telephone, gender, is_active');
 		$this->db->where('user_id', $user_id);
 		return $this->db->get($this->table)->row_array();
 	}

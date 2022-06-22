@@ -15,6 +15,67 @@
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <title>Users</title>
+  <style>
+    /* The switch - the box around the slider */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    /* Hide default HTML checkbox */
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    /* The slider */
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+
+    .slider.round:before {
+      border-radius: 50%;
+    }
+  </style>
 </head>
 
 <body id="page-top">
@@ -92,9 +153,110 @@
     }
     
     function edit_user(id){
-      alert(id);
+      $.ajax({
+        url : "<?= site_url('user/find_user_by_id/') ?>" + id,
+        type: "GET",
+        dataType: "JSON",
+        success: function(data){
+          $('[name="user_id"]').val(data.user_id);
+          $('[name="user_name"]').val(data.user_name);
+          $('[name="email"]').val(data.email);
+          $('[name="telephone"]').val(data.telephone);
+          $('[name="gender"]').val(data.gender);
+          $('[name="is_active"]').prop('checked', data.is_active === "1" ? true : false);
+          $('#modal_user').modal('show');
+        },
+        error: function (jqXHR, textStatus, errorThrown){
+          alert('Jaringan eror');
+        }
+      });
+    }
+
+    function update_user(id) {
+      let isActive = document.getElementsByName("is_active");
+      $.ajax({
+        url : "<?= site_url('user/update_user_by_id') ?>",
+        type: "POST",
+        data: {
+          user_id: $('[name="user_id"]').val(),
+          user_name: $('[name="user_name"]').val(),
+			    email: $('[name="email"]').val(),
+			    telephone: $('[name="telephone"]').val(),
+			    gender: $('[name="gender"]').val(),
+          is_active: isActive.checked ? 1 : 0,
+        },
+        dataType: "JSON",
+        success: function(res) {
+          $('#modalProfil').modal('hide');
+          swal("Sukses", {
+            icon: "success",
+          });
+          reload_table();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert('error');
+        }
+      });
     }
   </script>
+  <div class="modal fade" id="modal_user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				
+			  <div class="modal-header">
+				 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			  </div>
+			
+			  <div class="modal-body">
+				
+          <form id="form">
+            <input type="hidden" name="user_id">
+
+            <div class="form-group">
+              <label class="switch">
+                <input type="checkbox" name="is_active">
+                <span class="slider round"></span>
+              </label>
+            </div>
+
+            <div class="form-group">
+              <label for="nama" class="col-form-label">Nama</label>
+              <input type="text" class="form-control" name="user_name">
+              <div class="invalid-feedback"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="email" class="col-form-label">Email</label>
+              <input type="text" class="form-control" name="email">
+              <div class="invalid-feedback"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="telephone" class="col-form-label">Telephon</label>
+              <input type="number" class="form-control" name="telephone">
+              <div class="invalid-feedback"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="gender" class="col-form-label">Jenis kelamin</label>
+              <select class="form-control" name="gender">
+                <option value=""></option>
+                <option value="pria">Pria</option>
+                <option value="wanita">Wanita</option>
+              </select>
+            </div>
+
+          </form>
+				
+			  </div>
+			
+			  <div class="modal-footer">
+          <button type="button" class="btn btn-success" OnClick="update_user()">Simpan</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
 </html>

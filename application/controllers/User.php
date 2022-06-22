@@ -57,4 +57,23 @@ class User extends CI_Controller
 		];
 		echo json_encode($output);
 	}
+
+	public function find_user_by_id($user_id)
+	{
+		$res = $this->model_user->get_profil($user_id);
+		echo json_encode($res);
+	}
+
+	public function update_user_by_id()
+	{
+		$data = [
+			'user_name'	=> $this->input->post('user_name'),
+			'email'			=> $this->input->post('email'),
+			'telephone'	=> $this->input->post('telephone'),
+			'gender'		=> $this->input->post('gender'),
+			'is_active'		=> $this->input->post('is_active'),
+		];
+		$res = $this->model_user->update_profil($data, $this->input->post('user_id'));
+		echo json_encode($res);
+	}
 }
