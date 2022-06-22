@@ -16,7 +16,6 @@
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
   <title>Users</title>
   <style>
-    /* The switch - the box around the slider */
     .switch {
       position: relative;
       display: inline-block;
@@ -24,13 +23,12 @@
       height: 34px;
     }
 
-    /* Hide default HTML checkbox */
     .switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
-    /* The slider */
+
     .slider {
       position: absolute;
       cursor: pointer;
@@ -42,6 +40,7 @@
       -webkit-transition: .4s;
       transition: .4s;
     }
+
     .slider:before {
       position: absolute;
       content: "";
@@ -57,6 +56,7 @@
     input:checked + .slider {
       background-color: #2196F3;
     }
+    
     input:focus + .slider {
       box-shadow: 0 0 1px #2196F3;
     }
@@ -67,7 +67,6 @@
       transform: translateX(26px);
     }
 
-    /* Rounded sliders */
     .slider.round {
       border-radius: 34px;
     }

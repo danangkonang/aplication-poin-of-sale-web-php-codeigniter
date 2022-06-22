@@ -18,7 +18,7 @@ class Report extends CI_Controller
 	public function view_report_chart()
 	{
 		$data_session = [
-			'title'        => 'Laporan Chart',
+			'title'        => 'Diagram Laporan',
 			'active_class' => 'laporan-chart',
 		];
 		$this->session->set_userdata($data_session);
@@ -28,7 +28,7 @@ class Report extends CI_Controller
 	public function view_report_table()
 	{
 		$data_session = [
-			'title'        => 'Laporan table',
+			'title'        => 'Tabel Laporan',
 			'active_class' => 'laporan-table',
 		];
 		$this->session->set_userdata($data_session);

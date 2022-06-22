@@ -32,7 +32,7 @@ class Forgot extends CI_Controller
 	{
 		$cek = $this->model_forgot->cek_data_email($email);
 		if ($cek) {
-			$this->make_token($email);
+			$this->generate_token($email);
 		} else {
 			$this->session->set_flashdata('error_email', 'email belum terdaftar');
 			redirect('forgot');

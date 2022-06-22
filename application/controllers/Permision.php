@@ -19,7 +19,7 @@ class Permision extends CI_Controller
 	public function index()
 	{
 		$data_session = [
-			'title'        => 'Permision',
+			'title'        => 'Hak Akses',
 			'active_class' => 'permision',
 		];
 		$this->session->set_userdata($data_session);

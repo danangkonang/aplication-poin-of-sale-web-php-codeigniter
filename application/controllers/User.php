@@ -46,7 +46,7 @@ class User extends CI_Controller
 			} else {
 				$row[] = 'blokir';
 			}
-			$row[]  = '<button class="btn btn-danger" roler="button" onClick="edit_user(' . "'" . $user->user_id . "'" . ')">edit</button>';
+			$row[]  = '<button class="btn btn-danger" roler="button" onClick="edit_user(' . "'" . $user->user_id . "'" . ')">Edit</button>';
 			$data[] = $row;
 		}
 		$output = [

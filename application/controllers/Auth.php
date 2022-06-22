@@ -2,6 +2,9 @@
 
 defined('BASEPATH') || exit('No direct script access allowed');
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '../../.env');
+$dotenv->load();
+
 class Auth extends CI_Controller
 {
 	public function __construct()
@@ -24,7 +27,6 @@ class Auth extends CI_Controller
 				'active_class' => 'dashboard',
 			];
 			$this->session->set_userdata($data_session);
-
 			$data = [
 				'pendapatan_harian'  => $this->model_transaction->sum_daily(),
 				'pendapatan_bulanan' => $this->model_transaction->sum_monthly(),
@@ -52,13 +54,11 @@ class Auth extends CI_Controller
 		if ($data === null) {
 			delete_cookie('cookie_id');
 			$this->load->view('auth/form_login');
-
 			return;
 		}
 		if (! $data) {
 			delete_cookie('cookie_id');
 			$this->load->view('auth/form_login');
-
 			return;
 		}
 		if ($data['token_login'] === $user_cookie) {
@@ -76,7 +76,7 @@ class Auth extends CI_Controller
 			$cookie = $this->_rundom_string($data['user_id']);
 			$this->_cookie_session($data_session, $cookie);
 			$respon = $this->model_login->save_coocie($data['user_id'], ['token_login' => $cookie]);
-			header('location: http://localhost:8080');
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 
@@ -91,7 +91,6 @@ class Auth extends CI_Controller
 				$result .= $strings[$create];
 			}
 		}
-
 		return $result;
 	}
 
@@ -99,7 +98,6 @@ class Auth extends CI_Controller
 	{
 		$this->load->helper('cookie');
 		set_cookie('cookie_id', $data_cookie, '604800');
-
 		return $this->session->set_userdata($data_session);
 	}
 

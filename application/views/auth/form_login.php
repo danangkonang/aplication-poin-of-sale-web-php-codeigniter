@@ -53,10 +53,10 @@
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="<?php echo site_url('reset');?>">Forgot Password?</a>
+                    <a class="small" href="<?php echo site_url('reset');?>">Lupa Password?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="<?php echo site_url('registrasi');?>">Create an Account!</a>
+                    <a class="small" href="<?php echo site_url('registrasi');?>">Daftar Akun!</a>
                   </div>
                 </div>
               </div>

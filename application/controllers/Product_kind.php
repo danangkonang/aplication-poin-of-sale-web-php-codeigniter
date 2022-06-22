@@ -19,7 +19,7 @@ class Product_kind extends CI_Controller
 	public function index()
 	{
 		$data_session = [
-			'title'        => 'Kind',
+			'title'        => 'Jenis Produk',
 			'active_class' => 'product_kind',
 		];
 		$this->session->set_userdata($data_session);

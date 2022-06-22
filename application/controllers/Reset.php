@@ -34,14 +34,14 @@ class Reset extends CI_Controller
 	{
 		$cek = $this->model_user->cek_data_email($email);
 		if ($cek) {
-			$this->make_token($email);
+			$this->generate_token($email);
 		} else {
 			$this->session->set_flashdata('error_email', 'email belum terdaftar');
 			redirect('reset');
 		}
 	}
 
-	public function make_token($email)
+	public function generate_token($email)
 	{
 		$token = urlencode(base64_encode(random_bytes(32)));
 		$data_token = [
@@ -60,8 +60,10 @@ class Reset extends CI_Controller
 		$config = [
 			'protocol'  => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_user' => 'konangkonang88@gmail.com',
-			'smtp_pass' => 'bocahtlogo',
+			// 'smtp_user' => 'konangkonang88@gmail.com',
+			// 'smtp_pass' => 'bocahtlogo',
+			'smtp_user' => $_ENV['SMTP_USER'],
+			'smtp_pass' => $_ENV['SMTP_PASS'],
 			'smtp_port' => 465,
 			'mailtype'  => 'html',
 			'charset'   => 'utf-8',

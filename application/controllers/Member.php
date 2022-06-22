@@ -19,7 +19,7 @@ class Member extends CI_Controller
 	public function index()
 	{
 		$data_session = [
-			'title'        => 'member',
+			'title'        => 'Member',
 			'active_class' => 'member',
 		];
 		$this->session->set_userdata($data_session);

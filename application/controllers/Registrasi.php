@@ -13,7 +13,8 @@ class Registrasi extends CI_Controller
 		$this->load->model('model_registrasi');
 		$this->load->model('model_permision');
 		if ($this->session->userdata('id')) {
-			header('location: http://localhost:8080');
+			// header('location: http://localhost:8080');
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 
@@ -115,8 +116,10 @@ class Registrasi extends CI_Controller
 		$config = [
 			'protocol'  => 'smtp',
 			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'smtp_user' => 'riantiresa23@gmail.com',
-			'smtp_pass' => '1Q2w3e4r@#',
+			// 'smtp_user' => 'riantiresa23@gmail.com',
+			// 'smtp_pass' => '1Q2w3e4r@#',
+			'smtp_user' => $_ENV['SMTP_USER'],
+			'smtp_pass' => $_ENV['SMTP_PASS'],
 			'smtp_port' => 465,
 			'mailtype'  => 'html',
 			'charset'   => 'utf-8',

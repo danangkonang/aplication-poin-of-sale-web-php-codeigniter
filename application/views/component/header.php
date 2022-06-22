@@ -18,12 +18,12 @@
       <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
         <a class="dropdown-item" href="<?= base_url() ?>profile/me">
           <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-          Profile
+          Profil
         </a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="<?= base_url() ?>auth/logout">
           <i class="fas fa-power-off fa-sm fa-fw mr-2 text-gray-400"></i>
-          Logout
+          Keluar
         </a>
       </div>
     </li>

@@ -19,7 +19,7 @@ class Product_unit extends CI_Controller
 	public function index()
 	{
 		$data_session = [
-			'title'        => 'Unit',
+			'title'        => 'Satuan Produk',
 			'active_class' => 'product_unit',
 		];
 		$this->session->set_userdata($data_session);

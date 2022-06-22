@@ -12,7 +12,7 @@ class Login extends CI_Controller
 		parent::__construct();
 		$this->load->model('model_login');
 		if ($this->session->userdata('id')) {
-			header('location: http://localhost:9000');
+			header('location:' . $_ENV['APP_HOST']);
 		}
 	}
 
@@ -192,7 +192,7 @@ class Login extends CI_Controller
 					];
 					$this->_input_cookie($data_input_cookie, $data_update_cookie, $data_session, $cookie_id);
 					$this->_cookie_session($data_session, $cookie);
-					header('location: http://localhost:9000');
+					header('location:' . $_ENV['APP_HOST']);
 				// }
 				} else {
 					$this->session->set_flashdata('error_password', 'password salah');
