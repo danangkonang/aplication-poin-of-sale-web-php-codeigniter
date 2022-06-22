@@ -1,3 +1,7 @@
+<?php
+// var_dump($akun);
+// die;
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <link rel="icon" type="image/x-icon" href="<?= base_url() ?>assets/images/favicon.ico">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="<?= base_url() ?>assets/bootstrap-4.1.3/css/bootstrap-4.1.3.min.css" rel="stylesheet">
@@ -29,32 +34,36 @@
               <a href="javascript:void(0)" onClick="edit_profil()"><i class="far fa-2x fa-edit"></i></a>
             </div>
             
-            <div class="col-5 p-2 font-weight-bold text-dark">
+            <div class="h4 col-5 p-2 font-weight-bold text-dark">
               Nama
             </div>
-            <div class="col-7 p-2" id="nama_toko">
-              : <?= $akun['user_name'] ?>
+            <div class="h4 col-7 p-2 font-weight-bold d-flex">
+              <div class="pr-2">:</div>
+              <div id="user_name">-</div>
             </div>
             
-            <div class="col-5 p-2 font-weight-bold text-dark">
+            <div class="h4 col-5 p-2 font-weight-bold text-dark">
               Email
             </div>
-            <div class="col-7 p-2" id="alamat_toko">
-              : <?= $akun['email'] ?>
+            <div class="h4 col-7 p-2 font-weight-bold d-flex">
+              <div class="pr-2">:</div>
+              <div id="email">-</div>
             </div>
             
-            <div class="col-5 p-2 font-weight-bold text-dark">
+            <div class="h4 col-5 p-2 font-weight-bold text-dark">
               Telephon
             </div>
-            <div class="col-7 p-2" id="telephon_toko">
-              : <?= $akun['telephone'] ?>
+            <div class="h4 col-7 p-2 font-weight-bold d-flex">
+              <div class="pr-2">:</div>
+              <div id="telephone">-</div>
             </div>
             
-            <div class="col-5 p-2 font-weight-bold text-dark">
+            <div class="h4 col-5 p-2 font-weight-bold text-dark">
               Jenis Kelamin
             </div>
-            <div class="col-7 p-2" id="moto_toko">
-              : <?= $akun['gender'] ?>
+            <div class="h4 col-7 p-2 font-weight-bold d-flex">
+              <div class="pr-2">:</div>
+              <div id="gender">-</div>
             </div>
           </div>
         </div>
@@ -70,21 +79,43 @@
   <script src="<?= base_url() ?>assets/jquery/jquery-3.2.1.min.js"></script>
   <script src="<?= base_url() ?>assets/bootstrap-4.1.3/js/bootstrap.min.js"></script>
   <script src="<?= base_url() ?>assets/js/sb-admin-2.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
   <script>
     $(document).ready(function(){
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
+      my_profile();
     });
-    function edit_profil(){
+
+    function my_profile() {
       $.ajax({
-        url : "<?= site_url('profile/edit_profil') ?>",
+        url : "<?= site_url('profile/my_profile') ?>",
         type: "GET",
         dataType: "JSON",
         success: function(data){
-          $('[name="nama"]').val(data.user_name);
+          console.log(data.user_name);
+          $("#user_name").html(data.user_name);
+          $("#email").html(data.email);
+          $("#telephone").html(data.telephone);
+          $("#gender").html(data.gender);
+        },
+        error: function (jqXHR, textStatus, errorThrown){
+          alert('Jaringan eror');
+        }
+      });
+    }
+
+    function edit_profil(){
+      $.ajax({
+        url : "<?= site_url('profile/my_profile') ?>",
+        type: "GET",
+        dataType: "JSON",
+        success: function(data){
+          $('[name="user_name"]').val(data.user_name);
           $('[name="email"]').val(data.email);
-          $('[name="telephon"]').val(data.telephone);
-          $('[name="jenis kelamin"]').val(data.gender);
+          $('[name="telephone"]').val(data.telephone);
+          $('[name="gender"]').val(data.gender);
           $('#modalProfil').modal('show');
         },
         error: function (jqXHR, textStatus, errorThrown){
@@ -92,9 +123,34 @@
         }
       });
     }
+
+    function update_profile() {
+      console.log($('#user_name').val());
+      $.ajax({
+        url : "<?= site_url('profile/update_profil') ?>",
+        type: "POST",
+        data: {
+          user_name: $('[name="user_name"]').val(),
+			    email: $('[name="email"]').val(),
+			    telephone: $('[name="telephone"]').val(),
+			    gender: $('[name="gender"]').val(),
+        },
+        dataType: "JSON",
+        success: function(res) {
+          console.log(res);
+          $('#modalProfil').modal('hide');
+          swal("Sukses", {
+            icon: "success",
+          });
+          // reload_table();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert('error');
+        }
+      });
+    }
   </script>
 
-  <!-- Modal -->
   <div class="modal fade" id="modalProfil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
@@ -103,30 +159,31 @@
 				 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 			  </div>
 			
-			  <div class="modal-body" id="isiModal">
+			  <div class="modal-body">
 				
           <form id="form">
             <div class="form-group">
               <label for="nama" class="col-form-label">Nama</label>
-              <input type="text" class="form-control " name="nama" >
+              <input type="text" class="form-control" name="user_name">
               <div class="invalid-feedback"></div>
             </div>
             
             <div class="form-group">
               <label for="email" class="col-form-label">Email</label>
-              <input type="text" class="form-control " name="email" >
+              <input type="text" class="form-control" name="email">
               <div class="invalid-feedback"></div>
             </div>
             
             <div class="form-group">
-              <label for="telephon" class="col-form-label">Telephon</label>
-              <input type="number" class="form-control " name="telephon" >
+              <label for="telephone" class="col-form-label">Telephon</label>
+              <input type="number" class="form-control" name="telephone">
               <div class="invalid-feedback"></div>
             </div>
             
             <div class="form-group">
-              <label for="jenis_kelamin" class="col-form-label">Jenis kelamin</label>
-              <select class="form-control" name="jenis_kelamin" >
+              <label for="gender" class="col-form-label">Jenis kelamin</label>
+              <select class="form-control" name="gender">
+                <option value=""></option>
                 <option value="pria">Pria</option>
                 <option value="wanita">Wanita</option>
               </select>
@@ -134,7 +191,7 @@
 
             <div class="form-group">
               <label for="foto" class="col-form-label">foto</label>
-              <input type="file" class="form-control-file " name="foto" >
+              <input type="file" class="form-control-file" name="foto" id="image">
               <div class="invalid-feedback"></div>
             </div>
           </form>
@@ -142,7 +199,7 @@
 			  </div>
 			
 			  <div class="modal-footer">
-          <button type="button" class="btn btn-success" OnClick="simpan()">Simpan</button>
+          <button type="button" class="btn btn-success" OnClick="update_profile()">Simpan</button>
           <button type="button" class="btn btn-danger" data-dismiss="modal">Tutup</button>
 				</div>
 			</div>

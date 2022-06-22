@@ -129,8 +129,6 @@ class Registrasi extends CI_Controller
 		$this->email->subject('aktivasi akun');
 		$this->email->message('silahkan klik link untuk aktifasi akun<a href=" ' . site_url() . 'registrasi/aktifasi?email=' . $email . '&token=' . $token . ' "> ' . site_url() . 'registrasi/aktifasi?email=' . $email . '&token=' . $token . ' </a> <br>link akan kadaluarsa dalam waktu 24 jam');
 		if ($this->email->send()) {
-			//echo 'sukses';
-			//die;
 			return true;
 		}
 		echo $this->email->print_debugger();

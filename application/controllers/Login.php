@@ -153,8 +153,6 @@ class Login extends CI_Controller
 	public function proses_masuk($email, $password)
 	{
 		$data = $this->model_login->cek_email_member($email);
-		// var_dump($data);
-		// die;
 		if ($data['email'] === '') {
 			$this->session->set_flashdata('error_email', 'Email salah');
 			$this->load->view('auth/form_login');
@@ -211,7 +209,6 @@ class Login extends CI_Controller
 			return $this->model_user->update_cookie($data_update_cookie, $cookie_id);
 		}
 
-		// $input_cookie = $this->model_user->input_cookie($data_input_cookie);
 		return $this->model_user->input_cookie($data_input_cookie);
 	}
 

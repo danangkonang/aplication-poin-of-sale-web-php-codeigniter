@@ -99,16 +99,18 @@
 
 <script>
   let activeSession = "<?= $this->session->userdata('active_class') ?>";
-  let element = document.getElementById(activeSession);
-  element.classList.add("active");
-  (function($){
-    if(activeSession === 'laporan-table' || activeSession === 'laporan-chart'){
-      $("#collapseTwo").collapse('show');
-    }
-    if(activeSession === 'user' || activeSession === 'permision'){
-      let element = document.getElementById("listUser");
-      element.classList.add("active");
-      $("#collapseUser").collapse('show');
-    }
-  });
+  if (activeSession !== "") {
+    let element = document.getElementById(activeSession);
+    element.classList.add("active");
+    (function($){
+      if(activeSession === 'laporan-table' || activeSession === 'laporan-chart'){
+        $("#collapseTwo").collapse('show');
+      }
+      if(activeSession === 'user' || activeSession === 'permision'){
+        let element = document.getElementById("listUser");
+        element.classList.add("active");
+        $("#collapseUser").collapse('show');
+      }
+    });
+  }
 </script>

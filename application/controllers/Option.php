@@ -157,7 +157,7 @@ class Option extends CI_Controller
 		$no      = 1;
 		$output  = '';
 
-		$output .= '<div>'; // content
+		$output .= '<div>';
 
 		$output .= '
               <div style="text-align: center; font-size: 20px; font-weight: bold;">' . $toko->merchant_name . '</div>
@@ -184,7 +184,7 @@ class Option extends CI_Controller
                 </div>';
 		}
 
-		$output .= '</div>'; // body
+		$output .= '</div>';
 
 		$output .= '
                 <div style="display: flex;">
@@ -213,7 +213,7 @@ class Option extends CI_Controller
 		$output .= '<div style="text-align:center; margin: 20px 0;">
                   Terimakasih atas kunjungan anda
                 </div>';
-		$output .= '</div>'; // content
+		$output .= '</div>';
 		echo $output;
 	}
 

@@ -1,8 +1,3 @@
-<?php
-// var_dump($units);
-// die;
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,13 +7,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+  <link rel="icon" type="image/x-icon" href="<?= base_url() ?>assets/images/favicon.ico">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
   <link href="<?= base_url() ?>assets/css/sb-admin-2.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
   <link href="<?= base_url() ?>assets/jquery-ui-1.12.1.custom/jquery-ui.min.css" rel="stylesheet">
-  <link href="<?php echo base_url() ?>assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
+  <link href="<?= base_url() ?>assets/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet">
   <title>Product</title>
   <style>
     #preview{
@@ -91,8 +87,6 @@
       setup();
       $("body").toggleClass("sidebar-toggled");
       $(".sidebar").toggleClass("toggled");
-      // $('#start_promo').datepicker();
-      // $('#end_promo').datepicker();
     });
 
     function find_all_product() {
@@ -165,9 +159,12 @@
         type: "POST",
         data: $('#form_product').serialize(),
         dataType: "JSON",
-        success: function(data) {  
+        success: function(data) {
           if(data.status === 200) {
             close_modal();
+            swal("Sukses", {
+              icon: "success",
+            });
             reload_table();
           } else {
             swal({

@@ -1,7 +1,7 @@
 <?php
   $width = 30;  
   $height = 55; 
-  $pageLayout = array($width, $height); //  or array($height, $width) 
+  $pageLayout = array($width, $height);
   $pdf = new Pdf('p', 'pt', $pageLayout, true, 'UTF-8', false);
   $pdf->SetTitle('Nota');
   $pdf->SetTopMargin(10);

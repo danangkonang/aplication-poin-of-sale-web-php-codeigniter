@@ -31,8 +31,6 @@ class Auth extends CI_Controller
 				'produk'             => $this->model_product->count_all(),
 				'pegawai'            => $this->model_user->count_employee(),
 			];
-			// var_dump($data);
-			// die;
 			$this->load->view('dashboard/dashboard', $data);
 		}
 	}

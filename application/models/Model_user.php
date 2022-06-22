@@ -127,10 +127,17 @@ class Model_user extends CI_Model
 		return $this->db->update('users', $data);
 	}
 
-	public function get_profil()
+	public function get_profil($user_id)
 	{
-		$this->db->where('user_id', $this->session->userdata('user_id'));
+		$this->db->select('user_id, user_name, email, telephone, gender');
+		$this->db->where('user_id', $user_id);
 		return $this->db->get($this->table)->row_array();
+	}
+
+	public function update_profil($data, $user_id)
+	{
+		$this->db->where('user_id', $user_id);
+		return $this->db->update($this->table, $data);
 	}
 
 	public function count_employee()

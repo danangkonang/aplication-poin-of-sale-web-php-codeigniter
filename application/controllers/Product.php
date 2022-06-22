@@ -139,7 +139,10 @@ class Product extends CI_Controller
 			'is_active'      => $this->input->post('is_active'),
 		];
 		$this->model_product->update(['product_id' => $this->input->post('product_id')], $data);
-		echo json_encode(['status' => true]);
+		echo json_encode([
+			'status' => 200,
+			'message' => 'success',
+		]);
 	}
 
 	public function hapus_barang($id)

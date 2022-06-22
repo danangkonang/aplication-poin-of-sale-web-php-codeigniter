@@ -8,7 +8,6 @@ class Data extends CI_Controller
 	{
 		$n   = 2;
 		$key = 'abcd';
-		// $text = strlen($key)-1;
 		$hasil = [];
 		$hasil = '';
 
