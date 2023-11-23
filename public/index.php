@@ -54,6 +54,8 @@ $envFile = __DIR__ . '/../';
 
 if (! is_file($envFile . '.env')) {
 	echo "Please create an .env file from the provided example in .env.txt as none was found.";
+
+	die;
 }
 
 Dotenv::createImmutable($envFile)->load();
