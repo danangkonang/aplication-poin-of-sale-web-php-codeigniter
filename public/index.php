@@ -36,9 +36,29 @@
  * @filesource
  */
 
- require '../vendor/autoload.php';
+/*
+ *---------------------------------------------------------------
+ * COMPOSER AUTOLOAD
+ *---------------------------------------------------------------
+ */
+require __DIR__ . '/../vendor/autoload.php';
 
 use Dotenv\Dotenv;
+
+/*
+ *---------------------------------------------------------------
+ * DOTENV
+ *---------------------------------------------------------------
+ */
+$envFile = __DIR__ . '/../';
+
+if (! is_file($envFile . '.env')) {
+	echo "Please create an .env file from the provided example in .env.txt as none was found.";
+
+	die;
+}
+
+Dotenv::createImmutable($envFile)->load();
 
 /*
  *---------------------------------------------------------------
@@ -57,7 +77,7 @@ use Dotenv\Dotenv;
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
 
 /*
  *---------------------------------------------------------------
@@ -319,8 +339,5 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
-$dotenv = Dotenv::createUnsafeImmutable(ROOTPATH); // ::createUnsafeImmutable('../');
-// $dotenv = new Dotenv('../');
-$dotenv->load();
 require_once BASEPATH.'core/CodeIgniter.php';
 

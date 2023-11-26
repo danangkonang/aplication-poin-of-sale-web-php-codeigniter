@@ -2,9 +2,6 @@
 
 defined('BASEPATH') || exit('No direct script access allowed');
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '../../.env');
-$dotenv->load();
-
 class Transaction extends CI_Controller
 {
 	public function __construct()
